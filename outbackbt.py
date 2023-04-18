@@ -126,7 +126,7 @@ class OutbackBt(Inverter):
 
 # Testmethode für direkten Aufruf
 if __name__ == "__main__":
-	outbackInverterTest = OutbackBt("a4:c1:37:00:25:91")
+	outbackInverterTest = OutbackBt("00:35:FF:02:95:99")
 	outbackInverterTest.get_settings()
 
 	while True:
