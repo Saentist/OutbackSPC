@@ -78,8 +78,11 @@ class OutbackBt(Inverter):
 		return False
 
 	def get_settings(self):
+		print("b1")
 		result = self.read_gen_data()
+		print("b2")
 		while not result:
+			print("b3")
 			result = self.read_gen_data()
 			time.sleep(1)
 		#self.max_battery_charge_current = MAX_BATTERY_CHARGE_CURRENT
