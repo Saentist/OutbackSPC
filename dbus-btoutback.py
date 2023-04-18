@@ -20,22 +20,17 @@ from utils import logger
 import utils
 from inverter import Inverter
 from outbackbt import OutbackBt
-from virtual import Virtual
 
-
-
-logger.info("Starting dbus-btbattery")
-
+logger.info("Starting dbus-btoutback")
 
 def main():
-	def poll_battery(loop):
+	def poll_inverter(loop):
 		# Run in separate thread. Pass in the mainloop so the thread can kill us if there is an exception.
 		poller = Thread(target=lambda: helper.publish_inverter(loop))
 		# Thread will die with us if deamon
 		poller.daemon = True
 		poller.start()
 		return True
-
 
 	def get_btaddr() -> str:
 		# Get the bluetooth address we need to use from the argument
@@ -44,26 +39,18 @@ def main():
 		else:
 			return False
 
-
 	logger.info(
-		"dbus-btbattery v" + str(utils.DRIVER_VERSION) + utils.DRIVER_SUBVERSION
+		"dbus-btoutback v" + str(utils.DRIVER_VERSION) + utils.DRIVER_SUBVERSION
 	)
 
 	btaddr = get_btaddr()
-	if len(btaddr) == 2:
-		battery: Inverter = Virtual(OutbackBt(btaddr[0]), OutbackBt(btaddr[1]))
-	elif len(btaddr) == 3:
-		battery: Inverter = Virtual(OutbackBt(btaddr[0]), OutbackBt(btaddr[1]), OutbackBt(btaddr[2]))
-	elif len(btaddr) == 4:
-		battery: Inverter = Virtual(OutbackBt(btaddr[0]), OutbackBt(btaddr[1]), OutbackBt(btaddr[2]), OutbackBt(btaddr[3]))
-	else:
-		battery: Inverter = OutbackBt(btaddr[0])
+	outbackInverterObject: Inverter = OutbackBt(btaddr[0])
 
-	if battery is None:
-		logger.error("ERROR >>> No battery connection at " + str(btaddr))
+	if outbackInverterObject is None:
+		logger.error("ERROR >>> No Inverter connection at " + str(btaddr))
 		sys.exit(1)
 
-	battery.log_settings()
+	outbackInverterObject.log_settings()
 
 	# Have a mainloop, so we can send/receive asynchronous calls to and from dbus
 	DBusGMainLoop(set_as_default=True)
@@ -72,14 +59,14 @@ def main():
 	mainloop = gobject.MainLoop()
 
 	# Get the initial values for the battery used by setup_vedbus
-	helper = DbusHelper(battery)
+	helper = DbusHelper(outbackInverterObject)
 
 	if not helper.setup_vedbus():
-		logger.error("ERROR >>> Problem with battery " + str(btaddr))
+		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
 		sys.exit(1)
 
 	# Poll the battery at INTERVAL and run the main loop
-	gobject.timeout_add(battery.poll_interval, lambda: poll_battery(mainloop))
+	gobject.timeout_add(outbackInverterObject.poll_interval, lambda: poll_inverter(mainloop))
 	try:
 		mainloop.run()
 	except KeyboardInterrupt:

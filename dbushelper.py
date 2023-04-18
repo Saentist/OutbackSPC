@@ -15,7 +15,7 @@ sys.path.insert(
 )
 from vedbus import VeDbusService
 from settingsdevice import SettingsDevice
-import battery
+import inverter
 from utils import *
 
 
@@ -28,21 +28,21 @@ def get_bus():
 
 
 class DbusHelper:
-    def __init__(self, battery):
-        self.battery = battery
+    def __init__(self, inverter):
+        self.inverter = inverter
         self.instance = 1
         self.settings = None
         self.error_count = 0
         self._dbusservice = VeDbusService(
             "com.victronenergy.battery."
-            + self.battery.port[self.battery.port.rfind("/") + 1 :],
+            + self.inverter.port[self.inverter.port.rfind("/") + 1:],
             get_bus(),
         )
 
     def setup_instance(self):
         # bms_id = self.battery.production if self.battery.production is not None else \
         #     self.battery.port[self.battery.port.rfind('/') + 1:]
-        bms_id = self.battery.port[self.battery.port.rfind("/") + 1 :]
+        bms_id = self.inverter.port[self.inverter.port.rfind("/") + 1:]
         path = "/Settings/Devices/bluetoothbattery"
         default_instance = "battery:1"
         settings = {
@@ -81,7 +81,7 @@ class DbusHelper:
         }
 
         self.settings = SettingsDevice(get_bus(), settings, self.handle_changed_setting)
-        self.battery.role, self.instance = self.get_role_instance()
+        self.inverter.role, self.instance = self.get_role_instance()
 
     def get_role_instance(self):
         val = self.settings["instance"].split(":")
@@ -90,7 +90,7 @@ class DbusHelper:
 
     def handle_changed_setting(self, setting, oldvalue, newvalue):
         if setting == "instance":
-            self.battery.role, self.instance = self.get_role_instance()
+            self.inverter.role, self.instance = self.get_role_instance()
             logger.info("Changed DeviceInstance = %d", self.instance)
             return
         logger.info(
@@ -103,11 +103,11 @@ class DbusHelper:
         # and notify of all the attributes we intend to update
         # This is only called once when a battery is initiated
         self.setup_instance()
-        short_port = self.battery.port[self.battery.port.rfind("/") + 1 :]
+        short_port = self.inverter.port[self.inverter.port.rfind("/") + 1:]
         logger.info("%s" % ("com.victronenergy.battery." + short_port))
 
         # Get the settings for the battery
-        if not self.battery.get_settings():
+        if not self.inverter.get_settings():
             return False
 
         # Create the management objects, as specified in the ccgx dbus-api document
@@ -115,47 +115,47 @@ class DbusHelper:
         self._dbusservice.add_path(
             "/Mgmt/ProcessVersion", "Python " + platform.python_version()
         )
-        self._dbusservice.add_path("/Mgmt/Connection", "Bluetooth " + self.battery.port)
+        self._dbusservice.add_path("/Mgmt/Connection", "Bluetooth " + self.inverter.port)
 
         # Create the mandatory objects
         self._dbusservice.add_path("/DeviceInstance", self.instance)
         self._dbusservice.add_path("/ProductId", 0x0)
         self._dbusservice.add_path(
-            "/ProductName", "BluetoothBattery(" + self.battery.type + ")"
+            "/ProductName", "BluetoothBattery(" + self.inverter.type + ")"
         )
         self._dbusservice.add_path(
             "/FirmwareVersion", str(DRIVER_VERSION) + DRIVER_SUBVERSION
         )
-        self._dbusservice.add_path("/HardwareVersion", self.battery.hardware_version)
+        self._dbusservice.add_path("/HardwareVersion", self.inverter.hardware_version)
         self._dbusservice.add_path("/Connected", 1)
         self._dbusservice.add_path(
-            "/CustomName", "BluetoothBattery(" + self.battery.type + ")", writeable=True
+            "/CustomName", "BluetoothBattery(" + self.inverter.type + ")", writeable=True
         )
 
         # Create static battery info
         self._dbusservice.add_path(
-            "/Info/BatteryLowVoltage", self.battery.min_battery_voltage, writeable=True
+            "/Info/BatteryLowVoltage", self.inverter.min_battery_voltage, writeable=True
         )
         self._dbusservice.add_path(
             "/Info/MaxChargeVoltage",
-            self.battery.max_battery_voltage,
+            self.inverter.max_battery_voltage,
             writeable=True,
             gettextcallback=lambda p, v: "{:0.2f}V".format(v),
         )
         self._dbusservice.add_path(
             "/Info/MaxChargeCurrent",
-            self.battery.max_battery_charge_current,
+            self.inverter.max_battery_charge_current,
             writeable=True,
             gettextcallback=lambda p, v: "{:0.2f}A".format(v),
         )
         self._dbusservice.add_path(
             "/Info/MaxDischargeCurrent",
-            self.battery.max_battery_discharge_current,
+            self.inverter.max_battery_discharge_current,
             writeable=True,
             gettextcallback=lambda p, v: "{:0.2f}A".format(v),
         )
         self._dbusservice.add_path(
-            "/System/NrOfCellsPerBattery", self.battery.cell_count, writeable=True
+            "/System/NrOfCellsPerBattery", self.inverter.cell_count, writeable=True
         )
         self._dbusservice.add_path("/System/NrOfModulesOnline", 1, writeable=True)
         self._dbusservice.add_path("/System/NrOfModulesOffline", 0, writeable=True)
@@ -167,13 +167,13 @@ class DbusHelper:
         )
         self._dbusservice.add_path(
             "/Capacity",
-            self.battery.get_capacity_remain(),
+            self.inverter.get_capacity_remain(),
             writeable=True,
             gettextcallback=lambda p, v: "{:0.2f}Ah".format(v),
         )
         self._dbusservice.add_path(
             "/InstalledCapacity",
-            self.battery.capacity,
+            self.inverter.capacity,
             writeable=True,
             gettextcallback=lambda p, v: "{:0.0f}Ah".format(v),
         )
@@ -264,7 +264,7 @@ class DbusHelper:
 
         # cell voltages
         if BATTERY_CELL_DATA_FORMAT > 0:
-            for i in range(1, self.battery.cell_count + 1):
+            for i in range(1, self.inverter.cell_count + 1):
                 cellpath = (
                     "/Cell/%s/Volts"
                     if (BATTERY_CELL_DATA_FORMAT & 2)
@@ -306,28 +306,28 @@ class DbusHelper:
 
         return True
 
-    def publish_battery(self, loop):
+    def publish_inverter(self, loop):
         # This is called every battery.poll_interval milli second as set up per battery type to read and update the data
         try:
             # Call the battery's refresh_data function
-            success = self.battery.refresh_data()
+            success = self.inverter.refresh_data()
             if success:
                 self.error_count = 0
-                self.battery.online = True
+                self.inverter.online = True
             else:
                 self.error_count += 1
                 # If the battery is offline for more than 10 polls (polled every second for most batteries)
                 if self.error_count >= 10:
-                    self.battery.online = False
+                    self.inverter.online = False
                 # Has it completely failed
                 if self.error_count >= 60:
                     loop.quit()
 
             # This is to mannage CCL\DCL
-            self.battery.manage_charge_current()
+            self.inverter.manage_charge_current()
 
             # This is to mannage CVCL
-            self.battery.manage_charge_voltage()
+            self.inverter.manage_charge_voltage()
 
             # publish all the data from the battery object to dbus
             self.publish_dbus()
@@ -339,114 +339,114 @@ class DbusHelper:
     def publish_dbus(self):
 
         # Update SOC, DC and System items
-        self._dbusservice["/System/NrOfCellsPerBattery"] = self.battery.cell_count
-        self._dbusservice["/Soc"] = round(self.battery.soc, 2)
-        self._dbusservice["/Dc/0/Voltage"] = round(self.battery.voltage, 2)
-        self._dbusservice["/Dc/0/Current"] = round(self.battery.current, 2)
+        self._dbusservice["/System/NrOfCellsPerBattery"] = self.inverter.cell_count
+        self._dbusservice["/Soc"] = round(self.inverter.soc, 2)
+        self._dbusservice["/Dc/0/Voltage"] = round(self.inverter.voltage, 2)
+        self._dbusservice["/Dc/0/Current"] = round(self.inverter.current, 2)
         self._dbusservice["/Dc/0/Power"] = round(
-            self.battery.voltage * self.battery.current, 2
+            self.inverter.voltage * self.inverter.current, 2
         )
-        self._dbusservice["/Dc/0/Temperature"] = self.battery.get_temp()
-        self._dbusservice["/Capacity"] = self.battery.get_capacity_remain()
+        self._dbusservice["/Dc/0/Temperature"] = self.inverter.get_temp()
+        self._dbusservice["/Capacity"] = self.inverter.get_capacity_remain()
         self._dbusservice["/ConsumedAmphours"] = (
             0
-            if self.battery.capacity is None
-            or self.battery.get_capacity_remain() is None
-            else self.battery.capacity - self.battery.get_capacity_remain()
+            if self.inverter.capacity is None
+               or self.inverter.get_capacity_remain() is None
+            else self.inverter.capacity - self.inverter.get_capacity_remain()
         )
 
-        midpoint, deviation = self.battery.get_midvoltage()
+        midpoint, deviation = self.inverter.get_midvoltage()
         if midpoint is not None:
             self._dbusservice["/Dc/0/MidVoltage"] = midpoint
             self._dbusservice["/Dc/0/MidVoltageDeviation"] = deviation
 
         # Update battery extras
-        self._dbusservice["/History/ChargeCycles"] = self.battery.cycles
-        self._dbusservice["/History/TotalAhDrawn"] = self.battery.total_ah_drawn
+        self._dbusservice["/History/ChargeCycles"] = self.inverter.cycles
+        self._dbusservice["/History/TotalAhDrawn"] = self.inverter.total_ah_drawn
         self._dbusservice["/Io/AllowToCharge"] = (
-            1 if self.battery.charge_fet and self.battery.control_allow_charge else 0
+            1 if self.inverter.charge_fet and self.inverter.control_allow_charge else 0
         )
         self._dbusservice["/Io/AllowToDischarge"] = (
             1
-            if self.battery.discharge_fet and self.battery.control_allow_discharge
+            if self.inverter.discharge_fet and self.inverter.control_allow_discharge
             else 0
         )
         self._dbusservice["/System/NrOfModulesBlockingCharge"] = (
             0
-            if self.battery.charge_fet is None
-            or (self.battery.charge_fet and self.battery.control_allow_charge)
+            if self.inverter.charge_fet is None
+               or (self.inverter.charge_fet and self.inverter.control_allow_charge)
             else 1
         )
         self._dbusservice["/System/NrOfModulesBlockingDischarge"] = (
-            0 if self.battery.discharge_fet is None or self.battery.discharge_fet else 1
+            0 if self.inverter.discharge_fet is None or self.inverter.discharge_fet else 1
         )
-        self._dbusservice["/System/NrOfModulesOnline"] = 1 if self.battery.online else 0
+        self._dbusservice["/System/NrOfModulesOnline"] = 1 if self.inverter.online else 0
         self._dbusservice["/System/NrOfModulesOffline"] = (
-            0 if self.battery.online else 1
+            0 if self.inverter.online else 1
         )
-        self._dbusservice["/System/MinCellTemperature"] = self.battery.get_min_temp()
-        self._dbusservice["/System/MaxCellTemperature"] = self.battery.get_max_temp()
+        self._dbusservice["/System/MinCellTemperature"] = self.inverter.get_min_temp()
+        self._dbusservice["/System/MaxCellTemperature"] = self.inverter.get_max_temp()
 
         # Charge control
         self._dbusservice[
             "/Info/MaxChargeCurrent"
-        ] = self.battery.control_charge_current
+        ] = self.inverter.control_charge_current
         self._dbusservice[
             "/Info/MaxDischargeCurrent"
-        ] = self.battery.control_discharge_current
+        ] = self.inverter.control_discharge_current
 
         # Voltage control
-        self._dbusservice["/Info/MaxChargeVoltage"] = self.battery.control_voltage
+        self._dbusservice["/Info/MaxChargeVoltage"] = self.inverter.control_voltage
 
         # Updates from cells
-        self._dbusservice["/System/MinVoltageCellId"] = self.battery.get_min_cell_desc()
-        self._dbusservice["/System/MaxVoltageCellId"] = self.battery.get_max_cell_desc()
+        self._dbusservice["/System/MinVoltageCellId"] = self.inverter.get_min_cell_desc()
+        self._dbusservice["/System/MaxVoltageCellId"] = self.inverter.get_max_cell_desc()
         self._dbusservice[
             "/System/MinCellVoltage"
-        ] = self.battery.get_min_cell_voltage()
+        ] = self.inverter.get_min_cell_voltage()
         self._dbusservice[
             "/System/MaxCellVoltage"
-        ] = self.battery.get_max_cell_voltage()
-        self._dbusservice["/Balancing"] = self.battery.get_balancing()
+        ] = self.inverter.get_max_cell_voltage()
+        self._dbusservice["/Balancing"] = self.inverter.get_balancing()
 
         # Update the alarms
-        self._dbusservice["/Alarms/LowVoltage"] = self.battery.protection.voltage_low
+        self._dbusservice["/Alarms/LowVoltage"] = self.inverter.protection.voltage_low
         self._dbusservice[
             "/Alarms/LowCellVoltage"
-        ] = self.battery.protection.voltage_cell_low
-        self._dbusservice["/Alarms/HighVoltage"] = self.battery.protection.voltage_high
-        self._dbusservice["/Alarms/LowSoc"] = self.battery.protection.soc_low
+        ] = self.inverter.protection.voltage_cell_low
+        self._dbusservice["/Alarms/HighVoltage"] = self.inverter.protection.voltage_high
+        self._dbusservice["/Alarms/LowSoc"] = self.inverter.protection.soc_low
         self._dbusservice[
             "/Alarms/HighChargeCurrent"
-        ] = self.battery.protection.current_over
+        ] = self.inverter.protection.current_over
         self._dbusservice[
             "/Alarms/HighDischargeCurrent"
-        ] = self.battery.protection.current_under
+        ] = self.inverter.protection.current_under
         self._dbusservice[
             "/Alarms/CellImbalance"
-        ] = self.battery.protection.cell_imbalance
+        ] = self.inverter.protection.cell_imbalance
         self._dbusservice[
             "/Alarms/InternalFailure"
-        ] = self.battery.protection.internal_failure
+        ] = self.inverter.protection.internal_failure
         self._dbusservice[
             "/Alarms/HighChargeTemperature"
-        ] = self.battery.protection.temp_high_charge
+        ] = self.inverter.protection.temp_high_charge
         self._dbusservice[
             "/Alarms/LowChargeTemperature"
-        ] = self.battery.protection.temp_low_charge
+        ] = self.inverter.protection.temp_low_charge
         self._dbusservice[
             "/Alarms/HighTemperature"
-        ] = self.battery.protection.temp_high_discharge
+        ] = self.inverter.protection.temp_high_discharge
         self._dbusservice[
             "/Alarms/LowTemperature"
-        ] = self.battery.protection.temp_low_discharge
+        ] = self.inverter.protection.temp_low_discharge
 
         # cell voltages
         if BATTERY_CELL_DATA_FORMAT > 0:
             try:
                 voltageSum = 0
-                for i in range(self.battery.cell_count):
-                    voltage = self.battery.get_cell_voltage(i)
+                for i in range(self.inverter.cell_count):
+                    voltage = self.inverter.get_cell_voltage(i)
                     cellpath = (
                         "/Cell/%s/Volts"
                         if (BATTERY_CELL_DATA_FORMAT & 2)
@@ -456,14 +456,14 @@ class DbusHelper:
                     if BATTERY_CELL_DATA_FORMAT & 1:
                         self._dbusservice[
                             "/Balances/Cell%s" % (str(i + 1))
-                        ] = self.battery.get_cell_balancing(i)
+                        ] = self.inverter.get_cell_balancing(i)
                     if voltage:
                         voltageSum += voltage
                 pathbase = "Cell" if (BATTERY_CELL_DATA_FORMAT & 2) else "Voltages"
                 self._dbusservice["/%s/Sum" % pathbase] = voltageSum
                 self._dbusservice["/%s/Diff" % pathbase] = (
-                    self.battery.get_max_cell_voltage()
-                    - self.battery.get_min_cell_voltage()
+                    self.inverter.get_max_cell_voltage()
+                    - self.inverter.get_min_cell_voltage()
                 )
             except:
                 pass
@@ -471,33 +471,33 @@ class DbusHelper:
         # Update TimeToSoC
         try:
             if (
-                self.battery.capacity is not None
+                self.inverter.capacity is not None
                 and len(TIME_TO_SOC_POINTS) > 0
-                and self.battery.time_to_soc_update == 0
+                and self.inverter.time_to_soc_update == 0
             ):
-                self.battery.time_to_soc_update = TIME_TO_SOC_LOOP_CYCLES
+                self.inverter.time_to_soc_update = TIME_TO_SOC_LOOP_CYCLES
                 crntPrctPerSec = (
-                    abs(self.battery.current / (self.battery.capacity / 100)) / 3600
+                        abs(self.inverter.current / (self.inverter.capacity / 100)) / 3600
                 )
 
                 for num in TIME_TO_SOC_POINTS:
                     self._dbusservice["/TimeToSoC/" + str(num)] = (
-                        self.battery.get_timetosoc(num, crntPrctPerSec)
-                        if self.battery.current
+                        self.inverter.get_timetosoc(num, crntPrctPerSec)
+                        if self.inverter.current
                         else None
                     )
                 
                 # Update TimeToGo
                 self._dbusservice["/TimeToGo"] = (
-                    self.battery.get_timetosoc(SOC_LOW_WARNING, crntPrctPerSec)
-                    if self.battery.current
+                    self.inverter.get_timetosoc(SOC_LOW_WARNING, crntPrctPerSec)
+                    if self.inverter.current
                     else None
                 )
 
             else:
-                self.battery.time_to_soc_update -= 1
+                self.inverter.time_to_soc_update -= 1
         except:
             pass
 
-        logger.debug("logged to dbus [%s]" % str(round(self.battery.soc, 2)))
-        self.battery.log_cell_data()
+        logger.debug("logged to dbus [%s]" % str(round(self.inverter.soc, 2)))
+        self.inverter.log_cell_data()
