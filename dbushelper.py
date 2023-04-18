@@ -15,7 +15,6 @@ sys.path.insert(
 )
 from vedbus import VeDbusService
 from settingsdevice import SettingsDevice
-import inverter
 from utils import *
 
 
