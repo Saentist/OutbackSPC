@@ -3,7 +3,6 @@ from threading import Thread, Lock
 from inverter import Inverter
 from utils import *
 import time
-import binascii
 
 class OutbackBtDev(DefaultDelegate, Thread):
 	def __init__(self, address):
