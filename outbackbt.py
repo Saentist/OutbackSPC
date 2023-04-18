@@ -129,7 +129,7 @@ if __name__ == "__main__":
 	outbackInverterTest = OutbackBt("00:35:FF:02:95:99")
 	print("1")
 	outbackInverterTest.get_settings()
-
+	print("2")
 	while True:
 		outbackInverterTest.refresh_data()
 
