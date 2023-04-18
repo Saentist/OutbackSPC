@@ -37,7 +37,7 @@ def main():
 		if len(sys.argv) > 1:
 			return sys.argv[1:]
 		else:
-			return False
+			return "00:35:FF:02:95:99"
 
 	logger.info(
 		"dbus-btoutback v" + str(utils.DRIVER_VERSION) + utils.DRIVER_SUBVERSION
