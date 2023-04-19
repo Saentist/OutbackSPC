@@ -123,10 +123,9 @@ class OutbackBt(Inverter):
 
         self.mutex.release()
         print('b')
-        for ch in self.generalData1:
-            print(ch)
+        byteArrayObject = self.generalData1.read()
 
-        tuple_of_shorts = struct.unpack('>' + 'h' * (len(self.generalData1) // 2), self.generalData1)
+        tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
         a03Bytes = self.byte2short(tuple_of_shorts)
 
         acvoltage = a03Bytes[0]
