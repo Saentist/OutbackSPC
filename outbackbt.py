@@ -26,7 +26,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 			if not connected:
 				try:
 					logger.info('Connecting ' + self.address)
-					self.bt.connect(self.address, addrType="public")
+					self.bt.connect(self.address, addrType="random")
 					logger.info('Connected ' + self.address)
 					connected = True
 				except BTLEException as ex:
