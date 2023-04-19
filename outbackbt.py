@@ -21,28 +21,23 @@ class OutbackBtDev(DefaultDelegate, Thread):
 
 	def run(self):
 		self.running = True
-		timer = 0
 		connected = False
 		while self.running:
 			if not connected:
 				try:
-					print('ax1')
 					logger.info('Connecting ' + self.address)
 					self.bt.connect(self.address, iface=0)
 					logger.info('Connected ' + self.address)
 					connected = True
-					print('ax2')
 				except BTLEException as ex:
 					print(ex)
 					logger.info('Connection failed')
 					time.sleep(3)
 					continue
-			print('we are connectec')
 			try:
 				if self.bt.waitForNotifications(0.5):
 					continue
 
-				print('here')
 
 			except BTLEDisconnectError:
 				logger.info('Disconnected')
@@ -59,10 +54,10 @@ class OutbackBtDev(DefaultDelegate, Thread):
 		self.generalDataCallback = func
 
 	def handleNotification(self, cHandle, data):
-		print('bx1')
+		print('handleNotification START')
 		hex_data = binascii.hexlify(data)
 		hex_string = hex_data.decode('utf-8')
-		print('bx2')
+		print('handleNotification END')
 		print(hex_string)
 
 class OutbackBt(Inverter):
@@ -156,7 +151,7 @@ class OutbackBt(Inverter):
 # Testmethode für direkten Aufruf
 if __name__ == "__main__":
 	print('1')
-	peripheral = Peripheral("00:35:FF:02:95:99", 'random')
+	peripheral = Peripheral("00:35:FF:02:95:99", iface=0)
 	print('2')
 	for service in peripheral.getServices():
 		for characteristic in service.getCharacteristics():
