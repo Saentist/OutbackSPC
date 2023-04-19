@@ -123,8 +123,12 @@ class OutbackBt(Inverter):
 
         self.mutex.release()
         print('b')
-        byteArrayObject = self.generalData1.propertiesToString()
+        byteArrayObject = self.generalData1
         print('byteArrayObject')
+        for ch in byteArrayObject:
+            print('start')
+            print(ch)
+            print('ende')
         tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
         a03Bytes = self.byte2short(tuple_of_shorts)
 
