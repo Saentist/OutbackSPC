@@ -42,6 +42,8 @@ class OutbackBtDev(DefaultDelegate, Thread):
 				if self.bt.waitForNotifications(0.5):
 					continue
 
+				print('here')
+
 			except BTLEDisconnectError:
 				logger.info('Disconnected')
 				connected = False
