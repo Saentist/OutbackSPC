@@ -128,7 +128,8 @@ class OutbackBt(Inverter):
         print('byteArrayObject')
         for ch in byteArrayObject:
             print('start')
-            print(ch)
+            tempdate = ch.read()
+            print(tempdate)
             print('ende')
         tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
         a03Bytes = self.byte2short(tuple_of_shorts)
