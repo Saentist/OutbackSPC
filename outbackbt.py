@@ -116,7 +116,7 @@ class OutbackBt(Inverter):
 		print("c1")
 		self.mutex.acquire()
 		print("c2")
-		byteArrayObject = self.bt.getCharacteristics(uuid="00002a03-0000-1000-8000-00805f9b34fb")
+		byteArrayObject = self.dev.getCharacteristics(uuid="00002a03-0000-1000-8000-00805f9b34fb")
 		print(byteArrayObject)
 
 		tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
