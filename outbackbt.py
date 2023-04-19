@@ -27,7 +27,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 				try:
 					print('ax1')
 					logger.info('Connecting ' + self.address)
-					self.bt.connect(self.address, addrType="random")
+					self.bt.connect(self.address, addrType="public")
 					logger.info('Connected ' + self.address)
 					connected = True
 					print('ax2')
