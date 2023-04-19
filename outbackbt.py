@@ -16,7 +16,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 		self.interval = 5
 
 		# Bluepy stuff
-		self.bt = Peripheral(address, 'random')
+		self.bt = Peripheral()
 		self.bt.setDelegate(self)
 
 	def run(self):
@@ -24,13 +24,25 @@ class OutbackBtDev(DefaultDelegate, Thread):
 		timer = 0
 		connected = False
 		while self.running:
-
+			if not connected:
+				try:
+					print('ax1')
+					logger.info('Connecting ' + self.address)
+					self.bt.connect(self.address, addrType="random")
+					logger.info('Connected ' + self.address)
+					connected = True
+					print('ax2')
+				except BTLEException as ex:
+					print(ex)
+					logger.info('Connection failed')
+					time.sleep(3)
+					continue
+			print('we are connectec')
 			try:
-				services = self.bt.getServices()
+				if self.bt.waitForNotifications(0.5):
+					continue
 
-				# displays all services
-				for service in services:
-					print(service)
+				print('here')
 
 			except BTLEDisconnectError:
 				logger.info('Disconnected')
@@ -143,18 +155,26 @@ class OutbackBt(Inverter):
 
 # Testmethode für direkten Aufruf
 if __name__ == "__main__":
-	outbackInverterTest = OutbackBt("00:35:FF:02:95:99")
-	print("1")
-	outbackInverterTest.get_settings()
-	print("2")
-	while True:
-		outbackInverterTest.refresh_data()
 
-		print("")
-		print("Cells " + str(outbackInverterTest.cell_count))
-		print("")
+	peripheral = Peripheral("00:35:FF:02:95:99")
 
-		time.sleep(5)
+	for service in peripheral.getServices():
+		for characteristic in service.getCharacteristics():
+			print("Characteristic - id: %s\tname (if exists): %s\tavailable methods: %s" % (str(characteristic.uuid), str(characteristic), characteristic.propertiesToString()))
+
+
+	# outbackInverterTest = OutbackBt("00:35:FF:02:95:99")
+	# print("1")
+	# outbackInverterTest.get_settings()
+	# print("2")
+	# while True:
+	# 	outbackInverterTest.refresh_data()
+	#
+	# 	print("")
+	# 	print("Cells " + str(outbackInverterTest.cell_count))
+	# 	print("")
+	#
+	# 	time.sleep(5)
 
 
 
