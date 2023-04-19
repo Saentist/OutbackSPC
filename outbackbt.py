@@ -116,11 +116,27 @@ class OutbackBt(Inverter):
 		print("c1")
 		self.mutex.acquire()
 		print("c2")
-		if self.generalData1 == None or self.generalData2 == None:
-			self.mutex.release()
-			return False
-		print("c3")
-		gen_data = self.generalData1 + self.generalData2
+		byteArrayObject = self.bt.getCharacteristics(uuid="00002a03-0000-1000-8000-00805f9b34fb")
+		print(byteArrayObject)
+
+		tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
+		a03Bytes = self.byte2short(tuple_of_shorts)
+
+		acvoltage = a03Bytes[0]
+		acfrequency = a03Bytes[1]
+		outputvoltage = a03Bytes[2]
+		outputfrequency = a03Bytes[3] * 0.1
+		outputapppower = a03Bytes[4]
+		outputactpower = a03Bytes[5]
+		loadpercent = a03Bytes[6]
+		UNKNOWN = a03Bytes[7]
+		batteryvoltage = a03Bytes[8] * 0.01
+		chargecurrent = a03Bytes[9]
+		print('outputfrequency => ' + str(outputfrequency))
+		print('outputapppower => ' + str(outputapppower))
+		print('outputactpower => ' + str(outputactpower))
+		print('loadpercent => ' + str(loadpercent))
+
 		self.mutex.release()
 
 		#chList = p.getCharacteristics()
@@ -145,6 +161,14 @@ class OutbackBt(Inverter):
 			print("f3")
 			self.generalData2 = data
 		self.mutex.release()
+
+	def byte2short(self, integers):
+		myResult = []
+		for s in integers:
+			newVal = (((s >> 8) & 255) + (((s & 255) << 8) & 65280))
+			resultValue = newVal  # * 0.01
+			myResult.append(resultValue)
+		return myResult
 
 
 # Testmethode für direkten Aufruf
