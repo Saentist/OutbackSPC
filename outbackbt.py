@@ -28,7 +28,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 				try:
 					print('ax1')
 					logger.info('Connecting ' + self.address)
-					self.bt.connect(self.address)
+					self.bt.connect(self.address, addrType="PUBLIC")
 					logger.info('Connected ' + self.address)
 					connected = True
 					print('ax2')
@@ -37,7 +37,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 					logger.info('Connection failed')
 					time.sleep(3)
 					continue
-
+			print('we are connectec')
 			try:
 				if self.bt.waitForNotifications(0.5):
 					continue
