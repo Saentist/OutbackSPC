@@ -4,6 +4,7 @@ from inverter import Inverter
 from utils import *
 import time
 import binascii
+import struct
 
 class OutbackBtDev(DefaultDelegate, Thread):
 	def __init__(self, address):
@@ -38,7 +39,26 @@ class OutbackBtDev(DefaultDelegate, Thread):
 				if self.bt.waitForNotifications(0.5):
 					continue
 
+				byteArrayObject = self.bt.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")
+				print(byteArrayObject)
 
+				tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
+				a03Bytes = self.byte2short(tuple_of_shorts)
+
+				acvoltage = a03Bytes[0]
+				acfrequency = a03Bytes[1]
+				outputvoltage = a03Bytes[2]
+				outputfrequency = a03Bytes[3] * 0.1
+				outputapppower = a03Bytes[4]
+				outputactpower = a03Bytes[5]
+				loadpercent = a03Bytes[6]
+				UNKNOWN = a03Bytes[7]
+				batteryvoltage = a03Bytes[8] * 0.01
+				chargecurrent = a03Bytes[9]
+				print('outputfrequency => ' + str(outputfrequency))
+				print('outputapppower => ' + str(outputapppower))
+				print('outputactpower => ' + str(outputactpower))
+				print('loadpercent => ' + str(loadpercent))
 			except BTLEDisconnectError:
 				logger.info('Disconnected')
 				connected = False
