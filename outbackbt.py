@@ -71,7 +71,9 @@ class OutbackBt(Inverter):
 		self.interval = 5
 
 		dev = OutbackBtDev(self.address)
+		print("e1")
 		dev.addGeneralDataCallback(self.generalDataCB)
+		print("e1")
 		dev.connect()
 
 	def test_connection(self):
@@ -127,10 +129,13 @@ class OutbackBt(Inverter):
 		return True
 
 	def generalDataCB(self, data, index):
+		print("f1")
 		self.mutex.acquire()
 		if index == 0:
+			print("f2")
 			self.generalData1 = data
 		else:
+			print("f3")
 			self.generalData2 = data
 		self.mutex.release()
 
