@@ -77,11 +77,11 @@ class OutbackBt(Inverter):
 		self.port = "/bt" + address.replace(":", "")
 		self.interval = 5
 
-		dev = OutbackBtDev(self.address)
+		self.dev = OutbackBtDev(self.address)
 		print("e1")
-		dev.addGeneralDataCallback(self.generalDataCB)
+		self.dev.addGeneralDataCallback(self.generalDataCB)
 		print("e1")
-		dev.connect()
+		self.dev.connect()
 
 	def test_connection(self):
 		return False
