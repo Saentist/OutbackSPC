@@ -77,11 +77,11 @@ class OutbackBt(Inverter):
 		self.port = "/bt" + address.replace(":", "")
 		self.interval = 5
 
-		self.dev = OutbackBtDev(self.address)
+		dev = OutbackBtDev(self.address)
 		print("e1")
-		self.dev.addGeneralDataCallback(self.generalDataCB)
+		dev.addGeneralDataCallback(self.generalDataCB)
 		print("e1")
-		self.dev.connect()
+		dev.connect()
 
 	def test_connection(self):
 		return False
@@ -116,7 +116,7 @@ class OutbackBt(Inverter):
 		print("c1")
 		self.mutex.acquire()
 		print("c2")
-		byteArrayObject = self.dev.getCharacteristics(uuid="00002a03-0000-1000-8000-00805f9b34fb")
+		byteArrayObject = self.bt.getCharacteristics(uuid="00002a03-0000-1000-8000-00805f9b34fb")
 		print(byteArrayObject)
 
 		tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
@@ -179,9 +179,9 @@ if __name__ == "__main__":
 	byteArrayObject = peripheral.getCharacteristics(uuid="00002a03-0000-1000-8000-00805f9b34fb")
 	print(byteArrayObject)
 	print('2')
-	for service in peripheral.getServices():
-		for characteristic in service.getCharacteristics():
-			print("Characteristic - id: %s\tname (if exists): %s\tavailable methods: %s" % (str(characteristic.uuid), str(characteristic), characteristic.propertiesToString()))
+	#for service in peripheral.getServices():
+		#for characteristic in service.getCharacteristics():
+			#print("Characteristic - id: %s\tname (if exists): %s\tavailable methods: %s" % (str(characteristic.uuid), str(characteristic), characteristic.propertiesToString()))
 
 
 	# outbackInverterTest = OutbackBt("00:35:FF:02:95:99")
