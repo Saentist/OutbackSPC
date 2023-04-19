@@ -3,6 +3,7 @@ from threading import Thread, Lock
 from inverter import Inverter
 from utils import *
 import time
+import binascii
 
 class OutbackBtDev(DefaultDelegate, Thread):
 	def __init__(self, address):
@@ -56,8 +57,10 @@ class OutbackBtDev(DefaultDelegate, Thread):
 		self.generalDataCallback = func
 
 	def handleNotification(self, cHandle, data):
+		print('bx1')
 		hex_data = binascii.hexlify(data)
 		hex_string = hex_data.decode('utf-8')
+		print('bx2')
 		print(hex_string)
 
 class OutbackBt(Inverter):
