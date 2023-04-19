@@ -156,7 +156,7 @@ class OutbackBt(Inverter):
 # Testmethode für direkten Aufruf
 if __name__ == "__main__":
 	print('1')
-	peripheral = Peripheral("00:35:FF:02:95:99")
+	peripheral = Peripheral("00:35:FF:02:95:99", 'random')
 	print('2')
 	for service in peripheral.getServices():
 		for characteristic in service.getCharacteristics():
