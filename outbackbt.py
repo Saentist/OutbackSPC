@@ -30,26 +30,6 @@ class OutbackBtDev(DefaultDelegate, Thread):
 					self.bt.connect(self.address, iface=0)
 					logger.info('Connected ' + self.address)
 					connected = True
-					byteArrayObject = self.bt.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")
-					print(byteArrayObject)
-
-					tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
-					a03Bytes = self.byte2short(tuple_of_shorts)
-
-					acvoltage = a03Bytes[0]
-					acfrequency = a03Bytes[1]
-					outputvoltage = a03Bytes[2]
-					outputfrequency = a03Bytes[3] * 0.1
-					outputapppower = a03Bytes[4]
-					outputactpower = a03Bytes[5]
-					loadpercent = a03Bytes[6]
-					UNKNOWN = a03Bytes[7]
-					batteryvoltage = a03Bytes[8] * 0.01
-					chargecurrent = a03Bytes[9]
-					print('outputfrequency => ' + str(outputfrequency))
-					print('outputapppower => ' + str(outputapppower))
-					print('outputactpower => ' + str(outputactpower))
-					print('loadpercent => ' + str(loadpercent))
 				except BTLEException as ex:
 					print(ex)
 					logger.info('Connection failed')
@@ -171,6 +151,9 @@ class OutbackBt(Inverter):
 if __name__ == "__main__":
 	print('1')
 	peripheral = Peripheral("00:35:FF:02:95:99", iface=0)
+
+	byteArrayObject = peripheral.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")
+	print(byteArrayObject)
 	print('2')
 	for service in peripheral.getServices():
 		for characteristic in service.getCharacteristics():
