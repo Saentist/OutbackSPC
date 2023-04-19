@@ -25,10 +25,12 @@ class OutbackBtDev(DefaultDelegate, Thread):
 		while self.running:
 			if not connected:
 				try:
+					print('ax1')
 					logger.info('Connecting ' + self.address)
 					self.bt.connect(self.address, addrType="random")
 					logger.info('Connected ' + self.address)
 					connected = True
+					print('ax2')
 				except BTLEException as ex:
 					print(ex)
 					logger.info('Connection failed')
