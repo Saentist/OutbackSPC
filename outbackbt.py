@@ -16,7 +16,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 		self.interval = 5
 
 		# Bluepy stuff
-		self.bt = Peripheral()
+		self.bt = Peripheral(address, 'random')
 		self.bt.setDelegate(self)
 
 	def run(self):
@@ -24,25 +24,13 @@ class OutbackBtDev(DefaultDelegate, Thread):
 		timer = 0
 		connected = False
 		while self.running:
-			if not connected:
-				try:
-					print('ax1')
-					logger.info('Connecting ' + self.address)
-					self.bt.connect(self.address, addrType="random")
-					logger.info('Connected ' + self.address)
-					connected = True
-					print('ax2')
-				except BTLEException as ex:
-					print(ex)
-					logger.info('Connection failed')
-					time.sleep(3)
-					continue
-			print('we are connectec')
-			try:
-				if self.bt.waitForNotifications(0.5):
-					continue
 
-				print('here')
+			try:
+				services = self.bt.getServices()
+
+				# displays all services
+				for service in services:
+					print(service)
 
 			except BTLEDisconnectError:
 				logger.info('Disconnected')
