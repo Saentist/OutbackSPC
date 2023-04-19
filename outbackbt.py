@@ -104,13 +104,20 @@ class OutbackBt(Inverter):
 		self.discharge_fet = is_bit_set(tmp[0])
 
 	def read_gen_data(self):
+		print("c1")
 		self.mutex.acquire()
 		if self.generalData1 == None or self.generalData2 == None:
 			self.mutex.release()
 			return False
-
+		print("c2")
 		gen_data = self.generalData1 + self.generalData2
 		self.mutex.release()
+
+		#chList = p.getCharacteristics()
+		#chList = p.getCharacteristics(uuid=service_uuid)
+		#print("Handle      UUID        Properties")
+		#print("----------------------------------")
+		#for ch in chList:
 
 		# write data here
 		# sample
