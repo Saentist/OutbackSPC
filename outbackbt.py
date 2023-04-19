@@ -37,8 +37,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     time.sleep(3)
                     continue
             try:
-                data = self.bt.getCharacteristics(uuid="00002a03-0000-1000-8000-00805f9b34fb")
-                data = self.bt.getCharacteristics()
+                data = self.bt.readCharacteristics(uuid="00002a03-0000-1000-8000-00805f9b34fb")
                 self.generalDataCallback(data, 1)
             except BTLEDisconnectError:
                 logger.info('Disconnected')
@@ -126,11 +125,6 @@ class OutbackBt(Inverter):
         print('b')
         byteArrayObject = self.generalData1
         print('byteArrayObject')
-        for ch in byteArrayObject:
-            print('start')
-            tempdate = ch.read()
-            print(tempdate)
-            print('ende')
         tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
         a03Bytes = self.byte2short(tuple_of_shorts)
 
