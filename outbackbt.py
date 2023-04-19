@@ -152,7 +152,7 @@ if __name__ == "__main__":
 	print('1')
 	peripheral = Peripheral("00:35:FF:02:95:99", iface=0)
 
-	byteArrayObject = peripheral.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")
+	byteArrayObject = peripheral.getCharacteristics(uuid="00002a03-0000-1000-8000-00805f9b34fb")
 	print(byteArrayObject)
 	print('2')
 	for service in peripheral.getServices():
