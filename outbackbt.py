@@ -30,7 +30,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 					logger.info('Connected ' + self.address)
 					connected = True
 				except BTLEException as ex:
-					print("ex1")
+					print(ex)
 					logger.info('Connection failed')
 					time.sleep(3)
 					continue
