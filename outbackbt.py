@@ -52,7 +52,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     handle = characteristic.getHandle()
                     print(handle)
                 print('---')
-                test = service.readCharacteristic('29')
+                test = service.getCharacteristics('Reconnection Address')
                 print(test)
                 print('---')
                 time.sleep(10)
