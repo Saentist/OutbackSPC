@@ -45,6 +45,8 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 characteristics = service.getCharacteristics()
                 for characteristic in characteristics:
                     print(characteristic)
+                    value = characteristic.read()
+                    print(value)
                 time.sleep(10)
             except BTLEDisconnectError:
                 logger.info('Disconnected')
