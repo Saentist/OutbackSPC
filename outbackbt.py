@@ -150,7 +150,7 @@ class OutbackBt(Inverter):
             self.mutex.release()
             return False
 
-        self.mutex.release()
+        #self.mutex.release()
         print('b')
         byteArrayObject = self.generalData1
         print('byteArrayObject')
