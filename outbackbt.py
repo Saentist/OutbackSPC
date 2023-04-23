@@ -41,8 +41,10 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 #data = self.bt.getServiceByUUID("00002a03-0000-1000-8000-00805f9b34fb")
                 #self.generalDataCallback(data, 1)
                 services = self.bt.getServices()
-                for service in services:
-                    print(service)
+                service = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
+                characteristics = service.getCharacteristics()
+                for characteristic in characteristics:
+                    print(characteristic)
             except BTLEDisconnectError:
                 logger.info('Disconnected')
                 connected = False
