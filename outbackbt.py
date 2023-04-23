@@ -56,6 +56,8 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 print(test)
                 testvalue = test[0]
                 print(testvalue)
+                testvalueData = testvalue.read()
+                print(testvalueData)
                 print('---')
                 time.sleep(10)
             except BTLEDisconnectError:
