@@ -5,6 +5,7 @@ from utils import logger
 import utils
 from abc import ABC, abstractmethod
 
+
 class Inverter(ABC):
     """
     This Class is the abstract baseclass for all batteries. For each BMS this class needs to be extended
@@ -51,6 +52,30 @@ class Inverter(ABC):
         self.max_battery_charge_current = None
         self.max_battery_discharge_current = None
 
+        # OUTBACK
+        # A03
+        self.a03acvoltage = None
+        self.a03acfrequency = None
+        self.a03outputvoltage = None
+        self.a03outputfrequency = None
+        self.a03outputapppower = None
+        self.a03outputactpower = None
+        self.a03loadpercent = None
+        self.a03unknown7 = None
+        self.a03batteryvoltage = None
+        self.a03chargecurrent = None
+        # A11
+        self.a11unknown0 = None
+        self.a11unknown1 = None
+        self.a11unknown2 = None
+        self.a11unknown3 = None
+        self.a11unknown4 = None
+        self.a11unknown5 = None
+        self.a11pvInputVoltage = None
+        self.a11pvInputPower = None
+        self.a11pvInputCurrent = None
+        self.a11unknown8 = None
+        self.a11unknown9 = None
 
     @abstractmethod
     def test_connection(self) -> bool:
@@ -86,7 +111,6 @@ class Inverter(ABC):
         return False
 
     def log_settings(self) -> None:
-
         logger.info(f"Battery {self.type} connected to dbus from {self.port}")
         logger.info("=== Settings ===")
 

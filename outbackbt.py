@@ -129,79 +129,76 @@ class OutbackBt(Inverter):
             return False
 
         print('A03')
-        byteArrayObjectA03 = self.generalData1
-        print(byteArrayObjectA03)
-        tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObjectA03) // 2), byteArrayObjectA03)
-        a03Bytes = self.byte2short(tuple_of_shorts)
+        a03Bytes = self.getExtractData(self.generalData1)
         print(a03Bytes)
 
-        acvoltage = a03Bytes[0]
-        acfrequency = a03Bytes[1]
-        outputvoltage = a03Bytes[2] * 0.1
-        outputfrequency = a03Bytes[3] * 0.1
-        outputapppower = a03Bytes[4]
-        outputactpower = a03Bytes[5]
-        loadpercent = a03Bytes[6]
-        unknown7 = a03Bytes[7]
-        batteryvoltage = a03Bytes[8] * 0.01
-        chargecurrent = a03Bytes[9]
+        self.a03acvoltage = a03Bytes[0]
+        self.a03acfrequency = a03Bytes[1]
+        self.a03outputvoltage = a03Bytes[2] * 0.1
+        self.a03outputfrequency = a03Bytes[3] * 0.1
+        self.a03outputapppower = a03Bytes[4]
+        self.a03outputactpower = a03Bytes[5]
+        self.a03loadpercent = a03Bytes[6]
+        self.a03unknown7 = a03Bytes[7]
+        self.a03batteryvoltage = a03Bytes[8] * 0.01
+        self.a03chargecurrent = a03Bytes[9]
 
         # AUSGABE
-        print('acvoltage => ' + str(acvoltage))
-        print('acfrequency => ' + str(acfrequency))
-        print('outputvoltage => ' + str(outputvoltage))
-        print('outputfrequency => ' + str(outputfrequency))
-        print('outputapppower => ' + str(outputapppower))
-        print('outputactpower => ' + str(outputactpower))
-        print('loadpercent => ' + str(loadpercent))
-        print('unknown7 => ' + str(unknown7))
-        print('batteryvoltage => ' + str(batteryvoltage))
-        print('chargecurrent => ' + str(chargecurrent))
+        print('a03acvoltage => ' + str(self.a03acvoltage))
+        print('acfrequency => ' + str(self.a03acfrequency))
+        print('outputvoltage => ' + str(self.a03outputvoltage))
+        print('outputfrequency => ' + str(self.a03outputfrequency))
+        print('outputapppower => ' + str(self.a03outputapppower))
+        print('outputactpower => ' + str(self.a03outputactpower))
+        print('loadpercent => ' + str(self.a03loadpercent))
+        print('unknown7 => ' + str(self.a03unknown7))
+        print('batteryvoltage => ' + str(self.a03batteryvoltage))
+        print('chargecurrent => ' + str(self.a03chargecurrent))
 
         # A11 Bereich
         print('A11')
-        byteArrayObjectA11 = self.generalData2
-        print(byteArrayObjectA11)
-        tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObjectA11) // 2), byteArrayObjectA11)
-        a11Bytes = self.byte2short(tuple_of_shorts)
+        a11Bytes = self.getExtractData(self.generalData2)
         print(a11Bytes)
 
-        unknown0 = a11Bytes[0]  #
-        unknown1 = a11Bytes[1]  #
-        unknown2 = a11Bytes[2]  #
-        unknown3 = a11Bytes[3]  #
-        unknown4 = a11Bytes[4]  #
-        unknown5 = a11Bytes[5]  #
-        pvInputVoltage = a11Bytes[6] * 0.1  # Volt
-        pvInputPower = a11Bytes[7]  # Watt
-        unknown8 = a11Bytes[8]  #
-        unknown9 = a11Bytes[9]  #
+        self.a11unknown0 = a11Bytes[0]  #
+        self.a11unknown1 = a11Bytes[1]  #
+        self.a11unknown2 = a11Bytes[2]  #
+        self.a11unknown3 = a11Bytes[3]  #
+        self.a11unknown4 = a11Bytes[4]  #
+        self.a11unknown5 = a11Bytes[5]  #
+        self.a11pvInputVoltage = a11Bytes[6] * 0.1  # Volt
+        self.a11pvInputPower = a11Bytes[7]  # Watt
+        self.a11unknown8 = a11Bytes[8]  #
+        self.a11unknown9 = a11Bytes[9]  #
 
-        if pvInputPower > 0:
-            pvInputCurrent = pvInputPower / pvInputVoltage
+        if self.a11pvInputPower > 0:
+            self.a11pvInputCurrent = self.a11pvInputPower / self.a11pvInputVoltage
         else:
-            pvInputCurrent = 0
+            self.a11pvInputCurrent = 0
 
         # AUSGABE
-        print('unknown0 => ' + str(unknown0))
-        print('unknown1 => ' + str(unknown1))
-        print('unknown2 => ' + str(unknown2))
-        print('unknown3 => ' + str(unknown3))
-        print('unknown4 => ' + str(unknown4))
-        print('unknown5 => ' + str(unknown5))
-        print('pvInputPower => ' + str(pvInputPower))
-        print('pvInputVoltage => ' + str(pvInputVoltage))
-        print('pvInputCurrent => ' + str(pvInputCurrent))
-        print('unknown8 => ' + str(unknown8))
-        print('unknown9 => ' + str(unknown9))
+        print('unknown0 => ' + str(self.a11unknown0))
+        print('unknown1 => ' + str(self.a11unknown1))
+        print('unknown2 => ' + str(self.a11unknown2))
+        print('unknown3 => ' + str(self.a11unknown3))
+        print('unknown4 => ' + str(self.a11unknown4))
+        print('unknown5 => ' + str(self.a11unknown5))
+        print('pvInputPower => ' + str(self.a11pvInputPower))
+        print('pvInputVoltage => ' + str(self.a11pvInputVoltage))
+        print('pvInputCurrent => ' + str(self.a11pvInputCurrent))
+        print('unknown8 => ' + str(self.a11unknown8))
+        print('unknown9 => ' + str(self.a11unknown9))
 
         self.mutex.release()
 
-        # write data here
-        # sample
-        # self.voltage = voltage / 100
-
         return True
+
+    def getExtractData(self, byteArrayObject):
+        tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
+        bytesData = self.byte2short(tuple_of_shorts)
+        print(bytesData)
+
+        return bytesData
 
     def generalDataCB(self, data, index):
         print("f1")
