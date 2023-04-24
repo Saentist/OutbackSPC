@@ -37,13 +37,13 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     time.sleep(3)
                     continue
             try:
-                outbackService = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
-
-                outbackCharacteristicA03 = outbackService.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")[0]
+                outbackService1 = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
+                outbackCharacteristicA03 = outbackService1.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")[0]
                 data = outbackCharacteristicA03.read()
                 self.generalDataCallback(data, 1)
 
-                outbackCharacteristicA11 = outbackService.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
+                outbackService2 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
+                outbackCharacteristicA11 = outbackService2.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
                 data = outbackCharacteristicA11.read()
                 self.generalDataCallback(data, 0)
             except BTLEDisconnectError:
