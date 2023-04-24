@@ -137,12 +137,12 @@ class OutbackBt(Inverter):
 
         acvoltage = a03Bytes[0]
         acfrequency = a03Bytes[1]
-        outputvoltage = a03Bytes[2]
+        outputvoltage = a03Bytes[2] * 0.1
         outputfrequency = a03Bytes[3] * 0.1
         outputapppower = a03Bytes[4]
         outputactpower = a03Bytes[5]
         loadpercent = a03Bytes[6]
-        UNKNOWN = a03Bytes[7]
+        unknown7 = a03Bytes[7]
         batteryvoltage = a03Bytes[8] * 0.01
         chargecurrent = a03Bytes[9]
 
@@ -154,7 +154,7 @@ class OutbackBt(Inverter):
         print('outputapppower => ' + str(outputapppower))
         print('outputactpower => ' + str(outputactpower))
         print('loadpercent => ' + str(loadpercent))
-        print('UNKNOWN => ' + str(UNKNOWN))
+        print('unknown7 => ' + str(unknown7))
         print('batteryvoltage => ' + str(batteryvoltage))
         print('chargecurrent => ' + str(chargecurrent))
 
@@ -166,8 +166,16 @@ class OutbackBt(Inverter):
         a11Bytes = self.byte2short(tuple_of_shorts)
         print(a11Bytes)
 
+        unknown0 = a11Bytes[0]  #
+        unknown1 = a11Bytes[1]  #
+        unknown2 = a11Bytes[2]  #
+        unknown3 = a11Bytes[3]  #
+        unknown4 = a11Bytes[4]  #
+        unknown5 = a11Bytes[5]  #
         pvInputVoltage = a11Bytes[6] * 0.1  # Volt
         pvInputPower = a11Bytes[7]  # Watt
+        unknown8 = a11Bytes[8]  #
+        unknown9 = a11Bytes[9]  #
 
         if pvInputPower > 0:
             pvInputCurrent = pvInputPower / pvInputVoltage
@@ -175,9 +183,17 @@ class OutbackBt(Inverter):
             pvInputCurrent = 0
 
         # AUSGABE
+        print('unknown0 => ' + str(unknown0))
+        print('unknown1 => ' + str(unknown1))
+        print('unknown2 => ' + str(unknown2))
+        print('unknown3 => ' + str(unknown3))
+        print('unknown4 => ' + str(unknown4))
+        print('unknown5 => ' + str(unknown5))
         print('pvInputPower => ' + str(pvInputPower))
         print('pvInputVoltage => ' + str(pvInputVoltage))
         print('pvInputCurrent => ' + str(pvInputCurrent))
+        print('unknown8 => ' + str(unknown8))
+        print('unknown9 => ' + str(unknown9))
 
         self.mutex.release()
 
