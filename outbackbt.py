@@ -147,10 +147,16 @@ class OutbackBt(Inverter):
         chargecurrent = a03Bytes[9]
 
         # AUSGABE
+        print('acvoltage => ' + str(acvoltage))
+        print('acfrequency => ' + str(acfrequency))
+        print('outputvoltage => ' + str(outputvoltage))
         print('outputfrequency => ' + str(outputfrequency))
         print('outputapppower => ' + str(outputapppower))
         print('outputactpower => ' + str(outputactpower))
         print('loadpercent => ' + str(loadpercent))
+        print('UNKNOWN => ' + str(UNKNOWN))
+        print('batteryvoltage => ' + str(batteryvoltage))
+        print('chargecurrent => ' + str(chargecurrent))
 
         # A11 Bereich
         print('A11')
