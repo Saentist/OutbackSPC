@@ -212,28 +212,30 @@ if __name__ == "__main__":
     peripheral = Peripheral("00:35:FF:02:95:99", iface=0)
     print('2')
 
-    services = peripheral.getServices()
-    service = peripheral.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
-    characteristics = service.getCharacteristics()
-    for characteristic in characteristics:
-        print(characteristic)
-        value = characteristic.read()
-        print(value)
-        properties = characteristic.propertiesToString()
-        print(properties)
-        handle = characteristic.getHandle()
-        print(handle)
-    print('---')
-    test = service.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")
-    print(test)
-    testvalue = test[0]
-    print(testvalue)
-    testvalueData = testvalue.read()
-    print(testvalueData)
-    print('---')
-    time.sleep(10)
-# for service in peripheral.getServices():
-# for characteristic in service.getCharacteristics():
+    # services = peripheral.getServices()
+    # service = peripheral.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
+    # characteristics = service.getCharacteristics()
+    # for characteristic in characteristics:
+    #     print(characteristic)
+    #     value = characteristic.read()
+    #     print(value)
+    #     properties = characteristic.propertiesToString()
+    #     print(properties)
+    #     handle = characteristic.getHandle()
+    #     print(handle)
+    # print('---')
+    # test = service.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")
+    # print(test)
+    # testvalue = test[0]
+    # print(testvalue)
+    # testvalueData = testvalue.read()
+    # print(testvalueData)
+    # print('---')
+    # time.sleep(10)
+    for service in peripheral.getServices():
+        print(service)
+        for characteristic in service.getCharacteristics():
+            print("Characteristic - id: %s\tname (if exists): %s\tavailable methods: %s" % (str(characteristic.uuid), str(characteristic), characteristic.propertiesToString()))
 # print("Characteristic - id: %s\tname (if exists): %s\tavailable methods: %s" % (str(characteristic.uuid), str(characteristic), characteristic.propertiesToString()))
 
 # outbackInverterTest = OutbackBt("00:35:FF:02:95:99")
