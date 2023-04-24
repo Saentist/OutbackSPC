@@ -234,6 +234,7 @@ if __name__ == "__main__":
     # time.sleep(10)
     for service in peripheral.getServices():
         print(service)
+        print(service.uuid)
         for characteristic in service.getCharacteristics():
             print("Characteristic - id: %s\tname (if exists): %s\tavailable methods: %s" % (str(characteristic.uuid), str(characteristic), characteristic.propertiesToString()))
 # print("Characteristic - id: %s\tname (if exists): %s\tavailable methods: %s" % (str(characteristic.uuid), str(characteristic), characteristic.propertiesToString()))
