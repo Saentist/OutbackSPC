@@ -46,6 +46,8 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 outbackCharacteristicA11 = outbackService2.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
                 data = outbackCharacteristicA11.read()
                 self.generalDataCallback(data, 0)
+                print('sleeping 1 sec')
+                sleep(1)
             except BTLEDisconnectError:
                 logger.info('Disconnected')
                 connected = False
