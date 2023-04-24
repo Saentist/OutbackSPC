@@ -154,7 +154,7 @@ class OutbackBt(Inverter):
 
         # A11 Bereich
         print('A11')
-        byteArrayObjectA11 = self.generalData1
+        byteArrayObjectA11 = self.generalData2
         print(byteArrayObjectA11)
         tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObjectA11) // 2), byteArrayObjectA11)
         a11Bytes = self.byte2short(tuple_of_shorts)
