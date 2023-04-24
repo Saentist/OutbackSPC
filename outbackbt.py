@@ -46,8 +46,8 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 outbackCharacteristicA11 = outbackService2.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
                 data = outbackCharacteristicA11.read()
                 self.generalDataCallback(data, 0)
-                print('sleeping 1 sec')
-                sleep(1)
+                print('sleeping 2 sec')
+                sleep(2)
             except BTLEDisconnectError:
                 logger.info('Disconnected')
                 connected = False
@@ -93,7 +93,7 @@ class OutbackBt(Inverter):
         dev = OutbackBtDev(self.address)
         dev.addGeneralDataCallback(self.generalDataCB)
         dev.connect()
-        print('Outback _init_ >')
+        print('Outback _init_ =>')
 
     def test_connection(self):
         return False
@@ -109,7 +109,9 @@ class OutbackBt(Inverter):
         return result
 
     def refresh_data(self):
+        print("=> refresh_data")
         result = self.read_gen_data()
+        print("refresh_data =>")
         return result
 
     def log_settings(self):
