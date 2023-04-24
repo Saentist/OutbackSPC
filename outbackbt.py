@@ -133,6 +133,7 @@ class OutbackBt(Inverter):
         print(byteArrayObjectA03)
         tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObjectA03) // 2), byteArrayObjectA03)
         a03Bytes = self.byte2short(tuple_of_shorts)
+        print(a03Bytes)
 
         acvoltage = a03Bytes[0]
         acfrequency = a03Bytes[1]
@@ -157,9 +158,9 @@ class OutbackBt(Inverter):
         print(byteArrayObjectA11)
         tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObjectA11) // 2), byteArrayObjectA11)
         a11Bytes = self.byte2short(tuple_of_shorts)
+        print(a11Bytes)
 
         pvInputVoltage = a11Bytes[6] * 0.1  # Volt
-
         pvInputPower = a11Bytes[7]  # Watt
 
         if pvInputPower > 0:
@@ -172,11 +173,7 @@ class OutbackBt(Inverter):
         print('pvInputVoltage => ' + str(pvInputVoltage))
         print('pvInputCurrent => ' + str(pvInputCurrent))
 
-
-
         self.mutex.release()
-
-
 
         # write data here
         # sample
@@ -208,46 +205,9 @@ class OutbackBt(Inverter):
 
 # Testmethode für direkten Aufruf
 if __name__ == "__main__":
-    print('1')
     peripheral = Peripheral("00:35:FF:02:95:99", iface=0)
-    print('2')
-
-    # services = peripheral.getServices()
-    # service = peripheral.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
-    # characteristics = service.getCharacteristics()
-    # for characteristic in characteristics:
-    #     print(characteristic)
-    #     value = characteristic.read()
-    #     print(value)
-    #     properties = characteristic.propertiesToString()
-    #     print(properties)
-    #     handle = characteristic.getHandle()
-    #     print(handle)
-    # print('---')
-    # test = service.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")
-    # print(test)
-    # testvalue = test[0]
-    # print(testvalue)
-    # testvalueData = testvalue.read()
-    # print(testvalueData)
-    # print('---')
-    # time.sleep(10)
     for service in peripheral.getServices():
         print(service)
         print(service.uuid)
         for characteristic in service.getCharacteristics():
             print("Characteristic - id: %s\tname (if exists): %s\tavailable methods: %s" % (str(characteristic.uuid), str(characteristic), characteristic.propertiesToString()))
-# print("Characteristic - id: %s\tname (if exists): %s\tavailable methods: %s" % (str(characteristic.uuid), str(characteristic), characteristic.propertiesToString()))
-
-# outbackInverterTest = OutbackBt("00:35:FF:02:95:99")
-# print("1")
-# outbackInverterTest.get_settings()
-# print("2")
-# while True:
-# 	outbackInverterTest.refresh_data()
-#
-# 	print("")
-# 	print("Cells " + str(outbackInverterTest.cell_count))
-# 	print("")
-#
-# 	time.sleep(5)
