@@ -54,6 +54,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 continue
 
     def connect(self):
+        print('=> connect')
         self.start()
 
     def stop(self):
@@ -72,6 +73,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 
 class OutbackBt(Inverter):
     def __init__(self, address):
+        print('=> Outback _init_')
         Inverter.__init__(self, 0, 0, address)
 
         self.type = "OUTBACK BT"
@@ -89,24 +91,21 @@ class OutbackBt(Inverter):
         self.interval = 5
 
         dev = OutbackBtDev(self.address)
-        print("e1")
         dev.addGeneralDataCallback(self.generalDataCB)
-        print("e1")
         dev.connect()
+        print('Outback _init_ >')
 
     def test_connection(self):
         return False
 
     def get_settings(self):
-        print("b1")
+        print("=> get_settings")
         result = self.read_gen_data()
-        print("b2")
         while not result:
-            print("b3")
+            print("get_settings  WHILE")
             result = self.read_gen_data()
+            print('sleeping 1 sec')
             time.sleep(1)
-        # self.max_battery_charge_current = MAX_BATTERY_CHARGE_CURRENT
-        # self.max_battery_discharge_current = MAX_BATTERY_DISCHARGE_CURRENT
         return result
 
     def refresh_data(self):
