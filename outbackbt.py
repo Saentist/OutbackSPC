@@ -206,12 +206,12 @@ class OutbackBt(Inverter):
         print("f1")
         self.mutex.acquire()
         if index == 1:
-            print("f2")
-            print(data)
+            #print("f2")
+            #print(data)
             self.generalData1 = data
         else:
-            print("f3")
-            print(data)
+            #print("f3")
+            #print(data)
             self.generalData2 = data
         self.mutex.release()
 
