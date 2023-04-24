@@ -37,41 +37,14 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     time.sleep(3)
                     continue
             try:
-                #data = self.bt.getCharacteristics(uuid="00002a03-0000-1000-8000-00805f9b34fb")
-                #data = self.bt.getServiceByUUID("00002a03-0000-1000-8000-00805f9b34fb")
-                #self.generalDataCallback(data, 1)
-                # services = self.bt.getServices()
-                # service = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
-                # characteristics = service.getCharacteristics()
-                # for characteristic in characteristics:
-                #     print(characteristic)
-                #     value = characteristic.read()
-                #     print(value)
-                #     properties = characteristic.propertiesToString()
-                #     print(properties)
-                #     handle = characteristic.getHandle()
-                #     print(handle)
-                # print('---')
-                # test = service.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")
-                # print(test)
-                # testvalue = test[0]
-                # print(testvalue)
-                # testvalueData = testvalue.read()
-                # print(testvalueData)
-                # print('---')
-                #
-                # data_chrc.write(bytes("\x01"))
-                # time.sleep(10)
+                outbackService = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
 
-                #
-                service = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
-                characteristic = service.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")[0]
-                data = characteristic.read()
+                outbackCharacteristicA03 = outbackService.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")[0]
+                data = outbackCharacteristicA03.read()
                 self.generalDataCallback(data, 1)
 
-                service = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
-                characteristic = service.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
-                data = characteristic.read()
+                outbackCharacteristicA11 = outbackService.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
+                data = outbackCharacteristicA11.read()
                 self.generalDataCallback(data, 0)
             except BTLEDisconnectError:
                 logger.info('Disconnected')
@@ -151,17 +124,14 @@ class OutbackBt(Inverter):
     def read_gen_data(self):
         print('a')
         self.mutex.acquire()
-        if self.generalData1 is None:  # or self.generalData2 == None:
+        if self.generalData1 is None or self.generalData2 is None:
             self.mutex.release()
             return False
 
-        #self.mutex.release()
-        print('b')
-        byteArrayObject = self.generalData1
-        print('byteArrayObject')
-        for service in self.generalData1:
-            print(service)
-        tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
+        print('A03')
+        byteArrayObjectA03 = self.generalData1
+        print(byteArrayObjectA03)
+        tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObjectA03) // 2), byteArrayObjectA03)
         a03Bytes = self.byte2short(tuple_of_shorts)
 
         acvoltage = a03Bytes[0]
@@ -174,18 +144,39 @@ class OutbackBt(Inverter):
         UNKNOWN = a03Bytes[7]
         batteryvoltage = a03Bytes[8] * 0.01
         chargecurrent = a03Bytes[9]
+
+        # AUSGABE
         print('outputfrequency => ' + str(outputfrequency))
         print('outputapppower => ' + str(outputapppower))
         print('outputactpower => ' + str(outputactpower))
         print('loadpercent => ' + str(loadpercent))
 
+        # A11 Bereich
+        print('A11')
+        byteArrayObjectA11 = self.generalData1
+        print(byteArrayObjectA11)
+        tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObjectA11) // 2), byteArrayObjectA11)
+        a11Bytes = self.byte2short(tuple_of_shorts)
+
+        pvInputVoltage = a11Bytes[6] * 0.1  # Volt
+
+        pvInputPower = a11Bytes[7]  # Watt
+
+        if pvInputPower > 0:
+            pvInputCurrent = pvInputPower / pvInputVoltage
+        else:
+            pvInputCurrent = 0
+
+        # AUSGABE
+        print('pvInputPower => ' + str(pvInputPower))
+        print('pvInputVoltage => ' + str(pvInputVoltage))
+        print('pvInputCurrent => ' + str(pvInputCurrent))
+
+
+
         self.mutex.release()
 
-        # chList = p.getCharacteristics()
-        # chList = p.getCharacteristics(uuid=service_uuid)
-        # print("Handle      UUID        Properties")
-        # print("----------------------------------")
-        # for ch in chList:
+
 
         # write data here
         # sample
@@ -219,10 +210,28 @@ class OutbackBt(Inverter):
 if __name__ == "__main__":
     print('1')
     peripheral = Peripheral("00:35:FF:02:95:99", iface=0)
-
-    byteArrayObject = peripheral.getCharacteristics(uuid="00002a03-0000-1000-8000-00805f9b34fb")
-    print(byteArrayObject)
     print('2')
+
+    services = peripheral.getServices()
+    service = peripheral.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
+    characteristics = service.getCharacteristics()
+    for characteristic in characteristics:
+        print(characteristic)
+        value = characteristic.read()
+        print(value)
+        properties = characteristic.propertiesToString()
+        print(properties)
+        handle = characteristic.getHandle()
+        print(handle)
+    print('---')
+    test = service.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")
+    print(test)
+    testvalue = test[0]
+    print(testvalue)
+    testvalueData = testvalue.read()
+    print(testvalueData)
+    print('---')
+    time.sleep(10)
 # for service in peripheral.getServices():
 # for characteristic in service.getCharacteristics():
 # print("Characteristic - id: %s\tname (if exists): %s\tavailable methods: %s" % (str(characteristic.uuid), str(characteristic), characteristic.propertiesToString()))
