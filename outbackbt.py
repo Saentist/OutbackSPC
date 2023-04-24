@@ -191,6 +191,8 @@ class OutbackBt(Inverter):
 
         self.mutex.release()
 
+        sleep(5)
+
         return True
 
     def getExtractData(self, byteArrayObject):
