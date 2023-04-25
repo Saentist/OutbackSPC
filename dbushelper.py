@@ -19,6 +19,20 @@ from settingsdevice import SettingsDevice
 from utils import *
 
 
+# Again not all of these needed this is just duplicating the Victron code.
+class SystemBus(dbus.bus.BusConnection):
+    def __new__(cls):
+        return dbus.bus.BusConnection.__new__(cls, dbus.bus.BusConnection.TYPE_SYSTEM)
+
+
+class SessionBus(dbus.bus.BusConnection):
+    def __new__(cls):
+        return dbus.bus.BusConnection.__new__(cls, dbus.bus.BusConnection.TYPE_SESSION)
+
+
+def dbusconnection():
+    return SessionBus() if 'DBUS_SESSION_BUS_ADDRESS' in os.environ else SystemBus()
+
 def get_bus():
     return (
         dbus.SessionBus()
@@ -34,7 +48,7 @@ class DbusHelper:
         self.instance = 1
         self.settings = None
         self.error_count = 0
-        self._dbusSolarchargerService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], get_bus(),)
+        self._dbusSolarchargerService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
         self._dbusservice = VeDbusService('com.victronenergy.dummyservice.ttyO1')
         print(self._dbusservice)
 
