@@ -72,8 +72,7 @@ def main():
 		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
 		sys.exit(1)
 
-	# helper2 = DbusHelper2(outbackInverterObject)
-
+	print('helper2:' + helper2)
 	# Poll the battery at INTERVAL and run the main loop
 	gobject.timeout_add(outbackInverterObject.poll_interval, lambda: poll_inverter(mainloop))
 	try:
