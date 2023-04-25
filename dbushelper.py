@@ -121,10 +121,10 @@ class DbusHelper:
             self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
             print('vebus 2')
 
-            if self.devType == 'grid':
-                print('grid 1')
-                self._dbusService["/Ac/L1/Power"] = round(self.inverter.a03outputapppower - 30, 2)
-                print('grid 2')
+        if self.devType == 'grid':
+            print('grid 1')
+            self._dbusService["/Ac/L1/Power"] = round(self.inverter.a03outputapppower - 30, 2)
+            print('grid 2')
 
 
 
