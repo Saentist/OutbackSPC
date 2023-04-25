@@ -65,13 +65,6 @@ class OutbackBtDev(DefaultDelegate, Thread):
     def addGeneralDataCallback(self, func):
         self.generalDataCallback = func
 
-    def handleNotification(self, cHandle, data):
-        print('handleNotification START')
-        hex_data = binascii.hexlify(data)
-        hex_string = hex_data.decode('utf-8')
-        print('handleNotification END')
-        print(hex_string)
-
 
 class OutbackBt(Inverter):
     def __init__(self, address):
