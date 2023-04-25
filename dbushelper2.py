@@ -160,7 +160,6 @@ class DbusHelper2:
         self._vebusService = self._get_service_having_lowest_instance('com.victronenergy.vebus')
         self._batteryService = self._get_service_having_lowest_instance('com.victronenergy.battery')
         self._solarchargerService = self._get_service_having_lowest_instance('com.victronenergy.solarcharger')
-        self.getDataFromOutback()
 
     def getDataFromOutback(self, inverterData):
         self.writeToDbus(self._vebusService, '/Ac/Out/L1/P', inverterData)
