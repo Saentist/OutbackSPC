@@ -30,6 +30,12 @@ def main():
 		# Thread will die with us if deamon
 		poller.daemon = True
 		poller.start()
+
+		poller2 = Thread(target=lambda: helper2.publish_inverter(loop))
+		# Thread will die with us if deamon
+		poller2.daemon = True
+		poller2.start()
+
 		return True
 
 	def get_btaddr() -> str:

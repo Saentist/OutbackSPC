@@ -37,12 +37,10 @@ class DbusHelper:
     def __init__(self, inverter, devType, instance):
         self.inverter = inverter
         self.instance = instance
-        #self.settings = None
         self.error_count = 0
         self.devType = devType
         self.inverter.role = self.devType
         self._dbusService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
-
 
     def setup_vedbus(self):
         # Set up dbus service and device instance
