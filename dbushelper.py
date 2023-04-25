@@ -32,8 +32,13 @@ class DbusHelper:
         self.instance = 1
         self.settings = None
         self.error_count = 0
-        self._dbusservice = VeDbusService(
+        self._dbusSolarchargerService = VeDbusService(
             "com.victronenergy.solarcharger."
+            + self.inverter.port[self.inverter.port.rfind("/") + 1:],
+            get_bus(),
+        )
+        self._dbusInverterService = VeDbusService(
+            "com.victronenergy.inverter."
             + self.inverter.port[self.inverter.port.rfind("/") + 1:],
             get_bus(),
         )
@@ -68,7 +73,7 @@ class DbusHelper:
             return
 
         logger.info("Changed DeviceInstance = %d", float(self.settings["CellVoltageMin"]))
-        # self._dbusservice['/History/ChargeCycles']
+        # self._dbusSolarchargerService['/History/ChargeCycles']
 
     def setup_vedbus(self):
         # Set up dbus service and device instance
@@ -83,86 +88,86 @@ class DbusHelper:
             return False
 
         # Create the management objects, as specified in the ccgx dbus-api document
-        self._dbusservice.add_path("/Mgmt/ProcessName", __file__)
-        self._dbusservice.add_path("/Mgmt/ProcessVersion", "Python " + platform.python_version())
-        self._dbusservice.add_path("/Mgmt/Connection", "Bluetooth " + self.inverter.port)
+        self._dbusSolarchargerService.add_path("/Mgmt/ProcessName", __file__)
+        self._dbusSolarchargerService.add_path("/Mgmt/ProcessVersion", "Python " + platform.python_version())
+        self._dbusSolarchargerService.add_path("/Mgmt/Connection", "Bluetooth " + self.inverter.port)
 
         # Create the mandatory objects
-        self._dbusservice.add_path("/DeviceInstance", self.instance)
-        self._dbusservice.add_path("/ProductId", 0x0)
-        self._dbusservice.add_path("/ProductName", "Outback (" + self.inverter.type + ")")
-        self._dbusservice.add_path("/FirmwareVersion", str(DRIVER_VERSION) + DRIVER_SUBVERSION)
-        self._dbusservice.add_path("/HardwareVersion", self.inverter.hardware_version)
-        self._dbusservice.add_path("/Connected", 1)
-        self._dbusservice.add_path("/CustomName", "Outback (" + self.inverter.type + ")", writeable=True)
+        self._dbusSolarchargerService.add_path("/DeviceInstance", self.instance)
+        self._dbusSolarchargerService.add_path("/ProductId", 0x0)
+        self._dbusSolarchargerService.add_path("/ProductName", "Outback (" + self.inverter.type + ")")
+        self._dbusSolarchargerService.add_path("/FirmwareVersion", str(DRIVER_VERSION) + DRIVER_SUBVERSION)
+        self._dbusSolarchargerService.add_path("/HardwareVersion", self.inverter.hardware_version)
+        self._dbusSolarchargerService.add_path("/Connected", 1)
+        self._dbusSolarchargerService.add_path("/CustomName", "Outback (" + self.inverter.type + ")", writeable=True)
 
         # Create static battery info
-        # self._dbusservice.add_path("/Info/BatteryLowVoltage", self.inverter.min_battery_voltage, writeable=True)
-        # self._dbusservice.add_path("/Info/MaxChargeVoltage", self.inverter.max_battery_voltage, writeable=True, gettextcallback=lambda p, v: "{:0.2f}V".format(v),)
-        # self._dbusservice.add_path("/Info/MaxChargeCurrent", self.inverter.max_battery_charge_current, writeable=True, gettextcallback=lambda p, v: "{:0.2f}A".format(v),)
-        # self._dbusservice.add_path("/Info/MaxDischargeCurrent", self.inverter.max_battery_discharge_current, writeable=True, gettextcallback=lambda p, v: "{:0.2f}A".format(v),)
-        # self._dbusservice.add_path("/System/NrOfCellsPerBattery", self.inverter.cell_count, writeable=True)
-        # self._dbusservice.add_path("/System/NrOfModulesOnline", 1, writeable=True)
-        # self._dbusservice.add_path("/System/NrOfModulesOffline", 0, writeable=True)
-        # self._dbusservice.add_path("/System/NrOfModulesBlockingCharge", None, writeable=True)
-        # self._dbusservice.add_path("/System/NrOfModulesBlockingDischarge", None, writeable=True)
-        # self._dbusservice.add_path("/Capacity", self.inverter.get_capacity_remain(), writeable=True, gettextcallback=lambda p, v: "{:0.2f}Ah".format(v),)
-        # self._dbusservice.add_path("/InstalledCapacity", self.inverter.capacity, writeable=True, gettextcallback=lambda p, v: "{:0.0f}Ah".format(v),)
-        # self._dbusservice.add_path("/ConsumedAmphours", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}Ah".format(v),)
+        # self._dbusSolarchargerService.add_path("/Info/BatteryLowVoltage", self.inverter.min_battery_voltage, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Info/MaxChargeVoltage", self.inverter.max_battery_voltage, writeable=True, gettextcallback=lambda p, v: "{:0.2f}V".format(v),)
+        # self._dbusSolarchargerService.add_path("/Info/MaxChargeCurrent", self.inverter.max_battery_charge_current, writeable=True, gettextcallback=lambda p, v: "{:0.2f}A".format(v),)
+        # self._dbusSolarchargerService.add_path("/Info/MaxDischargeCurrent", self.inverter.max_battery_discharge_current, writeable=True, gettextcallback=lambda p, v: "{:0.2f}A".format(v),)
+        # self._dbusSolarchargerService.add_path("/System/NrOfCellsPerBattery", self.inverter.cell_count, writeable=True)
+        # self._dbusSolarchargerService.add_path("/System/NrOfModulesOnline", 1, writeable=True)
+        # self._dbusSolarchargerService.add_path("/System/NrOfModulesOffline", 0, writeable=True)
+        # self._dbusSolarchargerService.add_path("/System/NrOfModulesBlockingCharge", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/System/NrOfModulesBlockingDischarge", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Capacity", self.inverter.get_capacity_remain(), writeable=True, gettextcallback=lambda p, v: "{:0.2f}Ah".format(v),)
+        # self._dbusSolarchargerService.add_path("/InstalledCapacity", self.inverter.capacity, writeable=True, gettextcallback=lambda p, v: "{:0.0f}Ah".format(v),)
+        # self._dbusSolarchargerService.add_path("/ConsumedAmphours", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}Ah".format(v),)
         # Not used at this stage
-        # self._dbusservice.add_path('/System/MinTemperatureCellId', None, writeable=True)
-        # self._dbusservice.add_path('/System/MaxTemperatureCellId', None, writeable=True)
+        # self._dbusSolarchargerService.add_path('/System/MinTemperatureCellId', None, writeable=True)
+        # self._dbusSolarchargerService.add_path('/System/MaxTemperatureCellId', None, writeable=True)
 
         # Create SOC, DC and System items
-        # self._dbusservice.add_path("/Soc", None, writeable=True)
-        self._dbusservice.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v),)
-        self._dbusservice.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v),)
-        self._dbusservice.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v),)
-        self._dbusservice.add_path("/Yield/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v),)
-        self._dbusservice.add_path("/Pv/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v),)
-        self._dbusservice.add_path("/Load/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v),)
-        self._dbusservice.add_path("/Pv/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v),)
-        self._dbusservice.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v),)
-        # self._dbusservice.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v),)
-        # self._dbusservice.add_path("/Dc/0/Temperature", None, writeable=True)
-        # self._dbusservice.add_path("/Dc/0/MidVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:0.2f}V".format(v),)
-        # self._dbusservice.add_path("/Dc/0/MidVoltageDeviation", None, writeable=True, gettextcallback=lambda p, v: "{:0.1f}%".format(v),)
+        # self._dbusSolarchargerService.add_path("/Soc", None, writeable=True)
+        self._dbusSolarchargerService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
+        self._dbusSolarchargerService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v), )
+        self._dbusSolarchargerService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+        self._dbusSolarchargerService.add_path("/Yield/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+        self._dbusSolarchargerService.add_path("/Pv/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
+        self._dbusSolarchargerService.add_path("/Load/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
+        self._dbusSolarchargerService.add_path("/Pv/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
+        self._dbusSolarchargerService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+        # self._dbusSolarchargerService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v),)
+        # self._dbusSolarchargerService.add_path("/Dc/0/Temperature", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Dc/0/MidVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:0.2f}V".format(v),)
+        # self._dbusSolarchargerService.add_path("/Dc/0/MidVoltageDeviation", None, writeable=True, gettextcallback=lambda p, v: "{:0.1f}%".format(v),)
 
         # Create battery extras
-        # self._dbusservice.add_path("/System/MinCellTemperature", None, writeable=True)
-        # self._dbusservice.add_path("/System/MaxCellTemperature", None, writeable=True)
-        # self._dbusservice.add_path("/System/MaxCellVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:0.3f}V".format(v),)
-        # self._dbusservice.add_path("/System/MaxVoltageCellId", None, writeable=True)
-        # self._dbusservice.add_path("/System/MinCellVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:0.3f}V".format(v),)
-        # self._dbusservice.add_path("/System/MinVoltageCellId", None, writeable=True)
-        # self._dbusservice.add_path("/History/ChargeCycles", None, writeable=True)
-        # self._dbusservice.add_path("/History/TotalAhDrawn", None, writeable=True)
-        # self._dbusservice.add_path("/Balancing", None, writeable=True)
-        # self._dbusservice.add_path("/Io/AllowToCharge", 0, writeable=True)
-        # self._dbusservice.add_path("/Io/AllowToDischarge", 0, writeable=True)
-        # self._dbusservice.add_path('/SystemSwitch',1,writeable=True)
+        # self._dbusSolarchargerService.add_path("/System/MinCellTemperature", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/System/MaxCellTemperature", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/System/MaxCellVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:0.3f}V".format(v),)
+        # self._dbusSolarchargerService.add_path("/System/MaxVoltageCellId", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/System/MinCellVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:0.3f}V".format(v),)
+        # self._dbusSolarchargerService.add_path("/System/MinVoltageCellId", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/History/ChargeCycles", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/History/TotalAhDrawn", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Balancing", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Io/AllowToCharge", 0, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Io/AllowToDischarge", 0, writeable=True)
+        # self._dbusSolarchargerService.add_path('/SystemSwitch',1,writeable=True)
 
         # Create the alarms
-        # self._dbusservice.add_path("/Alarms/LowVoltage", None, writeable=True)
-        # self._dbusservice.add_path("/Alarms/HighVoltage", None, writeable=True)
-        # self._dbusservice.add_path("/Alarms/LowCellVoltage", None, writeable=True)
-        # self._dbusservice.add_path("/Alarms/HighCellVoltage", None, writeable=True)
-        # self._dbusservice.add_path("/Alarms/LowSoc", None, writeable=True)
-        # self._dbusservice.add_path("/Alarms/HighChargeCurrent", None, writeable=True)
-        # self._dbusservice.add_path("/Alarms/HighDischargeCurrent", None, writeable=True)
-        # self._dbusservice.add_path("/Alarms/CellImbalance", None, writeable=True)
-        # self._dbusservice.add_path("/Alarms/InternalFailure", None, writeable=True)
-        # self._dbusservice.add_path("/Alarms/HighChargeTemperature", None, writeable=True)
-        # self._dbusservice.add_path("/Alarms/LowChargeTemperature", None, writeable=True)
-        # self._dbusservice.add_path("/Alarms/HighTemperature", None, writeable=True)
-        # self._dbusservice.add_path("/Alarms/LowTemperature", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/LowVoltage", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/HighVoltage", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/LowCellVoltage", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/HighCellVoltage", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/LowSoc", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/HighChargeCurrent", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/HighDischargeCurrent", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/CellImbalance", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/InternalFailure", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/HighChargeTemperature", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/LowChargeTemperature", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/HighTemperature", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/Alarms/LowTemperature", None, writeable=True)
 
         # Create TimeToGO item
-        # self._dbusservice.add_path("/TimeToGo", None, writeable=True)
+        # self._dbusSolarchargerService.add_path("/TimeToGo", None, writeable=True)
 
         # logger.info(f"publish config values = {PUBLISH_CONFIG_VALUES}")
         # if PUBLISH_CONFIG_VALUES == 1:
-            # publish_config_variables(self._dbusservice)
+            # publish_config_variables(self._dbusSolarchargerService)
 
         return True
 
@@ -199,19 +204,19 @@ class DbusHelper:
     def publish_dbus(self):
 
         # Update SOC, DC and System items
-        #self._dbusservice["/System/NrOfCellsPerBattery"] = self.inverter.cell_count
-        #self._dbusservice["/Soc"] = round(self.inverter.soc, 2)
-        self._dbusservice["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
-        self._dbusservice["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 3)
-        self._dbusservice["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
-        # self._dbusservice["/Yield/Power"] = round(self.inverter.voltage * self.inverter.current, 2)
-        self._dbusservice["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
-        self._dbusservice["/Load/I"] = round(self.inverter.a11pvInputCurrent, 2)
-        self._dbusservice["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
-        self._dbusservice["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
-        # self._dbusservice["/Dc/0/Temperature"] = self.inverter.get_temp()
-        # self._dbusservice["/Capacity"] = self.inverter.get_capacity_remain()
-        # self._dbusservice["/ConsumedAmphours"] = (
+        #self._dbusSolarchargerService["/System/NrOfCellsPerBattery"] = self.inverter.cell_count
+        #self._dbusSolarchargerService["/Soc"] = round(self.inverter.soc, 2)
+        self._dbusSolarchargerService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
+        self._dbusSolarchargerService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
+        self._dbusSolarchargerService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
+        # self._dbusSolarchargerService["/Yield/Power"] = round(self.inverter.voltage * self.inverter.current, 2)
+        self._dbusSolarchargerService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
+        self._dbusSolarchargerService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
+        self._dbusSolarchargerService["/Load/I"] = round(self.inverter.a11pvInputCurrent, 2)
+        self._dbusSolarchargerService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
+        # self._dbusSolarchargerService["/Dc/0/Temperature"] = self.inverter.get_temp()
+        # self._dbusSolarchargerService["/Capacity"] = self.inverter.get_capacity_remain()
+        # self._dbusSolarchargerService["/ConsumedAmphours"] = (
         #     0
         #     if self.inverter.capacity is None
         #        or self.inverter.get_capacity_remain() is None
@@ -220,87 +225,87 @@ class DbusHelper:
         #
         # midpoint, deviation = self.inverter.get_midvoltage()
         # if midpoint is not None:
-        #     self._dbusservice["/Dc/0/MidVoltage"] = midpoint
-        #     self._dbusservice["/Dc/0/MidVoltageDeviation"] = deviation
+        #     self._dbusSolarchargerService["/Dc/0/MidVoltage"] = midpoint
+        #     self._dbusSolarchargerService["/Dc/0/MidVoltageDeviation"] = deviation
         #
         # # Update battery extras
-        # self._dbusservice["/History/ChargeCycles"] = self.inverter.cycles
-        # self._dbusservice["/History/TotalAhDrawn"] = self.inverter.total_ah_drawn
-        # self._dbusservice["/Io/AllowToCharge"] = (
+        # self._dbusSolarchargerService["/History/ChargeCycles"] = self.inverter.cycles
+        # self._dbusSolarchargerService["/History/TotalAhDrawn"] = self.inverter.total_ah_drawn
+        # self._dbusSolarchargerService["/Io/AllowToCharge"] = (
         #     1 if self.inverter.charge_fet and self.inverter.control_allow_charge else 0
         # )
-        # self._dbusservice["/Io/AllowToDischarge"] = (
+        # self._dbusSolarchargerService["/Io/AllowToDischarge"] = (
         #     1
         #     if self.inverter.discharge_fet and self.inverter.control_allow_discharge
         #     else 0
         # )
-        # self._dbusservice["/System/NrOfModulesBlockingCharge"] = (
+        # self._dbusSolarchargerService["/System/NrOfModulesBlockingCharge"] = (
         #     0
         #     if self.inverter.charge_fet is None
         #        or (self.inverter.charge_fet and self.inverter.control_allow_charge)
         #     else 1
         # )
-        # self._dbusservice["/System/NrOfModulesBlockingDischarge"] = (
+        # self._dbusSolarchargerService["/System/NrOfModulesBlockingDischarge"] = (
         #     0 if self.inverter.discharge_fet is None or self.inverter.discharge_fet else 1
         # )
-        # self._dbusservice["/System/NrOfModulesOnline"] = 1 if self.inverter.online else 0
-        # self._dbusservice["/System/NrOfModulesOffline"] = (
+        # self._dbusSolarchargerService["/System/NrOfModulesOnline"] = 1 if self.inverter.online else 0
+        # self._dbusSolarchargerService["/System/NrOfModulesOffline"] = (
         #     0 if self.inverter.online else 1
         # )
-        # self._dbusservice["/System/MinCellTemperature"] = self.inverter.get_min_temp()
-        # self._dbusservice["/System/MaxCellTemperature"] = self.inverter.get_max_temp()
+        # self._dbusSolarchargerService["/System/MinCellTemperature"] = self.inverter.get_min_temp()
+        # self._dbusSolarchargerService["/System/MaxCellTemperature"] = self.inverter.get_max_temp()
         #
         # # Charge control
-        # self._dbusservice[
+        # self._dbusSolarchargerService[
         #     "/Info/MaxChargeCurrent"
         # ] = self.inverter.control_charge_current
-        # self._dbusservice[
+        # self._dbusSolarchargerService[
         #     "/Info/MaxDischargeCurrent"
         # ] = self.inverter.control_discharge_current
         #
         # # Voltage control
-        # self._dbusservice["/Info/MaxChargeVoltage"] = self.inverter.control_voltage
+        # self._dbusSolarchargerService["/Info/MaxChargeVoltage"] = self.inverter.control_voltage
         #
         # # Updates from cells
-        # self._dbusservice["/System/MinVoltageCellId"] = self.inverter.get_min_cell_desc()
-        # self._dbusservice["/System/MaxVoltageCellId"] = self.inverter.get_max_cell_desc()
-        # self._dbusservice[
+        # self._dbusSolarchargerService["/System/MinVoltageCellId"] = self.inverter.get_min_cell_desc()
+        # self._dbusSolarchargerService["/System/MaxVoltageCellId"] = self.inverter.get_max_cell_desc()
+        # self._dbusSolarchargerService[
         #     "/System/MinCellVoltage"
         # ] = self.inverter.get_min_cell_voltage()
-        # self._dbusservice[
+        # self._dbusSolarchargerService[
         #     "/System/MaxCellVoltage"
         # ] = self.inverter.get_max_cell_voltage()
-        # self._dbusservice["/Balancing"] = self.inverter.get_balancing()
+        # self._dbusSolarchargerService["/Balancing"] = self.inverter.get_balancing()
         #
         # # Update the alarms
-        # self._dbusservice["/Alarms/LowVoltage"] = self.inverter.protection.voltage_low
-        # self._dbusservice[
+        # self._dbusSolarchargerService["/Alarms/LowVoltage"] = self.inverter.protection.voltage_low
+        # self._dbusSolarchargerService[
         #     "/Alarms/LowCellVoltage"
         # ] = self.inverter.protection.voltage_cell_low
-        # self._dbusservice["/Alarms/HighVoltage"] = self.inverter.protection.voltage_high
-        # self._dbusservice["/Alarms/LowSoc"] = self.inverter.protection.soc_low
-        # self._dbusservice[
+        # self._dbusSolarchargerService["/Alarms/HighVoltage"] = self.inverter.protection.voltage_high
+        # self._dbusSolarchargerService["/Alarms/LowSoc"] = self.inverter.protection.soc_low
+        # self._dbusSolarchargerService[
         #     "/Alarms/HighChargeCurrent"
         # ] = self.inverter.protection.current_over
-        # self._dbusservice[
+        # self._dbusSolarchargerService[
         #     "/Alarms/HighDischargeCurrent"
         # ] = self.inverter.protection.current_under
-        # self._dbusservice[
+        # self._dbusSolarchargerService[
         #     "/Alarms/CellImbalance"
         # ] = self.inverter.protection.cell_imbalance
-        # self._dbusservice[
+        # self._dbusSolarchargerService[
         #     "/Alarms/InternalFailure"
         # ] = self.inverter.protection.internal_failure
-        # self._dbusservice[
+        # self._dbusSolarchargerService[
         #     "/Alarms/HighChargeTemperature"
         # ] = self.inverter.protection.temp_high_charge
-        # self._dbusservice[
+        # self._dbusSolarchargerService[
         #     "/Alarms/LowChargeTemperature"
         # ] = self.inverter.protection.temp_low_charge
-        # self._dbusservice[
+        # self._dbusSolarchargerService[
         #     "/Alarms/HighTemperature"
         # ] = self.inverter.protection.temp_high_discharge
-        # self._dbusservice[
+        # self._dbusSolarchargerService[
         #     "/Alarms/LowTemperature"
         # ] = self.inverter.protection.temp_low_discharge
 
