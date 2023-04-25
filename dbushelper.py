@@ -112,6 +112,7 @@ class DbusHelper:
         # Create SOC, DC and System items
         # self._dbusSolarchargerService.add_path("/Soc", None, writeable=True)
         self._dbusSolarchargerService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
+        self._dbusSolarchargerService.add_path("/Hub/ChargeVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
         self._dbusSolarchargerService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v), )
         self._dbusSolarchargerService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
         self._dbusSolarchargerService.add_path("/Yield/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
@@ -197,6 +198,7 @@ class DbusHelper:
         # Update SOC, DC and System items
         #self._dbusSolarchargerService["/System/NrOfCellsPerBattery"] = self.inverter.cell_count
         #self._dbusSolarchargerService["/Soc"] = round(self.inverter.soc, 2)
+        self._dbusSolarchargerService["/Hub/ChargeVoltage"] = round(self.inverter.a11pvInputVoltage, 2)
         self._dbusSolarchargerService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
         self._dbusSolarchargerService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
         self._dbusSolarchargerService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
