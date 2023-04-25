@@ -104,19 +104,19 @@ class OutbackBt(Inverter):
         return False
 
     def get_settings(self):
-        print("=> get_settings")
+        #print("=> get_settings")
         result = self.read_gen_data()
         while not result:
-            print("get_settings  WHILE")
+            #print("get_settings  WHILE")
             result = self.read_gen_data()
-            print('sleeping 1 sec')
-            time.sleep(1)
+            #print('sleeping 1 sec')
+            #time.sleep(1)
         return result
 
     def refresh_data(self):
         print("=> refresh_data")
         result = self.read_gen_data()
-        print("refresh_data =>")
+        #print("refresh_data =>")
         return result
 
     def log_settings(self):
@@ -134,7 +134,7 @@ class OutbackBt(Inverter):
         self.mutex.acquire()
         if self.generalData1 is None or self.generalData2 is None:
             self.mutex.release()
-            print('read_gen_data False =>')
+            #print('read_gen_data False =>')
             return False
 
         print('A03')
@@ -199,9 +199,9 @@ class OutbackBt(Inverter):
         print('unknown9 => ' + str(self.a11unknown9))
 
         self.mutex.release()
-        print('sleeping 5 sec')
-        sleep(5)
-        print('read_gen_data True =>')
+        #print('sleeping 5 sec')
+        #sleep(5)
+        #print('read_gen_data True =>')
         return True
 
     def getExtractData(self, byteArrayObject):
@@ -216,10 +216,10 @@ class OutbackBt(Inverter):
         self.mutex.acquire()
         if index == 1:
             self.generalData1 = data
-            print("=> generalDataCB data1 =>")
+            # print("=> generalDataCB data1 =>")
         else:
             self.generalData2 = data
-            print("=> generalDataCB data2 =>")
+            # print("=> generalDataCB data2 =>")
         self.mutex.release()
 
     def byte2short(self, integers):

@@ -71,7 +71,6 @@ class DbusHelper:
             return
 
         logger.info("Changed DeviceInstance = %d", float(self.settings["CellVoltageMin"]))
-        # self._dbusService['/History/ChargeCycles']
 
     def setup_vedbus(self):
         # Set up dbus service and device instance
@@ -99,25 +98,7 @@ class DbusHelper:
         self._dbusService.add_path("/Connected", 1)
         self._dbusService.add_path("/CustomName", "Outback (" + self.inverter.type + ")", writeable=True)
 
-        # Create static battery info
-        # self._dbusService.add_path("/Info/BatteryLowVoltage", self.inverter.min_battery_voltage, writeable=True)
-        # self._dbusService.add_path("/Info/MaxChargeVoltage", self.inverter.max_battery_voltage, writeable=True, gettextcallback=lambda p, v: "{:0.2f}V".format(v),)
-        # self._dbusService.add_path("/Info/MaxChargeCurrent", self.inverter.max_battery_charge_current, writeable=True, gettextcallback=lambda p, v: "{:0.2f}A".format(v),)
-        # self._dbusService.add_path("/Info/MaxDischargeCurrent", self.inverter.max_battery_discharge_current, writeable=True, gettextcallback=lambda p, v: "{:0.2f}A".format(v),)
-        # self._dbusService.add_path("/System/NrOfCellsPerBattery", self.inverter.cell_count, writeable=True)
-        # self._dbusService.add_path("/System/NrOfModulesOnline", 1, writeable=True)
-        # self._dbusService.add_path("/System/NrOfModulesOffline", 0, writeable=True)
-        # self._dbusService.add_path("/System/NrOfModulesBlockingCharge", None, writeable=True)
-        # self._dbusService.add_path("/System/NrOfModulesBlockingDischarge", None, writeable=True)
-        # self._dbusService.add_path("/Capacity", self.inverter.get_capacity_remain(), writeable=True, gettextcallback=lambda p, v: "{:0.2f}Ah".format(v),)
-        # self._dbusService.add_path("/InstalledCapacity", self.inverter.capacity, writeable=True, gettextcallback=lambda p, v: "{:0.0f}Ah".format(v),)
-        # self._dbusService.add_path("/ConsumedAmphours", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}Ah".format(v),)
-        # Not used at this stage
-        # self._dbusService.add_path('/System/MinTemperatureCellId', None, writeable=True)
-        # self._dbusService.add_path('/System/MaxTemperatureCellId', None, writeable=True)
-
-        # Create SOC, DC and System items
-        # self._dbusService.add_path("/Soc", None, writeable=True)
+        # Create System items
         self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
         self._dbusService.add_path("/Hub/ChargeVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
         self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v), )
@@ -127,46 +108,6 @@ class DbusHelper:
         self._dbusService.add_path("/Load/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
         self._dbusService.add_path("/Pv/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
         self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
-        # self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v),)
-        # self._dbusService.add_path("/Dc/0/Temperature", None, writeable=True)
-        # self._dbusService.add_path("/Dc/0/MidVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:0.2f}V".format(v),)
-        # self._dbusService.add_path("/Dc/0/MidVoltageDeviation", None, writeable=True, gettextcallback=lambda p, v: "{:0.1f}%".format(v),)
-
-        # Create battery extras
-        # self._dbusService.add_path("/System/MinCellTemperature", None, writeable=True)
-        # self._dbusService.add_path("/System/MaxCellTemperature", None, writeable=True)
-        # self._dbusService.add_path("/System/MaxCellVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:0.3f}V".format(v),)
-        # self._dbusService.add_path("/System/MaxVoltageCellId", None, writeable=True)
-        # self._dbusService.add_path("/System/MinCellVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:0.3f}V".format(v),)
-        # self._dbusService.add_path("/System/MinVoltageCellId", None, writeable=True)
-        # self._dbusService.add_path("/History/ChargeCycles", None, writeable=True)
-        # self._dbusService.add_path("/History/TotalAhDrawn", None, writeable=True)
-        # self._dbusService.add_path("/Balancing", None, writeable=True)
-        # self._dbusService.add_path("/Io/AllowToCharge", 0, writeable=True)
-        # self._dbusService.add_path("/Io/AllowToDischarge", 0, writeable=True)
-        # self._dbusService.add_path('/SystemSwitch',1,writeable=True)
-
-        # Create the alarms
-        # self._dbusService.add_path("/Alarms/LowVoltage", None, writeable=True)
-        # self._dbusService.add_path("/Alarms/HighVoltage", None, writeable=True)
-        # self._dbusService.add_path("/Alarms/LowCellVoltage", None, writeable=True)
-        # self._dbusService.add_path("/Alarms/HighCellVoltage", None, writeable=True)
-        # self._dbusService.add_path("/Alarms/LowSoc", None, writeable=True)
-        # self._dbusService.add_path("/Alarms/HighChargeCurrent", None, writeable=True)
-        # self._dbusService.add_path("/Alarms/HighDischargeCurrent", None, writeable=True)
-        # self._dbusService.add_path("/Alarms/CellImbalance", None, writeable=True)
-        # self._dbusService.add_path("/Alarms/InternalFailure", None, writeable=True)
-        # self._dbusService.add_path("/Alarms/HighChargeTemperature", None, writeable=True)
-        # self._dbusService.add_path("/Alarms/LowChargeTemperature", None, writeable=True)
-        # self._dbusService.add_path("/Alarms/HighTemperature", None, writeable=True)
-        # self._dbusService.add_path("/Alarms/LowTemperature", None, writeable=True)
-
-        # Create TimeToGO item
-        # self._dbusService.add_path("/TimeToGo", None, writeable=True)
-
-        # logger.info(f"publish config values = {PUBLISH_CONFIG_VALUES}")
-        # if PUBLISH_CONFIG_VALUES == 1:
-            # publish_config_variables(self._dbusService)
 
         return True
 
