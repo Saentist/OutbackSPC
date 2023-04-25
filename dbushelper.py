@@ -134,7 +134,7 @@ class DbusHelper:
         print(self.devType)
         if self.devType == 'solarcharger':
             # Update SOC, DC and System items
-            print('solarcharger')
+            print('solarcharger 1')
             self._dbusService["/Hub/ChargeVoltage"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
@@ -142,10 +142,10 @@ class DbusHelper:
             self._dbusService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Load/I"] = round(self.inverter.a11pvInputCurrent, 2)
-            print('solarcharger')
+            print('solarcharger 2')
 
         if self.devType == 'vebus':
-            print('vebus')
+            print('vebus 1')
             self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
-            print('vebus')
+            print('vebus 2')
         # logger.debug("logged to dbus [%s]" % str(round(self.inverter.soc, 2)))
