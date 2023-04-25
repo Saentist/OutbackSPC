@@ -117,6 +117,7 @@ class DbusHelper:
         # self._dbusservice.add_path("/Soc", None, writeable=True)
         self._dbusservice.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v),)
         self._dbusservice.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v),)
+        self._dbusservice.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v),)
         self._dbusservice.add_path("/Yield/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v),)
         self._dbusservice.add_path("/Pv/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v),)
         self._dbusservice.add_path("/Load/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v),)
