@@ -182,10 +182,10 @@ class DbusHelper:
                     loop.quit()
 
             # This is to mannage CCL\DCL
-            self.inverter.manage_charge_current()
+            # self.inverter.manage_charge_current()
 
             # This is to mannage CVCL
-            self.inverter.manage_charge_voltage()
+            # self.inverter.manage_charge_voltage()
 
             # publish all the data from the battery object to dbus
             self.publish_dbus()
