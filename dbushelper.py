@@ -60,6 +60,7 @@ class DbusHelper:
 
     def get_role_instance(self):
         val = self.settings["instance"].split(":")
+        print(val)
         logger.info("DeviceInstance = %d", int(val[1]))
         return val[0], int(val[1])
 
