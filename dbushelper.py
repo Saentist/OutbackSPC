@@ -27,19 +27,19 @@ def get_bus():
 
 
 class DbusHelper:
-    def __init__(self, inverter, type):
+    def __init__(self, inverter, devType):
         self.inverter = inverter
         self.instance = 1
         self.settings = None
         self.error_count = 0
-        self._dbusSolarchargerService = VeDbusService("com.victronenergy." + type + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:])
+        self._dbusSolarchargerService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], get_bus(),)
 
-    def setup_instance(self, type):
+    def setup_instance(self, devType):
         # bms_id = self.battery.production if self.battery.production is not None else \
         #     self.battery.port[self.battery.port.rfind('/') + 1:]
         bms_id = self.inverter.port[self.inverter.port.rfind("/") + 1:]
         path = "/Settings/Devices/outbackinverter"
-        default_instance = type + ":1"
+        default_instance = devType + ":1"
         settings = {
             "instance": [
                 path + "_" + str(bms_id).replace(" ", "_") + "/ClassAndVrmInstance",

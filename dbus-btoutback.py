@@ -59,9 +59,9 @@ def main():
 	mainloop = gobject.MainLoop()
 
 	# Get the initial values for the battery used by setup_vedbus
-	helper = DbusHelper(outbackInverterObject, 'pvinverter')
+	helper = DbusHelper(outbackInverterObject, 'solarcharger')
 
-	if not helper.setup_vedbus('pvinverter'):
+	if not helper.setup_vedbus('solarcharger'):
 		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
 		sys.exit(1)
 
