@@ -131,7 +131,7 @@ class DbusHelper:
 
     def publish_dbus(self):
         logger.info("Publishing to dbus")
-        print(self.devType)
+        print('devType=' + self.devType)
         if self.devType == 'solarcharger':
             # Update SOC, DC and System items
             print('solarcharger 1')
