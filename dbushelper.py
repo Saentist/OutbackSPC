@@ -80,10 +80,6 @@ class DbusHelper:
         short_port = self.inverter.port[self.inverter.port.rfind("/") + 1:]
         logger.info("%s" % ("com.victronenergy.solarcharger." + short_port))
 
-        # Get the settings for the battery
-        if not self.inverter.get_settings():
-            return False
-
         # Create the management objects, as specified in the ccgx dbus-api document
         self._dbusService.add_path("/Mgmt/ProcessName", __file__)
         self._dbusService.add_path("/Mgmt/ProcessVersion", "Python " + platform.python_version())
