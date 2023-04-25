@@ -226,7 +226,7 @@ class DbusHelper:
         self._dbusSolarchargerService["/Load/I"] = round(self.inverter.a11pvInputCurrent, 2)
         self._dbusSolarchargerService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
 
-        self.helper2.getDataFromOutback(round(self.inverter.a03outputapppower - 30, 2))
+        # self.helper2.getDataFromOutback(round(self.inverter.a03outputapppower - 30, 2))
         # self._dbusSolarchargerService["/Dc/0/Temperature"] = self.inverter.get_temp()
         # self._dbusSolarchargerService["/Capacity"] = self.inverter.get_capacity_remain()
         # self._dbusSolarchargerService["/ConsumedAmphours"] = (
