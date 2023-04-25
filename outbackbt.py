@@ -107,11 +107,6 @@ class OutbackBt(Inverter):
         #print("refresh_data =>")
         return result
 
-    def log_settings(self):
-        # Override log_settings() to call get_settings() first
-        self.get_settings()
-        Inverter.log_settings(self)
-
     def read_gen_data(self):
         # print('=> read_gen_data')
         self.mutex.acquire()
