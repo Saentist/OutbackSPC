@@ -61,14 +61,14 @@ def main():
 	# Get the initial values for the battery used by setup_vedbus
 	helper = DbusHelper(outbackInverterObject, 'solarcharger')
 
-	if not helper.setup_vedbus('solarcharger'):
+	if not helper.setup_vedbus():
 		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
 		sys.exit(1)
 
 	# Get the initial values for the battery used by setup_vedbus
 	helper2 = DbusHelper(outbackInverterObject, 'vebus')
 
-	if not helper2.setup_vedbus('vebus'):
+	if not helper2.setup_vedbus():
 		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
 		sys.exit(1)
 
