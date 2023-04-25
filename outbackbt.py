@@ -103,9 +103,7 @@ class OutbackBt(Inverter):
         print("=> refresh_data")
         result = self.read_gen_data()
         while not result:
-            #print("get_settings  WHILE")
             result = self.read_gen_data()
-        #print("refresh_data =>")
         return result
 
     def read_gen_data(self):
