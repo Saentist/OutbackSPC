@@ -71,8 +71,6 @@ class DbusHelper:
             logger.info("Changed DeviceInstance = %d", self.instance)
             return
 
-        logger.info("Changed DeviceInstance = %d", float(self.settings["CellVoltageMin"]))
-
     def setup_vedbus(self):
         # Set up dbus service and device instance
         # and notify of all the attributes we intend to update
