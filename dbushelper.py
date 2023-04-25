@@ -73,6 +73,7 @@ class DbusHelper:
         self._dbusService.add_path("/Load/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
         self._dbusService.add_path("/Pv/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
         self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+        self._dbusService.add_path("/Ac/L1/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
 
         return True
 
@@ -119,4 +120,12 @@ class DbusHelper:
             print('vebus 1')
             self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
             print('vebus 2')
+
+            if self.devType == 'grid':
+                print('grid 1')
+                self._dbusService["/Ac/L1/Power"] = round(self.inverter.a03outputapppower - 30, 2)
+                print('grid 2')
+
+
+
         # logger.debug("logged to dbus [%s]" % str(round(self.inverter.soc, 2)))
