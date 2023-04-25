@@ -59,20 +59,19 @@ def main():
 	mainloop = gobject.MainLoop()
 
 	# Get the initial values for the battery used by setup_vedbus
-	helper = DbusHelper(outbackInverterObject, 'solarcharger')
+	helper = DbusHelper(outbackInverterObject, 'vebus')
 
 	if not helper.setup_vedbus():
 		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
 		sys.exit(1)
 
 	# Get the initial values for the battery used by setup_vedbus
-	helper2 = DbusHelper(outbackInverterObject, 'vebus')
+	helper2 = DbusHelper(outbackInverterObject, 'solarcharger')
 
 	if not helper2.setup_vedbus():
 		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
 		sys.exit(1)
 
-	print(helper2)
 	# Poll the battery at INTERVAL and run the main loop
 	gobject.timeout_add(outbackInverterObject.poll_interval, lambda: poll_inverter(mainloop))
 	try:
