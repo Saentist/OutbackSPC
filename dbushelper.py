@@ -302,4 +302,4 @@ class DbusHelper:
         #     "/Alarms/LowTemperature"
         # ] = self.inverter.protection.temp_low_discharge
 
-        logger.debug("logged to dbus [%s]" % str(round(self.inverter.soc, 2)))
+        # logger.debug("logged to dbus [%s]" % str(round(self.inverter.soc, 2)))
