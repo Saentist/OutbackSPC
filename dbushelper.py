@@ -29,13 +29,14 @@ def get_bus():
 
 class DbusHelper:
     def __init__(self, inverter, devType):
-        print('INIT')
         self.inverter = inverter
-        self.helper2 = DbusHelper2()
+        # self.helper2 = DbusHelper2()
         self.instance = 1
         self.settings = None
         self.error_count = 0
         self._dbusSolarchargerService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], get_bus(),)
+        self._dbusservice = VeDbusService('com.victronenergy.dummyservice.ttyO1')
+        print(self._dbusservice)
 
     def setup_instance(self, devType):
         # bms_id = self.battery.production if self.battery.production is not None else \
