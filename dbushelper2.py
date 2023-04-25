@@ -38,7 +38,7 @@ class DbusHelper2:
         # bms_id = self.battery.production if self.battery.production is not None else \
         #     self.battery.port[self.battery.port.rfind('/') + 1:]
         bms_id = self.inverter.port[self.inverter.port.rfind("/") + 1:]
-        path = "/Settings/Devices/outbackinverter"
+        path = "/Settings/Devices/outbackinverter2"
         default_instance = devType + ":1"
         settings = {
             "instance": [
