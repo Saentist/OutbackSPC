@@ -116,7 +116,7 @@ class DbusHelper:
         # Create SOC, DC and System items
         # self._dbusservice.add_path("/Soc", None, writeable=True)
         self._dbusservice.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v),)
-        self._dbusservice.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v),)
+        self._dbusservice.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v),)
         self._dbusservice.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v),)
         self._dbusservice.add_path("/Yield/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v),)
         self._dbusservice.add_path("/Pv/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v),)
@@ -202,7 +202,7 @@ class DbusHelper:
         #self._dbusservice["/System/NrOfCellsPerBattery"] = self.inverter.cell_count
         #self._dbusservice["/Soc"] = round(self.inverter.soc, 2)
         self._dbusservice["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
-        self._dbusservice["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
+        self._dbusservice["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 3)
         self._dbusservice["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
         # self._dbusservice["/Yield/Power"] = round(self.inverter.voltage * self.inverter.current, 2)
         self._dbusservice["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
