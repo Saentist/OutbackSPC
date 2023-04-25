@@ -29,6 +29,7 @@ def get_bus():
 
 class DbusHelper:
     def __init__(self, inverter, devType):
+        print('INIT')
         self.inverter = inverter
         self.helper2 = DbusHelper2()
         self.instance = 1
