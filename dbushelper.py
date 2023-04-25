@@ -33,6 +33,7 @@ class DbusHelper:
         self.settings = None
         self.error_count = 0
         self._dbusSolarchargerService = VeDbusService("com.victronenergy.solarcharger." + self.inverter.port[self.inverter.port.rfind("/") + 1:], get_bus(),)
+        self.test = dbusservice = VeDbusService('com.victronenergy.example')
 
     def setup_instance(self):
         # bms_id = self.battery.production if self.battery.production is not None else \
