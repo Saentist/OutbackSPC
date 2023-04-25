@@ -90,11 +90,11 @@ class DbusHelper:
         # Create the mandatory objects
         self._dbusservice.add_path("/DeviceInstance", self.instance)
         self._dbusservice.add_path("/ProductId", 0x0)
-        self._dbusservice.add_path("/ProductName", "Outback SPC III(" + self.inverter.type + ")")
+        self._dbusservice.add_path("/ProductName", "Outback (" + self.inverter.type + ")")
         self._dbusservice.add_path("/FirmwareVersion", str(DRIVER_VERSION) + DRIVER_SUBVERSION)
         self._dbusservice.add_path("/HardwareVersion", self.inverter.hardware_version)
         self._dbusservice.add_path("/Connected", 1)
-        self._dbusservice.add_path("/CustomName", "Outback SPC III(" + self.inverter.type + ")", writeable=True)
+        self._dbusservice.add_path("/CustomName", "Outback (" + self.inverter.type + ")", writeable=True)
 
         # Create static battery info
         # self._dbusservice.add_path("/Info/BatteryLowVoltage", self.inverter.min_battery_voltage, writeable=True)
