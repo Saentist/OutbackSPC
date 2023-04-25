@@ -140,5 +140,7 @@ class DbusHelper:
         self._dbusService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
         self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
         self._dbusService["/Load/I"] = round(self.inverter.a11pvInputCurrent, 2)
+        print('here')
         self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
+        print('there')
         # logger.debug("logged to dbus [%s]" % str(round(self.inverter.soc, 2)))
