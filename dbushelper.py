@@ -34,9 +34,9 @@ def dbusconnection():
 
 
 class DbusHelper:
-    def __init__(self, inverter, devType):
+    def __init__(self, inverter, devType, instance):
         self.inverter = inverter
-        self.instance = 1
+        self.instance = instance
         self.settings = None
         self.error_count = 0
         self.devType = devType
