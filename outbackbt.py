@@ -50,9 +50,6 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 # dritte potentielle characteristikcs uuid
                 # 00002a29-0000-1000-8000-00805f9b34fb
                 # todo bei zeiten ausprobieren
-
-                print('sleeping 2 sec')
-                sleep(2)
             except BTLEDisconnectError:
                 logger.info('Disconnected')
                 connected = False
