@@ -37,44 +37,17 @@ class DbusHelper:
     def __init__(self, inverter, devType, instance):
         self.inverter = inverter
         self.instance = instance
-        self.settings = None
+        #self.settings = None
         self.error_count = 0
         self.devType = devType
+        self.inverter.role = self.devType
         self._dbusService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
 
-    def setup_instance(self):
-        bms_id = self.inverter.port[self.inverter.port.rfind("/") + 1:]
-        path = "/Settings/Devices/outbackinverter"
-        default_instance = self.devType + ":" + str(self.instance)
-        settings = {
-            "instance": [
-                path + "_" + str(bms_id).replace(" ", "_") + "/ClassAndVrmInstance",
-                default_instance,
-                0,
-                0,
-            ],
-        }
-
-        self.settings = SettingsDevice(dbusconnection(), settings, self.handle_changed_setting)
-        self.inverter.role, self.instance = self.get_role_instance()
-
-    def get_role_instance(self):
-        val = self.settings["instance"].split(":")
-        print(val)
-        logger.info("DeviceInstance = %d", int(val[1]))
-        return val[0], int(val[1])
-
-    def handle_changed_setting(self, setting, oldvalue, newvalue):
-        if setting == "instance":
-            self.inverter.role, self.instance = self.get_role_instance()
-            logger.info("Changed DeviceInstance = %d", self.instance)
-            return
 
     def setup_vedbus(self):
         # Set up dbus service and device instance
         # and notify of all the attributes we intend to update
         # This is only called once when a battery is initiated
-        self.setup_instance()
         short_port = self.inverter.port[self.inverter.port.rfind("/") + 1:]
         logger.info("%s" % ("com.victronenergy." + self.devType + "." + short_port))
 
