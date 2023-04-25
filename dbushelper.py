@@ -122,6 +122,7 @@ class DbusHelper:
         self._dbusservice.add_path("/Pv/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v),)
         self._dbusservice.add_path("/Load/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v),)
         self._dbusservice.add_path("/Pv/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v),)
+        self._dbusservice.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v),)
         # self._dbusservice.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v),)
         # self._dbusservice.add_path("/Dc/0/Temperature", None, writeable=True)
         # self._dbusservice.add_path("/Dc/0/MidVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:0.2f}V".format(v),)
@@ -207,6 +208,7 @@ class DbusHelper:
         self._dbusservice["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
         self._dbusservice["/Load/I"] = round(self.inverter.a11pvInputCurrent, 2)
         self._dbusservice["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
+        self._dbusservice["/Ac/Out/L1/P"] = round(self.inverter.self.a03outputapppower - 30, 2)
         # self._dbusservice["/Dc/0/Temperature"] = self.inverter.get_temp()
         # self._dbusservice["/Capacity"] = self.inverter.get_capacity_remain()
         # self._dbusservice["/ConsumedAmphours"] = (
