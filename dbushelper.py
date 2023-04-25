@@ -143,7 +143,7 @@ class DbusHelper:
             self._dbusService["/Load/I"] = round(self.inverter.a11pvInputCurrent, 2)
             print('solarcharger')
 
-        if self.devType('vebus'):
+        if self.devType == 'vebus':
             print('vebus')
             self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
             print('vebus')
