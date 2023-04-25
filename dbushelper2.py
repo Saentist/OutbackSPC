@@ -29,8 +29,7 @@ class DbusHelper2:
     mngr = None
     adapter = None
 
-    def __init__(self, inverter):
-        self.inverter = inverter
+    def __init__(self):
         dummy = {'code': None, 'whenToLog': 'configChange', 'accessLevel': None}
         dbus_tree = {
             'com.victronenergy.solarcharger': {
@@ -163,8 +162,8 @@ class DbusHelper2:
         self._solarchargerService = self._get_service_having_lowest_instance('com.victronenergy.solarcharger')
         self.getDataFromOutback()
 
-    def getDataFromOutback(self):
-        self.writeToDbus(self._vebusService, '/Ac/Out/L1/P', self.inverter.a03outputapppower)
+    def getDataFromOutback(self, inverterData):
+        self.writeToDbus(self._vebusService, '/Ac/Out/L1/P', inverterData)
         #self.writeToDbus(self._solarchargerService, '/Dc/0/Current', pvInputCurrent)
         #self.writeToDbus(self._solarchargerService, '/Yield/Power ', 10)
         #self.writeToDbus(self._solarchargerService, '/Pv/I', pvInputCurrent)

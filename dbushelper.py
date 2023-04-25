@@ -14,6 +14,7 @@ sys.path.insert(
     ),
 )
 from vedbus import VeDbusService
+from dbushelper2 import DbusHelper2
 from settingsdevice import SettingsDevice
 from utils import *
 
@@ -29,6 +30,7 @@ def get_bus():
 class DbusHelper:
     def __init__(self, inverter, devType):
         self.inverter = inverter
+        self.helper2 = DbusHelper2()
         self.instance = 1
         self.settings = None
         self.error_count = 0
@@ -207,6 +209,8 @@ class DbusHelper:
         self._dbusSolarchargerService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
         self._dbusSolarchargerService["/Load/I"] = round(self.inverter.a11pvInputCurrent, 2)
         self._dbusSolarchargerService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
+
+        self.helper2.getDataFromOutback(round(self.inverter.a03outputapppower - 30, 2))
         # self._dbusSolarchargerService["/Dc/0/Temperature"] = self.inverter.get_temp()
         # self._dbusSolarchargerService["/Capacity"] = self.inverter.get_capacity_remain()
         # self._dbusSolarchargerService["/ConsumedAmphours"] = (
