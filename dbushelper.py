@@ -95,6 +95,8 @@ class DbusHelper:
         self._dbusSolarchargerService.add_path("/HardwareVersion", self.inverter.hardware_version)
         self._dbusSolarchargerService.add_path("/Connected", 1)
         self._dbusSolarchargerService.add_path("/CustomName", "Outback (" + self.inverter.type + ")", writeable=True)
+        self._dbusSolarchargerService.add_path("/AllowedRoles", self.inverter.allowed_roles)
+        self._dbusSolarchargerService.add_path("/Role", self.inverter.role, writeable=True, onchangecallback=self.change_role('solarcharger'))
 
         # Create static battery info
         # self._dbusSolarchargerService.add_path("/Info/BatteryLowVoltage", self.inverter.min_battery_voltage, writeable=True)
@@ -195,12 +197,14 @@ class DbusHelper:
         except:
             traceback.print_exc()
             loop.quit()
-
+    def change_role(self, role):
+        self._dbusSolarchargerService["/Role"] = role
     def publish_dbus(self):
 
         # Update SOC, DC and System items
         #self._dbusSolarchargerService["/System/NrOfCellsPerBattery"] = self.inverter.cell_count
         #self._dbusSolarchargerService["/Soc"] = round(self.inverter.soc, 2)
+        self.change_role('solarcharger')
         self._dbusSolarchargerService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
         self._dbusSolarchargerService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
         self._dbusSolarchargerService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
@@ -208,6 +212,7 @@ class DbusHelper:
         self._dbusSolarchargerService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
         self._dbusSolarchargerService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
         self._dbusSolarchargerService["/Load/I"] = round(self.inverter.a11pvInputCurrent, 2)
+        self.change_role('pvinverter')
         self._dbusSolarchargerService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
         # self._dbusSolarchargerService["/Dc/0/Temperature"] = self.inverter.get_temp()
         # self._dbusSolarchargerService["/Capacity"] = self.inverter.get_capacity_remain()
