@@ -158,9 +158,9 @@ class DbusHelper:
         # Create TimeToGO item
         # self._dbusservice.add_path("/TimeToGo", None, writeable=True)
 
-        logger.info(f"publish config values = {PUBLISH_CONFIG_VALUES}")
-        if PUBLISH_CONFIG_VALUES == 1:
-            publish_config_variables(self._dbusservice)
+        # logger.info(f"publish config values = {PUBLISH_CONFIG_VALUES}")
+        # if PUBLISH_CONFIG_VALUES == 1:
+            # publish_config_variables(self._dbusservice)
 
         return True
 
