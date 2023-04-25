@@ -18,9 +18,8 @@ class Inverter(ABC):
         self.baud_rate = baud
         self.role = "vebus"
         self.type = "Generic"
-        self.poll_interval = 1000
+        self.poll_interval = 2000  # 2 Sekunden
         self.online = True
-        self.allowed_roles = ["grid", "pvinverter", "genset", "solarcharger"]
 
         self.hardware_version = None
         self.voltage = None
