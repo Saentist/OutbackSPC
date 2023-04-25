@@ -99,16 +99,6 @@ class OutbackBt(Inverter):
     def test_connection(self):
         return False
 
-    def get_settings(self):
-        #print("=> get_settings")
-        result = self.read_gen_data()
-        while not result:
-            #print("get_settings  WHILE")
-            result = self.read_gen_data()
-            #print('sleeping 1 sec')
-            #time.sleep(1)
-        return result
-
     def refresh_data(self):
         print("=> refresh_data")
         result = self.read_gen_data()
@@ -117,11 +107,6 @@ class OutbackBt(Inverter):
             result = self.read_gen_data()
         #print("refresh_data =>")
         return result
-
-    def log_settings(self):
-        # Override log_settings() to call get_settings() first
-        self.get_settings()
-        Inverter.log_settings(self)
 
     def read_gen_data(self):
         # print('=> read_gen_data')
