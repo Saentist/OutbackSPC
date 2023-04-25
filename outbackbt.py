@@ -130,7 +130,7 @@ class OutbackBt(Inverter):
         self.discharge_fet = is_bit_set(tmp[0])
 
     def read_gen_data(self):
-        print('=> read_gen_data')
+        # print('=> read_gen_data')
         self.mutex.acquire()
         if self.generalData1 is None or self.generalData2 is None:
             self.mutex.release()
