@@ -78,7 +78,7 @@ class DbusHelper:
         # This is only called once when a battery is initiated
         self.setup_instance()
         short_port = self.inverter.port[self.inverter.port.rfind("/") + 1:]
-        logger.info("%s" % ("com.victronenergy.solarcharger." + short_port))
+        logger.info("%s" % ("com.victronenergy." + self.devType + "." + short_port))
 
         # Create the management objects, as specified in the ccgx dbus-api document
         self._dbusService.add_path("/Mgmt/ProcessName", __file__)
