@@ -45,7 +45,7 @@ class DbusHelper:
     def setup_instance(self):
         bms_id = self.inverter.port[self.inverter.port.rfind("/") + 1:]
         path = "/Settings/Devices/outbackinverter"
-        default_instance = self.devType + ":" + self.instance
+        default_instance = self.devType + ":" + str(self.instance)
         settings = {
             "instance": [
                 path + "_" + str(bms_id).replace(" ", "_") + "/ClassAndVrmInstance",
