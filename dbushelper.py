@@ -66,7 +66,8 @@ class DbusHelper:
 
     def handle_changed_setting(self, setting, oldvalue, newvalue):
         if setting == "instance":
-            self.inverter.role, self.instance = self.get_role_instance()
+            # self.inverter.role, self.instance = self.get_role_instance()
+            self.devType, self.instance = self.get_role_instance()
             logger.info("Changed DeviceInstance = %d", self.instance)
             return
 
