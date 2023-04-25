@@ -79,6 +79,7 @@ class OutbackBt(Inverter):
         Inverter.__init__(self, 0, 0, address)
 
         self.type = "SPC III"
+        self.debug = False
 
         # Bluepy stuff
         self.bt = Peripheral()
@@ -150,16 +151,17 @@ class OutbackBt(Inverter):
         self.a03chargecurrent = a03Bytes[9]
 
         # AUSGABE
-        print('a03acvoltage => ' + str(self.a03acvoltage))
-        print('acfrequency => ' + str(self.a03acfrequency))
-        print('outputvoltage => ' + str(self.a03outputvoltage))
-        print('outputfrequency => ' + str(self.a03outputfrequency))
-        print('outputapppower => ' + str(self.a03outputapppower))
-        print('outputactpower => ' + str(self.a03outputactpower))
-        print('loadpercent => ' + str(self.a03loadpercent))
-        print('unknown7 => ' + str(self.a03unknown7))
-        print('batteryvoltage => ' + str(self.a03batteryvoltage))
-        print('chargecurrent => ' + str(self.a03chargecurrent))
+        if self.debug:
+            print('a03acvoltage => ' + str(self.a03acvoltage))
+            print('acfrequency => ' + str(self.a03acfrequency))
+            print('outputvoltage => ' + str(self.a03outputvoltage))
+            print('outputfrequency => ' + str(self.a03outputfrequency))
+            print('outputapppower => ' + str(self.a03outputapppower))
+            print('outputactpower => ' + str(self.a03outputactpower))
+            print('loadpercent => ' + str(self.a03loadpercent))
+            print('unknown7 => ' + str(self.a03unknown7))
+            print('batteryvoltage => ' + str(self.a03batteryvoltage))
+            print('chargecurrent => ' + str(self.a03chargecurrent))
 
         # A11 Bereich
         # print('A11')
@@ -182,18 +184,19 @@ class OutbackBt(Inverter):
         else:
             self.a11pvInputCurrent = 0
 
-        # AUSGABE
-        print('unknown0 => ' + str(self.a11unknown0))
-        print('unknown1 => ' + str(self.a11unknown1))
-        print('unknown2 => ' + str(self.a11unknown2))
-        print('unknown3 => ' + str(self.a11unknown3))
-        print('unknown4 => ' + str(self.a11unknown4))
-        print('unknown5 => ' + str(self.a11unknown5))
-        print('pvInputPower => ' + str(self.a11pvInputPower))
-        print('pvInputVoltage => ' + str(self.a11pvInputVoltage))
-        print('pvInputCurrent => ' + str(self.a11pvInputCurrent))
-        print('unknown8 => ' + str(self.a11unknown8))
-        print('unknown9 => ' + str(self.a11unknown9))
+        if self.debug:
+            # AUSGABE
+            print('unknown0 => ' + str(self.a11unknown0))
+            print('unknown1 => ' + str(self.a11unknown1))
+            print('unknown2 => ' + str(self.a11unknown2))
+            print('unknown3 => ' + str(self.a11unknown3))
+            print('unknown4 => ' + str(self.a11unknown4))
+            print('unknown5 => ' + str(self.a11unknown5))
+            print('pvInputPower => ' + str(self.a11pvInputPower))
+            print('pvInputVoltage => ' + str(self.a11pvInputVoltage))
+            print('pvInputCurrent => ' + str(self.a11pvInputCurrent))
+            print('unknown8 => ' + str(self.a11unknown8))
+            print('unknown9 => ' + str(self.a11unknown9))
 
         self.mutex.release()
         #print('sleeping 5 sec')
