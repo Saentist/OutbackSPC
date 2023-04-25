@@ -65,10 +65,10 @@ def main():
 		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
 		sys.exit(1)
 
-	helper2 = DbusHelper(outbackInverterObject, 'vebus')
-	if not helper2.setup_vedbus('vebus'):
-		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
-		sys.exit(1)
+	#helper2 = DbusHelper(outbackInverterObject, 'vebus')
+	#if not helper2.setup_vedbus('vebus'):
+		#logger.error("ERROR >>> Problem with inverter " + str(btaddr))
+		#sys.exit(1)
 
 	# Poll the battery at INTERVAL and run the main loop
 	gobject.timeout_add(outbackInverterObject.poll_interval, lambda: poll_inverter(mainloop))
