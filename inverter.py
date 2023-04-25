@@ -16,7 +16,7 @@ class Inverter(ABC):
     def __init__(self, port, baud, address):
         self.port = port
         self.baud_rate = baud
-        self.role = "vebus"
+        self.role = None
         self.type = "Generic"
         self.poll_interval = 2000  # 2 Sekunden
         self.online = True
