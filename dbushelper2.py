@@ -141,19 +141,14 @@ class DbusHelper2:
                 '/Soc': dummy,
             }
         }
-        global dbusMonitor
-        if dbusMonitor is None:
-            self._dbusmonitor = self._create_dbus_monitor(dbus_tree, valueChangedCallback=self._dbus_value_changed,
-                                                          deviceAddedCallback=self._device_added,
-                                                          deviceRemovedCallback=self._device_removed)
-            if self.debug:
-                print('dbsmonitor')
-                print(self._dbusmonitor)
-            dbusMonitor = self._dbusmonitor
-        else:
-            self._dbusmonitor = dbusMonitor
-            if self.debug:
-                print('reusing dbusmonitor')
+
+        self._dbusmonitor = self._create_dbus_monitor(dbus_tree, valueChangedCallback=self._dbus_value_changed,
+                                                      deviceAddedCallback=self._device_added,
+                                                      deviceRemovedCallback=self._device_removed)
+        if self.debug:
+            print('dbsmonitor')
+            print(self._dbusmonitor)
+
 
         print('Starting Main ...')
         self._tankService = self._get_service_having_lowest_instance('com.victronenergy.tank')
