@@ -27,19 +27,19 @@ def get_bus():
 
 
 class DbusHelper:
-    def __init__(self, inverter):
+    def __init__(self, inverter, type):
         self.inverter = inverter
         self.instance = 1
         self.settings = None
         self.error_count = 0
-        self._dbusSolarchargerService = VeDbusService("com.victronenergy.solarcharger." + self.inverter.port[self.inverter.port.rfind("/") + 1:], get_bus(),)
+        self._dbusSolarchargerService = VeDbusService("com.victronenergy." + type + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], get_bus(),)
 
-    def setup_instance(self):
+    def setup_instance(self, type):
         # bms_id = self.battery.production if self.battery.production is not None else \
         #     self.battery.port[self.battery.port.rfind('/') + 1:]
         bms_id = self.inverter.port[self.inverter.port.rfind("/") + 1:]
         path = "/Settings/Devices/outbackinverter"
-        default_instance = "inverter:1"
+        default_instance = type + ":1"
         settings = {
             "instance": [
                 path + "_" + str(bms_id).replace(" ", "_") + "/ClassAndVrmInstance",
@@ -66,11 +66,11 @@ class DbusHelper:
         logger.info("Changed DeviceInstance = %d", float(self.settings["CellVoltageMin"]))
         # self._dbusSolarchargerService['/History/ChargeCycles']
 
-    def setup_vedbus(self):
+    def setup_vedbus(self, type):
         # Set up dbus service and device instance
         # and notify of all the attributes we intend to update
         # This is only called once when a battery is initiated
-        self.setup_instance()
+        self.setup_instance(type)
         short_port = self.inverter.port[self.inverter.port.rfind("/") + 1:]
         logger.info("%s" % ("com.victronenergy.solarcharger." + short_port))
 
