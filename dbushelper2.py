@@ -15,7 +15,7 @@ from dbusmonitor import DbusMonitor
 dbusMonitor = None
 
 class DbusHelper2:
-    debug = False
+    debug = True
     ubit = None
     state = None
     connected = None
