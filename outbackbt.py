@@ -75,7 +75,6 @@ class OutbackBtDev(DefaultDelegate, Thread):
 
 class OutbackBt(Inverter):
     def __init__(self, address):
-        print('=> Outback _init_')
         Inverter.__init__(self, 0, 0, address)
 
         self.type = "SPC III"
@@ -96,7 +95,6 @@ class OutbackBt(Inverter):
         dev = OutbackBtDev(self.address)
         dev.addGeneralDataCallback(self.generalDataCB)
         dev.connect()
-        print('Outback _init_ =>')
 
     def test_connection(self):
         return False
