@@ -137,9 +137,9 @@ class OutbackBt(Inverter):
             #print('read_gen_data False =>')
             return False
 
-        print('A03')
+        # print('A03')
         a03Bytes = self.getExtractData(self.generalData1)
-        print(a03Bytes)
+        # print(a03Bytes)
 
         self.a03acvoltage = a03Bytes[0]
         self.a03acfrequency = a03Bytes[1]
@@ -165,9 +165,9 @@ class OutbackBt(Inverter):
         print('chargecurrent => ' + str(self.a03chargecurrent))
 
         # A11 Bereich
-        print('A11')
+        # print('A11')
         a11Bytes = self.getExtractData(self.generalData2)
-        print(a11Bytes)
+        # print(a11Bytes)
 
         self.a11unknown0 = a11Bytes[0]  #
         self.a11unknown1 = a11Bytes[1]  #
@@ -212,7 +212,7 @@ class OutbackBt(Inverter):
         return bytesData
 
     def generalDataCB(self, data, index):
-        print("=> generalDataCB")
+        # print("=> generalDataCB")
         self.mutex.acquire()
         if index == 1:
             self.generalData1 = data
