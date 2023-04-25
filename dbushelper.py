@@ -208,7 +208,7 @@ class DbusHelper:
         self._dbusservice["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
         self._dbusservice["/Load/I"] = round(self.inverter.a11pvInputCurrent, 2)
         self._dbusservice["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
-        self._dbusservice["/Ac/Out/L1/P"] = round(self.inverter.self.a03outputapppower - 30, 2)
+        self._dbusservice["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
         # self._dbusservice["/Dc/0/Temperature"] = self.inverter.get_temp()
         # self._dbusservice["/Capacity"] = self.inverter.get_capacity_remain()
         # self._dbusservice["/ConsumedAmphours"] = (
