@@ -14,7 +14,6 @@ sys.path.insert(
     ),
 )
 from vedbus import VeDbusService
-from dbushelper2 import DbusHelper2
 from settingsdevice import SettingsDevice
 from utils import *
 
@@ -132,6 +131,7 @@ class DbusHelper:
 
     def publish_dbus(self):
         logger.debug("Publishing to dbus")
+        print('1234')
         if self.devType == 'solarcharger':
             # Update SOC, DC and System items
             print('solarcharger')
