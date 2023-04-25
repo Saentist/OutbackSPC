@@ -39,7 +39,7 @@ class DbusHelper:
         )
         self._dbusInverterService = VeDbusService(
             "com.victronenergy.inverter."
-            + self.inverter.port[self.inverter.port.rfind("/") + 1:],
+            + self.inverter.port[self.inverter.port.rfind("/") + 2:],
             get_bus(),
         )
 
