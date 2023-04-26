@@ -64,7 +64,7 @@ class DbusHelper:
 
         if self.devType == 'solarcharger':
             self.inverter.type = ''
-        elif self.devType == 'pvinverter':
+        elif self.devType == 'inverter':
             self.inverter.type = 'Inverter'
         else:
             self.inverter.type = 'Unknown'
