@@ -56,19 +56,20 @@ class DbusHelper:
         # Create the mandatory objects
         self._dbusService.add_path("/DeviceInstance", self.instance)
         self._dbusService.add_path("/ProductId", 0x0)
-        self._dbusService.add_path("/ProductName", "Outback (" + self.inverter.type + ")")
+        self._dbusService.add_path("/ProductName", "Outback - SPC III")
         self._dbusService.add_path("/FirmwareVersion", str(DRIVER_VERSION) + DRIVER_SUBVERSION)
+        self.inverter.hardware_version = '3KW'
         self._dbusService.add_path("/HardwareVersion", self.inverter.hardware_version)
         self._dbusService.add_path("/Connected", 1)
 
         if self.devType == 'solarcharger':
-            self.inverter.type = 'Charger'
+            self.inverter.type = ''
         elif self.devType == 'pvinverter':
             self.inverter.type = 'Inverter'
         else:
             self.inverter.type = 'Unknown'
 
-        self._dbusService.add_path("/CustomName", "Outback (" + self.inverter.type + ")", writeable=True)
+        self._dbusService.add_path("/CustomName", "Outback " + self.inverter.type + "", writeable=True)
 
         # Create System items
         self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
