@@ -153,15 +153,15 @@ class DbusHelper:
             self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03outputvoltage, 2)
             self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03outputcurrent, 2)
             self._dbusService['/Ac/ActiveIn/ActiveInput'] = ""
-            self._dbusService['/Ac/ActiveIn/L1/P'] = ""
-            self._dbusService['/Ac/ActiveIn/L2/P'] = ""
-            self._dbusService['/Ac/ActiveIn/L3/P'] = ""
-            self._dbusService['/Mode'] = ""
-            self._dbusService['/State'] = ""
+            self._dbusService['/Ac/ActiveIn/L1/P'] = round(1234, 2)
+            self._dbusService['/Ac/ActiveIn/L2/P'] = round(1234, 2)
+            self._dbusService['/Ac/ActiveIn/L3/P'] = round(1234, 2)
+            self._dbusService['/Mode'] = 1
+            self._dbusService['/State'] = 1
             self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
-            self._dbusService['/Soc'] = ""
+            self._dbusService['/Soc'] = 100
 
             # print('vebus 2')
 
