@@ -70,7 +70,7 @@ class OutbackBt(Inverter):
     def __init__(self, address):
         Inverter.__init__(self, 0, 0, address)
 
-        self.type = "SPC III"
+        self.type = ""
         self.debug = True
 
         # Bluepy stuff

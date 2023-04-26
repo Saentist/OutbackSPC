@@ -14,7 +14,6 @@ sys.path.insert(
     ),
 )
 from vedbus import VeDbusService
-from settingsdevice import SettingsDevice
 from utils import *
 
 
@@ -61,6 +60,14 @@ class DbusHelper:
         self._dbusService.add_path("/FirmwareVersion", str(DRIVER_VERSION) + DRIVER_SUBVERSION)
         self._dbusService.add_path("/HardwareVersion", self.inverter.hardware_version)
         self._dbusService.add_path("/Connected", 1)
+
+        if self.devType == 'solarcharger':
+            self.inverter.type = 'Charger'
+        elif self.devType == 'pvinverter':
+            self.inverter.type = 'Inverter'
+        else:
+            self.inverter.type = 'Unknown'
+
         self._dbusService.add_path("/CustomName", "Outback (" + self.inverter.type + ")", writeable=True)
 
         # Create System items
