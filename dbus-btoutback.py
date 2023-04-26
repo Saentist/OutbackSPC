@@ -36,6 +36,11 @@ def main():
 		poller2.daemon = True
 		poller2.start()
 
+		poller3 = Thread(target=lambda: helper3.publish_inverter(loop))
+		# Thread will die with us if deamon
+		poller3.daemon = True
+		poller3.start()
+
 		return True
 
 	def get_btaddr() -> str:
@@ -72,9 +77,16 @@ def main():
 		sys.exit(1)
 
 	# Get the initial values for the battery used by setup_vedbus
-	helper2 = DbusHelper(outbackInverterObject, 'vebus', 2)
+	helper2 = DbusHelper(outbackInverterObject, 'solarcharger', 2)
 
 	if not helper2.setup_vedbus():
+		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
+		sys.exit(1)
+
+	# Get the initial values for the battery used by setup_vedbus
+	helper3 = DbusHelper(outbackInverterObject, 'vebus', 2)
+
+	if not helper3.setup_vedbus():
 		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
 		sys.exit(1)
 
