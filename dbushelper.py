@@ -111,8 +111,8 @@ class DbusHelper:
             #self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
             #self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
             #self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
-            #self._dbusService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
-            #self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
+            self._dbusService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
+            self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
             #self._dbusService["/Load/I"] = round(self.inverter.a11pvInputCurrent, 2)
             print('solarcharger 2')
 
