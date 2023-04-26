@@ -18,7 +18,7 @@ class Inverter(ABC):
         self.baud_rate = baud
         self.role = None
         self.type = "Generic"
-        self.poll_interval = 1000  # 1 Sekunden
+        self.poll_interval = 1000  # 1 Sekunden neu
         self.online = True
 
         self.hardware_version = None
