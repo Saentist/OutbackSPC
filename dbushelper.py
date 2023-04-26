@@ -175,6 +175,4 @@ class DbusHelper:
             # self._dbusService["/Yield/Power"] = round(1234, 2) # ist die summe die von der PV Anlage kommt errechnet sich automatisch
             # print('grid 2')
 
-
-
         # logger.debug("logged to dbus [%s]" % str(round(self.inverter.soc, 2)))

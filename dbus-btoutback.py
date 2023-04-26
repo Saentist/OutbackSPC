@@ -24,22 +24,29 @@ from outbackbt import OutbackBt
 logger.info("Starting dbus-btoutback")
 
 def main():
+	helper1 = True
+	helper2 = True
+	helper3 = False
+
 	def poll_inverter(loop):
 		# Run in separate thread. Pass in the mainloop so the thread can kill us if there is an exception.
-		poller = Thread(target=lambda: helper.publish_inverter(loop))
-		# Thread will die with us if deamon
-		poller.daemon = True
-		poller.start()
+		if helper1:
+			poller = Thread(target=lambda: helper.publish_inverter(loop))
+			# Thread will die with us if deamon
+			poller.daemon = True
+			poller.start()
 
-		poller2 = Thread(target=lambda: helper2.publish_inverter(loop))
-		# Thread will die with us if deamon
-		poller2.daemon = True
-		poller2.start()
+		if helper2:
+			poller2 = Thread(target=lambda: helper2.publish_inverter(loop))
+			# Thread will die with us if deamon
+			poller2.daemon = True
+			poller2.start()
 
-		poller3 = Thread(target=lambda: helper3.publish_inverter(loop))
-		# Thread will die with us if deamon
-		poller3.daemon = True
-		poller3.start()
+		if helper3:
+			poller3 = Thread(target=lambda: helper3.publish_inverter(loop))
+			# Thread will die with us if deamon
+			poller3.daemon = True
+			poller3.start()
 
 		return True
 
@@ -69,26 +76,29 @@ def main():
 		gobject.threads_init()
 	mainloop = gobject.MainLoop()
 
-	# Get the initial values for the battery used by setup_vedbus
-	helper = DbusHelper(outbackInverterObject, 'inverter', 1)
+	if helper1:
+		# Get the initial values for the battery used by setup_vedbus
+		helper = DbusHelper(outbackInverterObject, 'inverter', 1)
 
-	if not helper.setup_vedbus():
-		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
-		sys.exit(1)
+		if not helper.setup_vedbus():
+			logger.error("ERROR >>> Problem with inverter " + str(btaddr))
+			sys.exit(1)
 
-	# Get the initial values for the battery used by setup_vedbus
-	helper2 = DbusHelper(outbackInverterObject, 'solarcharger', 2)
+	if helper2:
+		# Get the initial values for the battery used by setup_vedbus
+		helper2 = DbusHelper(outbackInverterObject, 'solarcharger', 2)
 
-	if not helper2.setup_vedbus():
-		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
-		sys.exit(1)
+		if not helper2.setup_vedbus():
+			logger.error("ERROR >>> Problem with inverter " + str(btaddr))
+			sys.exit(1)
 
-	# Get the initial values for the battery used by setup_vedbus
-	helper3 = DbusHelper(outbackInverterObject, 'vebus', 3)
+	if helper3:
+		# Get the initial values for the battery used by setup_vedbus
+		helper3 = DbusHelper(outbackInverterObject, 'vebus', 3)
 
-	if not helper3.setup_vedbus():
-		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
-		sys.exit(1)
+		if not helper3.setup_vedbus():
+			logger.error("ERROR >>> Problem with inverter " + str(btaddr))
+			sys.exit(1)
 
 	# Poll the battery at INTERVAL and run the main loop
 	gobject.timeout_add(outbackInverterObject.poll_interval, lambda: poll_inverter(mainloop))
