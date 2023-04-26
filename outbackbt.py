@@ -71,7 +71,7 @@ class OutbackBt(Inverter):
         Inverter.__init__(self, 0, 0, address)
 
         self.type = ""
-        self.debug = True
+        self.debug = False
 
         # Bluepy stuff
         self.bt = Peripheral()
