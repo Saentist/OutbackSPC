@@ -38,6 +38,7 @@ class Inverter(ABC):
         self.a03unknown7 = None
         self.a03batteryvoltage = None
         self.a03chargecurrent = None
+        self.a03outputcurrent = None
         # A11
         self.a11unknown0 = None
         self.a11unknown1 = None

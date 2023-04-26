@@ -120,6 +120,7 @@ class OutbackBt(Inverter):
         self.a03unknown7 = a03Bytes[7]
         self.a03batteryvoltage = a03Bytes[8] * 0.01
         self.a03chargecurrent = a03Bytes[9]
+        self.a03outputcurrent = self.a03outputapppower / self.a03outputvoltage
 
         # AUSGABE
         if self.debug:

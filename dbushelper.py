@@ -129,9 +129,14 @@ class DbusHelper:
             self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
             # print('vebus 2')
 
-        if self.devType == 'pvinverter':
+        if self.devType == 'inverter':
             # print('grid 1')
-            self._dbusService["/Ac/L1/Power"] = round(self.inverter.a03outputapppower - 30, 2)
+            self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
+            self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
+            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
+            self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03outputvoltage, 2)
+            self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03outputcurrent - 30, 2)
+            self._dbusService["/Yield/Power"] = round(1234, 2)
             # print('grid 2')
 
 
