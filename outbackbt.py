@@ -134,6 +134,7 @@ class OutbackBt(Inverter):
             print('unknown7 => ' + str(self.a03unknown7))
             print('batteryvoltage => ' + str(self.a03batteryvoltage))
             print('chargecurrent => ' + str(self.a03chargecurrent))
+            print('outputcurrent => ' + str(self.a03outputcurrent))
 
         # A11 Bereich
         # print('A11')
