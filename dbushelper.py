@@ -64,30 +64,49 @@ class DbusHelper:
 
         if self.devType == 'solarcharger':
             self.inverter.type = ''
+            self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
+            self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v), )
+            self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+            self._dbusService.add_path("/Pv/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
+            self._dbusService.add_path("/Pv/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
+
         elif self.devType == 'inverter':
             self.inverter.type = 'Inverter'
+            self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
+            self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v), )
+            self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+            self._dbusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
+            self._dbusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
+            self._dbusService.add_path("/Yield/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+
+        elif self.devType == 'vebus':
+            self.inverter.type = 'vebus'
+            self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+            self._dbusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
+            self._dbusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
+            self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
+            self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v), )
+            self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+
+            self._dbusService.add_path("/Ac/ActiveIn/ActiveInput", None, writeable=True, )
+            self._dbusService.add_path("/Mode", None, writeable=True, )
+            self._dbusService.add_path("/State", None, writeable=True, )
+            self._dbusService.add_path("/Soc", None, writeable=True, )
+            self._dbusService.add_path("/Ac/ActiveIn/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+            self._dbusService.add_path("/Ac/ActiveIn/L2/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+            self._dbusService.add_path("/Ac/ActiveIn/L3/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+
         else:
             self.inverter.type = 'Unknown'
 
+        # muss am schluss stehen da der inverter.type gesetzt sein muss
         self._dbusService.add_path("/CustomName", "Outback " + self.inverter.type + "", writeable=True)
 
-        # Create System items
-        self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
-        self._dbusService.add_path("/Hub/ChargeVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
-        self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v), )
-        self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+        # ungenutzte Parameter
 
-        self._dbusService.add_path("/Pv/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
-        self._dbusService.add_path("/Load/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
-        self._dbusService.add_path("/Pv/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
-        self._dbusService.add_path("/Ac/L1/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
-
-        # INVERTER
-        self._dbusService.add_path("/Yield/Power", None, writeable=True,gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
-        self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
-        self._dbusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
-        self._dbusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
-
+        # self._dbusService.add_path("/Hub/ChargeVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
+        # self._dbusService.add_path("/Load/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
+        # self._dbusService.add_path("/Ac/L1/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
 
         return True
 
@@ -121,18 +140,29 @@ class DbusHelper:
         if self.devType == 'solarcharger':
             # Update SOC, DC and System items
             # print('solarcharger 1')
-            #self._dbusService["/Hub/ChargeVoltage"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
             self._dbusService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
-            # self._dbusService["/Load/I"] = round(1234, 2)
             # print('solarcharger 2')
 
         if self.devType == 'vebus':
             # print('vebus 1')
             self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
+            self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03outputvoltage, 2)
+            self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03outputcurrent, 2)
+            self._dbusService['/Ac/ActiveIn/ActiveInput'] = ""
+            self._dbusService['/Ac/ActiveIn/L1/P'] = ""
+            self._dbusService['/Ac/ActiveIn/L2/P'] = ""
+            self._dbusService['/Ac/ActiveIn/L3/P'] = ""
+            self._dbusService['/Mode'] = ""
+            self._dbusService['/State'] = ""
+            self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
+            self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
+            self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
+            self._dbusService['/Soc'] = ""
+
             # print('vebus 2')
 
         if self.devType == 'inverter':
