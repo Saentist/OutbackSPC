@@ -76,12 +76,18 @@ class DbusHelper:
         self._dbusService.add_path("/Hub/ChargeVoltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
         self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v), )
         self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
-        self._dbusService.add_path("/Yield/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+
         self._dbusService.add_path("/Pv/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
         self._dbusService.add_path("/Load/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
         self._dbusService.add_path("/Pv/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
-        self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
         self._dbusService.add_path("/Ac/L1/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+
+        # INVERTER
+        self._dbusService.add_path("/Yield/Power", None, writeable=True,gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+        self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+        self._dbusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
+        self._dbusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
+
 
         return True
 
