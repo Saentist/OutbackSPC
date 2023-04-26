@@ -141,8 +141,8 @@ class DbusHelper:
             self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
             self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03outputvoltage, 2)
-            self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03outputcurrent - 30, 2)
-            self._dbusService["/Yield/Power"] = round(1234, 2)
+            self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03outputcurrent, 2)
+            # self._dbusService["/Yield/Power"] = round(1234, 2) # ist die summe die von der PV Anlage kommt errechnet sich automatisch
             # print('grid 2')
 
 
