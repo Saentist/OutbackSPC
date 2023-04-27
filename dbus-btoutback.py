@@ -24,9 +24,9 @@ from outbackbt import OutbackBt
 logger.info("Starting dbus-btoutback")
 
 def main():
-	helper1 = False
-	helper2 = False
-	helper3 = True
+	helper1 = True
+	helper2 = True
+	helper3 = False
 
 	def poll_inverter(loop):
 		# Run in separate thread. Pass in the mainloop so the thread can kill us if there is an exception.
