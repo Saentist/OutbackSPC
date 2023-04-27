@@ -24,9 +24,9 @@ from outbackbt import OutbackBt
 logger.info("Starting dbus-btoutback")
 
 def main():
-	helper1 = True
-	helper2 = True
-	helper3 = False
+	helper1 = False
+	helper2 = False
+	helper3 = True
 
 	def poll_inverter(loop):
 		# Run in separate thread. Pass in the mainloop so the thread can kill us if there is an exception.
@@ -94,7 +94,7 @@ def main():
 
 	if helper3:
 		# Get the initial values for the battery used by setup_vedbus
-		helper3 = DbusHelper(outbackInverterObject, 'vebus', 3)
+		helper3 = DbusHelper(outbackInverterObject, 'multi', 3)
 
 		if not helper3.setup_vedbus():
 			logger.error("ERROR >>> Problem with inverter " + str(btaddr))

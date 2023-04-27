@@ -42,6 +42,13 @@ class DbusHelper:
         self._dbusService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
 
     def setup_vedbus(self):
+        # formating
+        _kwh = lambda p, v: (str(v) + 'KWh')    # lambda p, v: "{:0.1f}A".format(v)
+        _a = lambda p, v: (str(v) + 'A')        # lambda p, v: "{:2.3f}A".format(v)
+        _w = lambda p, v: (str(v) + 'W')        # lambda p, v: "{:0.0f}W".format(v)
+        _v = lambda p, v: (str(v) + 'V')        # lambda p, v: "{:2.2f}V".format(v)
+        _h = lambda p, v: (str(v) + 'Hz')        # lambda p, v: "{:2.2f}V".format(v)
+
         # Set up dbus service and device instance
         # and notify of all the attributes we intend to update
         # This is only called once when a battery is initiated
@@ -64,37 +71,39 @@ class DbusHelper:
 
         if self.devType == 'solarcharger':
             self.inverter.type = ''
-            self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
-            self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v), )
-            self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
-            self._dbusService.add_path("/Pv/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
-            self._dbusService.add_path("/Pv/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
+            self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=_v, )
+            self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
+            self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Pv/I", None, writeable=True, gettextcallback=_a, )
+            self._dbusService.add_path("/Pv/V", None, writeable=True, gettextcallback=_v, )
 
         elif self.devType == 'inverter':
             self.inverter.type = 'Inverter'
-            self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
-            self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v), )
-            self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
-            self._dbusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
-            self._dbusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
-            self._dbusService.add_path("/Yield/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+            self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=_v, )
+            self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
+            self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=_v, )
+            self._dbusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=_a, )
+            self._dbusService.add_path("/Yield/Power", None, writeable=True, gettextcallback=_w, )
 
-        elif self.devType == 'vebus':
-            self.inverter.type = 'vebus'
-            self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
-            self._dbusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
-            self._dbusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}A".format(v), )
-            self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=lambda p, v: "{:2.2f}V".format(v), )
-            self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=lambda p, v: "{:2.3f}A".format(v), )
-            self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
-
-            self._dbusService.add_path("/Ac/ActiveIn/ActiveInput", None, writeable=True, )
-            self._dbusService.add_path("/Mode", None, writeable=True, )
-            self._dbusService.add_path("/State", None, writeable=True, )
-            self._dbusService.add_path("/Soc", None, writeable=True, )
-            self._dbusService.add_path("/Ac/ActiveIn/L1/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
-            self._dbusService.add_path("/Ac/ActiveIn/L2/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
-            self._dbusService.add_path("/Ac/ActiveIn/L3/P", None, writeable=True, gettextcallback=lambda p, v: "{:0.0f}W".format(v), )
+        elif self.devType == 'multi':
+            self.inverter.type = 'multi'
+            self._dbusService("/Ac/In/1/L1/V", None, writeable=True, gettextcallback=_v, )
+            self._dbusService("/Ac/In/1/L1/F", None, writeable=True, gettextcallback=_h, )
+            self._dbusService("/Ac/Out/1/L1/P", None, writeable=True, gettextcallback=_w, )
+            self._dbusService("/Ac/Out/1/L1/V", None, writeable=True, gettextcallback=_v, )
+            self._dbusService("/Ac/Out/1/L1/I", None, writeable=True, gettextcallback=_a, )
+            self._dbusService("/Ac/Out/1/L1/F", None, writeable=True, gettextcallback=_h, )
+            self._dbusService('/Pv/0/V', None, writeable=True, gettextcallback=_v, )
+            self._dbusService('/Pv/0/P', None, writeable=True, gettextcallback=_w, )
+            self._dbusService('/MppOperationMode', 2)
+            self._dbusService("/Ac/ActiveIn/ActiveInput", 1)
+            self._dbusService("/Ac/NumberOfPhases", 1)
+            self._dbusService("/Ac/NumberOfAcInputs", 1)
+            self._dbusService("/Ac/In/1/Type", 2)
+            self._dbusService('/NrOfTrackers', 1)
+            self._dbusService('/Mode', 3)
+            self._dbusService('/State', 252)
 
         else:
             self.inverter.type = 'Unknown'
@@ -147,23 +156,56 @@ class DbusHelper:
             self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
             # print('solarcharger 2')
 
-        if self.devType == 'vebus':
-            # print('vebus 1')
-            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
-            self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03outputvoltage, 2)
-            self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03outputcurrent, 2)
-            self._dbusService['/Ac/ActiveIn/ActiveInput'] = ""
-            self._dbusService['/Ac/ActiveIn/L1/P'] = round(1234, 2)
-            self._dbusService['/Ac/ActiveIn/L2/P'] = round(1234, 2)
-            self._dbusService['/Ac/ActiveIn/L3/P'] = round(1234, 2)
-            self._dbusService['/Mode'] = 1
-            self._dbusService['/State'] = 1
-            self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
-            self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
-            self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
-            self._dbusService['/Soc'] = 100
+        if self.devType == 'multi':
+            # AC Input measurements:
+            # self._dbusService["/Ac/In/1/L1/P"] = ""                                               # <- Real power of AC IN1 on L1
+            # self._dbusService["/Ac/In/1/L1/I"] = ""                                               # <- Current of AC IN1 on L1
+            self._dbusService["/Ac/In/1/L1/V"] = round(self.inverter.a03acvoltage, 2)               # <- Voltage of AC IN1 on L1
+            self._dbusService["/Ac/In/1/L1/F"] = round(self.inverter.a03acfrequency, 2)             # <- Frequency of AC IN1 on L1
 
-            # print('vebus 2')
+            # AC Input settings:
+            # self._dbusService["/Ac/In/1/Type"] = 2                                                  # <- AC IN1 type: 0 (Not used), 1 (Grid), 2(Generator), 3(Shore)
+
+            # AC Output measurements:
+            self._dbusService["/Ac/Out/1/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)    # <- Frequency of AC OUT1 on L1
+            self._dbusService["/Ac/Out/1/L1/V"] = round(self.inverter.a03outputvoltage, 2)          # <- Voltage of AC OUT1 on L1
+            self._dbusService["/Ac/Out/1/L1/I"] = round(self.inverter.a03outputcurrent, 2)          # <- Current of AC OUT1 on L1
+            self._dbusService["/Ac/Out/1/L1/F"] = round(self.inverter.a03outputfrequency, 2)        # <- Real power of AC OUT1 on L1
+
+            # self._dbusService["/Ac/ActiveIn/ActiveInput"] = 1                                       # <- Active input: 0 = ACin-1, 1 = ACin-2,
+            # self._dbusService["/Ac/NumberOfPhases"] = 1
+            # self._dbusService["/Ac/NumberOfAcInputs"] = 1
+
+            # For all alarms: 0 = OK; 1 = Warning; 2 = Alarm
+            # Generic alarms:
+            # self._dbusService["/Alarms/LowSoc"] = 0                                               # <- Low state of charge
+            # self._dbusService["/Alarms/LowVoltage"] = 0                                           # <- Low battery voltage
+            # self._dbusService["/Alarms/HighVoltage "] = 0                                         # <- High battery voltage
+            # self._dbusService["/Alarms/LowVoltageAcOut"] = 0                                      # <- Low AC Out voltage
+            # self._dbusService["/Alarms/HighVoltageAcOut"] = 0                                     # <- High AC Out voltage
+            # self._dbusService["/Alarms/HighTemperature"] = 0                                      # <- High device temperature
+            # self._dbusService["/Alarms/Overload"] = 0                                             # <- Inverter overload
+            # self._dbusService["/Alarms/Ripple"] = 0                                               # <- High DC ripple
+
+            # Battery Values
+            # self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)        # <- Battery Voltage
+            # self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)        # <- Battery current in Ampere, positive when charging
+            # self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)            # <- Battery Power
+            # self._dbusService["/Dc/0/Temperature "] = round(self.inverter.a11pvInputPower, 2)     # <- Battery temperature in degrees Celsius
+
+            # Additional Data
+            # self._dbusService['/Mode'] = 3                                                          # <- Position of the switch. 1=Charger Only;2=Inverter Only;3=On;4=Off
+            # self._dbusService['/State'] = 252                                                       # <- Charger state 0=Off 2=Fault 3=Bulk 4=Absorption 5=Float 6=Storage 7=Equalize 8=Passthrough 9=Inverting 245=Wake-up 25-=Blocked 252=External control
+            # self._dbusService['/Soc'] = 100                                                       # <- State of charge of internal battery monitor
+
+            # PV tracker information:
+            # self._dbusService['/NrOfTrackers'] = 1                                                  # <- number of trackers
+            self._dbusService['/Pv/0/V'] = round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
+            self._dbusService['/Pv/0/P'] = round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
+            # self._dbusService['/Yield/Power'] = 1                                                 # <- PV array power (Watts)
+            # self._dbusService['/Yield/User'] = 1                                                  # <- Total kWh produced (user resettable)
+            # self._dbusService['/Yield/System'] = 1                                                # <- Total kWh produced (not resettable)
+            # self._dbusService['/MppOperationMode'] = 2                                              # <- 0 = Off 1 = Voltage or Current limited 2 = MPPT Tracker active
 
         if self.devType == 'inverter':
             # print('grid 1')
