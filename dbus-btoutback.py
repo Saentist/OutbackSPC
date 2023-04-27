@@ -25,7 +25,7 @@ logger.info("Starting dbus-btoutback")
 
 def main():
 	helper1 = True
-	helper2 = False
+	helper2 = True
 	helper3 = False
 
 	def poll_inverter(loop):
