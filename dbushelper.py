@@ -88,22 +88,22 @@ class DbusHelper:
 
         elif self.devType == 'multi':
             self.inverter.type = 'multi'
-            self._dbusService("/Ac/In/1/L1/V", None, writeable=True, gettextcallback=_v, )
-            self._dbusService("/Ac/In/1/L1/F", None, writeable=True, gettextcallback=_h, )
-            self._dbusService("/Ac/Out/1/L1/P", None, writeable=True, gettextcallback=_w, )
-            self._dbusService("/Ac/Out/1/L1/V", None, writeable=True, gettextcallback=_v, )
-            self._dbusService("/Ac/Out/1/L1/I", None, writeable=True, gettextcallback=_a, )
-            self._dbusService("/Ac/Out/1/L1/F", None, writeable=True, gettextcallback=_h, )
-            self._dbusService('/Pv/0/V', None, writeable=True, gettextcallback=_v, )
-            self._dbusService('/Pv/0/P', None, writeable=True, gettextcallback=_w, )
-            self._dbusService('/MppOperationMode', 2)
-            self._dbusService("/Ac/ActiveIn/ActiveInput", 1)
-            self._dbusService("/Ac/NumberOfPhases", 1)
-            self._dbusService("/Ac/NumberOfAcInputs", 1)
-            self._dbusService("/Ac/In/1/Type", 2)
-            self._dbusService('/NrOfTrackers', 1)
-            self._dbusService('/Mode', 3)
-            self._dbusService('/State', 252)
+            self._dbusService.add_path("/Ac/In/1/L1/V", None, writeable=True, gettextcallback=_v, )
+            self._dbusService.add_path("/Ac/In/1/L1/F", None, writeable=True, gettextcallback=_h, )
+            self._dbusService.add_path("/Ac/Out/1/L1/P", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Ac/Out/1/L1/V", None, writeable=True, gettextcallback=_v, )
+            self._dbusService.add_path("/Ac/Out/1/L1/I", None, writeable=True, gettextcallback=_a, )
+            self._dbusService.add_path("/Ac/Out/1/L1/F", None, writeable=True, gettextcallback=_h, )
+            self._dbusService.add_path('/Pv/0/V', None, writeable=True, gettextcallback=_v, )
+            self._dbusService.add_path('/Pv/0/P', None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path('/MppOperationMode', 2)
+            self._dbusService.add_path("/Ac/ActiveIn/ActiveInput", 1)
+            self._dbusService.add_path("/Ac/NumberOfPhases", 1)
+            self._dbusService.add_path("/Ac/NumberOfAcInputs", 1)
+            self._dbusService.add_path("/Ac/In/1/Type", 2)
+            self._dbusService.add_path('/NrOfTrackers', 1)
+            self._dbusService.add_path('/Mode', 3)
+            self._dbusService.add_path('/State', 252)
 
         else:
             self.inverter.type = 'Unknown'
