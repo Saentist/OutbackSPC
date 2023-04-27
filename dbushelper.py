@@ -158,8 +158,8 @@ class DbusHelper:
 
         if self.devType == 'multi':
             # AC Input measurements:
-            # self._dbusService["/Ac/In/1/L1/P"] = ""                                               # <- Real power of AC IN1 on L1
-            # self._dbusService["/Ac/In/1/L1/I"] = ""                                               # <- Current of AC IN1 on L1
+            self._dbusService["/Ac/In/1/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)                                               # <- Real power of AC IN1 on L1
+            self._dbusService["/Ac/In/1/L1/I"] = round(self.inverter.a03outputcurrent, 2)                                                # <- Current of AC IN1 on L1
             self._dbusService["/Ac/In/1/L1/V"] = round(self.inverter.a03acvoltage, 2)               # <- Voltage of AC IN1 on L1
             self._dbusService["/Ac/In/1/L1/F"] = round(self.inverter.a03acfrequency, 2)             # <- Frequency of AC IN1 on L1
 
