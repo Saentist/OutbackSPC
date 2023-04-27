@@ -91,7 +91,7 @@ class DbusHelper:
             self._dbusService("/Ac/In/1/L1/V", None, writeable=True, gettextcallback=_v, )
             self._dbusService("/Ac/In/1/L1/F", None, writeable=True, gettextcallback=_h, )
             self._dbusService("/Ac/Out/1/L1/P", None, writeable=True, gettextcallback=_w, )
-            self._dbusService("/Ac/Out/1/L1/V", None, writeable=True, gettextcallback=_v, )
+            # self._dbusService("/Ac/Out/1/L1/V", None, writeable=True, gettextcallback=_v, )
             self._dbusService("/Ac/Out/1/L1/I", None, writeable=True, gettextcallback=_a, )
             self._dbusService("/Ac/Out/1/L1/F", None, writeable=True, gettextcallback=_h, )
             self._dbusService('/Pv/0/V', None, writeable=True, gettextcallback=_v, )
