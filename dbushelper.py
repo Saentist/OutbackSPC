@@ -105,7 +105,7 @@ class DbusHelper:
             self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=_v, )
             self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
             self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=_w, )
-            self._dbusService.add_path('/MppOperationMode', 2)
+            self._dbusService.add_path('/MppOperationMode', 1)
             self._dbusService.add_path("/Ac/ActiveIn/ActiveInput", 0)
             self._dbusService.add_path("/Ac/NumberOfPhases", 1)
             self._dbusService.add_path("/Ac/NumberOfAcInputs", 1)
