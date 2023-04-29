@@ -165,7 +165,7 @@ class DbusHelper:
             self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
             # print('solarcharger 2')
 
-        if self.devType == 'multi':
+        if self.devType == 'vebus':
             # AC Input measurements:
             # self._dbusService["/Ac/In/1/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)                                               # <- Real power of AC IN1 on L1
             # self._dbusService["/Ac/In/1/L1/I"] = round(self.inverter.a03outputcurrent, 2)                                                # <- Current of AC IN1 on L1
