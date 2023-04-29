@@ -79,6 +79,8 @@ class DbusHelper:
 
         elif self.devType == 'inverter':
             self.inverter.type = 'Inverter'
+            self._dbusService.add_path('/Mode', 2)
+            self._dbusService.add_path('/State', 9)
             self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=_v, )
             self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
             self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=_w, )
@@ -88,12 +90,13 @@ class DbusHelper:
 
         elif self.devType == 'multi':
             self.inverter.type = 'multi'
+            self._dbusService.add_path("/Yield/Power", None, writeable=True, gettextcallback=_w, )
             self._dbusService.add_path("/Ac/In/1/L1/V", None, writeable=True, gettextcallback=_v, )
             self._dbusService.add_path("/Ac/In/1/L1/F", None, writeable=True, gettextcallback=_h, )
-            self._dbusService.add_path("/Ac/Out/1/L1/P", None, writeable=True, gettextcallback=_w, )
-            self._dbusService.add_path("/Ac/Out/1/L1/V", None, writeable=True, gettextcallback=_v, )
-            self._dbusService.add_path("/Ac/Out/1/L1/I", None, writeable=True, gettextcallback=_a, )
-            self._dbusService.add_path("/Ac/Out/1/L1/F", None, writeable=True, gettextcallback=_h, )
+            self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=_v, )
+            self._dbusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=_a, )
+            self._dbusService.add_path("/Ac/Out/L1/F", None, writeable=True, gettextcallback=_h, )
             self._dbusService.add_path('/Pv/0/V', None, writeable=True, gettextcallback=_v, )
             self._dbusService.add_path('/Pv/0/P', None, writeable=True, gettextcallback=_w, )
             self._dbusService.add_path('/MppOperationMode', 2)
@@ -101,7 +104,7 @@ class DbusHelper:
             self._dbusService.add_path("/Ac/NumberOfPhases", 1)
             self._dbusService.add_path("/Ac/NumberOfAcInputs", 1)
             self._dbusService.add_path("/Ac/In/1/Type", 2)
-            self._dbusService.add_path('/NrOfTrackers', 1)
+            # self._dbusService.add_path('/NrOfTrackers', 1)
             self._dbusService.add_path('/Mode', 3)
             self._dbusService.add_path('/State', 252)
 
@@ -167,10 +170,10 @@ class DbusHelper:
             # self._dbusService["/Ac/In/1/Type"] = 2                                                  # <- AC IN1 type: 0 (Not used), 1 (Grid), 2(Generator), 3(Shore)
 
             # AC Output measurements:
-            self._dbusService["/Ac/Out/1/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)    # <- Frequency of AC OUT1 on L1
-            self._dbusService["/Ac/Out/1/L1/V"] = round(self.inverter.a03outputvoltage, 2)          # <- Voltage of AC OUT1 on L1
-            self._dbusService["/Ac/Out/1/L1/I"] = round(self.inverter.a03outputcurrent, 2)          # <- Current of AC OUT1 on L1
-            self._dbusService["/Ac/Out/1/L1/F"] = round(self.inverter.a03outputfrequency, 2)        # <- Real power of AC OUT1 on L1
+            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)    # <- Frequency of AC OUT1 on L1
+            self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03outputvoltage, 2)          # <- Voltage of AC OUT1 on L1
+            self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03outputcurrent, 2)          # <- Current of AC OUT1 on L1
+            self._dbusService["/Ac/Out/L1/F"] = round(self.inverter.a03outputfrequency, 2)        # <- Real power of AC OUT1 on L1
 
             # self._dbusService["/Ac/ActiveIn/ActiveInput"] = 1                                       # <- Active input: 0 = ACin-1, 1 = ACin-2,
             # self._dbusService["/Ac/NumberOfPhases"] = 1
