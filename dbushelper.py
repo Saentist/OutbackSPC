@@ -176,7 +176,8 @@ class DbusHelper:
             # self._dbusService["/Ac/In/1/Type"] = 2                                                  # <- AC IN1 type: 0 (Not used), 1 (Grid), 2(Generator), 3(Shore)
 
             # AC Output measurements:
-            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)    # <- Frequency of AC OUT1 on L1
+            # self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)    # <- Frequency of AC OUT1 on L1
+            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower, 2)    # <- Frequency of AC OUT1 on L1
             self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03outputvoltage, 2)          # <- Voltage of AC OUT1 on L1
             self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03outputcurrent, 2)          # <- Current of AC OUT1 on L1
             self._dbusService["/Ac/Out/L1/F"] = round(self.inverter.a03outputfrequency, 2)        # <- Real power of AC OUT1 on L1
