@@ -112,7 +112,7 @@ class DbusHelper:
             self._dbusService.add_path("/Ac/In/1/Type", 2)
             self._dbusService.add_path('/NrOfTrackers', 1)
             self._dbusService.add_path('/Mode', 3)
-            self._dbusService.add_path('/State', 252)
+            self._dbusService.add_path('/State', 9)
 
         else:
             self.inverter.type = 'Unknown'
@@ -214,7 +214,7 @@ class DbusHelper:
             self._dbusService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2)                                                # <- PV array power (Watts)
             # self._dbusService['/Yield/User'] = 1                                                  # <- Total kWh produced (user resettable)
             # self._dbusService['/Yield/System'] = 1                                                # <- Total kWh produced (not resettable)
-            self._dbusService['/MppOperationMode'] = 1                                              # <- 0 = Off 1 = Voltage or Current limited 2 = MPPT Tracker active
+            # self._dbusService['/MppOperationMode'] = 1                                              # <- 0 = Off 1 = Voltage or Current limited 2 = MPPT Tracker active
 
         if self.devType == 'inverter':
             # print('grid 1')
