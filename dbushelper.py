@@ -109,9 +109,8 @@ class DbusHelper:
             self._dbusService.add_path("/Ac/ActiveIn/ActiveInput", 0)
             self._dbusService.add_path("/Ac/NumberOfPhases", 1)
             self._dbusService.add_path("/Ac/NumberOfAcInputs", 1)
-            self._dbusService.add_path("/Ac/NumberOfAcInputs", 1)
-            self._dbusService.add_path("/NrOfTrackers", 1)
-            # self._dbusService.add_path('/NrOfTrackers', 1)
+            self._dbusService.add_path("/Ac/In/1/Type", 2)
+            self._dbusService.add_path('/NrOfTrackers', 1)
             self._dbusService.add_path('/Mode', 3)
             self._dbusService.add_path('/State', 252)
 
