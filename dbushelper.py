@@ -91,6 +91,8 @@ class DbusHelper:
         elif self.devType == 'multi':
             self.inverter.type = 'multi'
             self._dbusService.add_path("/Yield/Power", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Ac/In/1/L1/P", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Ac/In/1/L1/I", None, writeable=True, gettextcallback=_a, )
             self._dbusService.add_path("/Ac/In/1/L1/V", None, writeable=True, gettextcallback=_v, )
             self._dbusService.add_path("/Ac/In/1/L1/F", None, writeable=True, gettextcallback=_h, )
             self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=_w, )
