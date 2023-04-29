@@ -197,9 +197,9 @@ class DbusHelper:
             # self._dbusService["/Alarms/Ripple"] = 0                                               # <- High DC ripple
 
             # Battery Values
-            self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)        # <- Battery Voltage
-            self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)        # <- Battery current in Ampere, positive when charging
-            self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)            # <- Battery Power
+            self._dbusService["/Dc/0/Voltage"] = 1  # round(self.inverter.a11pvInputVoltage, 2)        # <- Battery Voltage
+            self._dbusService["/Dc/0/Current"] = 2  # round(self.inverter.a11pvInputCurrent, 2)        # <- Battery current in Ampere, positive when charging
+            self._dbusService["/Dc/0/Power"] = 2 #  round(self.inverter.a11pvInputPower, 2)            # <- Battery Power
             # self._dbusService["/Dc/0/Temperature "] = round(self.inverter.a11pvInputPower, 2)     # <- Battery temperature in degrees Celsius
 
             # Additional Data
@@ -212,7 +212,7 @@ class DbusHelper:
             self._dbusService['/Pv/I'] = 1  # round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
             self._dbusService['/Pv/V'] = 10  # round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
             self._dbusService['/Pv/P'] = 10  # round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
-            self._dbusService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2)                                                # <- PV array power (Watts)
+            self._dbusService['/Yield/Power'] = 20  # round(self.inverter.a11pvInputPower, 2)                                                # <- PV array power (Watts)
             # self._dbusService['/Yield/User'] = 1                                                  # <- Total kWh produced (user resettable)
             # self._dbusService['/Yield/System'] = 1                                                # <- Total kWh produced (not resettable)
             # self._dbusService['/MppOperationMode'] = 1                                              # <- 0 = Off 1 = Voltage or Current limited 2 = MPPT Tracker active
