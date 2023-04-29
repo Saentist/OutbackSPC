@@ -99,9 +99,9 @@ class DbusHelper:
             self._dbusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=_v, )
             self._dbusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=_a, )
             self._dbusService.add_path("/Ac/Out/L1/F", None, writeable=True, gettextcallback=_h, )
-            self._dbusService.add_path('/Pv/1/V', None, writeable=True, gettextcallback=_v, )
-            self._dbusService.add_path('/Pv/1/P', None, writeable=True, gettextcallback=_w, )
-            self._dbusService.add_path('/Pv/1/I', None, writeable=True, gettextcallback=_a, )
+            self._dbusService.add_path('/Pv/V', None, writeable=True, gettextcallback=_v, )
+            self._dbusService.add_path('/Pv/P', None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path('/Pv/I', None, writeable=True, gettextcallback=_a, )
             self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=_v, )
             self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
             self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=_w, )
@@ -209,8 +209,8 @@ class DbusHelper:
 
             # PV tracker information:
             # self._dbusService['/NrOfTrackers'] = 1                                                  # <- number of trackers
-            self._dbusService['/Pv/1/V'] = round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
-            self._dbusService['/Pv/1/P'] = 10 # round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
+            self._dbusService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
+            self._dbusService['/Pv/P'] = 10 # round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
             self._dbusService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2)                                                # <- PV array power (Watts)
             # self._dbusService['/Yield/User'] = 1                                                  # <- Total kWh produced (user resettable)
             # self._dbusService['/Yield/System'] = 1                                                # <- Total kWh produced (not resettable)
