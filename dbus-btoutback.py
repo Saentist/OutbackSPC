@@ -24,10 +24,10 @@ from outbackbt import OutbackBt
 logger.info("Starting dbus-btoutback")
 
 def main():
-	useInverterDevice = False
+	useInverterDevice = True
 	useSolarchargerDevice = True
 	useVebusDevice = True
-	useMultiDevice = True
+	useMultiDevice = False
 
 	def poll_inverter(loop):
 		# Run in separate thread. Pass in the mainloop so the thread can kill us if there is an exception.
