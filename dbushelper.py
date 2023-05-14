@@ -90,29 +90,54 @@ class DbusHelper:
 
         elif self.devType == 'vebus':
             self.inverter.type = 'vebus'
-            self._dbusService.add_path("/Yield/Power", None, writeable=True, gettextcallback=_w, )
-            self._dbusService.add_path("/Ac/In/1/L1/P", None, writeable=True, gettextcallback=_w, )
-            self._dbusService.add_path("/Ac/In/1/L1/I", None, writeable=True, gettextcallback=_a, )
-            self._dbusService.add_path("/Ac/In/1/L1/V", None, writeable=True, gettextcallback=_v, )
-            self._dbusService.add_path("/Ac/In/1/L1/F", None, writeable=True, gettextcallback=_h, )
+            self._dbusService.add_path("/Ac/State/IgnoreAcIn1", 0)  # 0 = AcIn1 is not ignored; 1 = AcIn1 is being ignored (by assistant configuration).
+            self._dbusService.add_path("/Settings/SystemSetup/AcInput1", 2)  # 0 (Not used), 1 (Grid), 2(Generator), 3(Shore)
+            self._dbusService.add_path("/Ac/PowerMeasurementType", 2)  #  0 = Apparent power only -> under the /P paths, apparent power is published.
+                                                                       #  1 = Real power, but only measured by phase masters, and not synced in time. (And multiplied by number of units in parallel)
+                                                                       #  2 = Real power, from all devices, but at different points in time
+                                                                       #  3 = Real power, at the same time snapshotted, but only by the phase masters and then multiplied by number of units in parallel.
+                                                                       #  4 = Real power, from all devices and at snaphotted at the same moment.
+            self._dbusService.add_path("/Ac/ActiveIn/ActiveInput", 0)
+            self._dbusService.add_path("/Ac/In/1/CurrentLimit", 0)
+            self._dbusService.add_path("/Ac/In/1/CurrentLimitIsAdjustable", None, writeable=True, gettextcallback=_w, )  # <- 0 when inverting, 1 when connected to an AC in
+            self._dbusService.add_path("/Ac/ActiveIn/L1", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Ac/ActiveIn/P", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Ac/ActiveIn/L1/P", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Ac/ActiveIn/L1/I", None, writeable=True, gettextcallback=_a, )
+            self._dbusService.add_path("/Ac/ActiveIn/L1/V", None, writeable=True, gettextcallback=_v, )
+            self._dbusService.add_path("/Ac/ActiveIn/L1/F", None, writeable=True, gettextcallback=_h, )
             self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=_w, )
             self._dbusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=_v, )
             self._dbusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=_a, )
             self._dbusService.add_path("/Ac/Out/L1/F", None, writeable=True, gettextcallback=_h, )
-            self._dbusService.add_path('/Pv/V', None, writeable=True, gettextcallback=_v, )
-            self._dbusService.add_path('/Pv/P', None, writeable=True, gettextcallback=_w, )
-            self._dbusService.add_path('/Pv/I', None, writeable=True, gettextcallback=_a, )
-            self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=_v, )
-            self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
-            self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=_w, )
-            self._dbusService.add_path('/MppOperationMode', 1, writeable=True,)
-            self._dbusService.add_path("/Ac/ActiveIn/ActiveInput", 0)
-            self._dbusService.add_path("/Ac/NumberOfPhases", 1)
-            self._dbusService.add_path("/Ac/NumberOfAcInputs", 1)
-            self._dbusService.add_path("/Ac/In/1/Type", 2)
-            self._dbusService.add_path('/NrOfTrackers', 1)
-            self._dbusService.add_path('/Mode', 3, writeable=True,)
-            self._dbusService.add_path('/State', 9, writeable=True,)
+            self._dbusService.add_path('/Mode', 3, writeable=True,)  #  1=Charger Only;2=Inverter Only;3=On;4=Off
+            self._dbusService.add_path('//ModeIsAdjustable ', 3, writeable=True,)  #  0. Switch position cannot be controlled remotely (typically because a VE.Bus BMS is present).
+                                                                                   #  1. Switch position can be controlled remotely
+            self._dbusService.add_path('/State', 9, writeable=True, )       #  0=Off;1=Low Power Mode;2=Fault;3=Bulk;4=Absorption;5=Float;
+                                                                            #  6=Storage;7=Equalize;8=Passthru;9=Inverting;10=Power assist;
+                                                                            #  11=Power supply mode;252=External control
+            self._dbusService.add_path('/VebusChargeState', 9, writeable=True, )        # <- 1. Bulk
+                                                                                        #  2. Absorption
+                                                                                        #  3. Float
+                                                                                        #  4. Storage
+                                                                                        #  5. Repeat absorption
+                                                                                        #  6. Forced absorption
+                                                                                        #  7. Equalise
+                                                                                        #  8. Bulk stopped
+            self._dbusService.add_path('/VebusSetChargeState', 9, writeable=True, )     #  1. Force to Equalise. 1 hour 1, 2 or 4 V above absorption (12/24/48V). Charge current is limited to 1/4 of normal value. Will be followed by a normal 24-hour float state.
+                                                                                        #  2. Force to Absorption, for maximum absorption time. Will be followed by a normal 24-hour float state.
+                                                                                        #  3. Force to Float, for 24 hours. (from "Interfacing with VE.Bus products – MK2 Protocol" doc)
+
+            # LEDs: 0 = Off, 1 = On, 2 = Blinking, 3 = Blinking inverted
+            self._dbusService.add_path('/Leds/Mains', 1)
+            self._dbusService.add_path('/Leds/Bulk', 0)
+            self._dbusService.add_path('/Leds/Absorption', 0)
+            self._dbusService.add_path('/Leds/Float', 0)
+            self._dbusService.add_path('/Leds/Inverter', 0)
+            self._dbusService.add_path('/Leds/Overload', 0)
+            self._dbusService.add_path('/Leds/LowBattery', 0)
+            self._dbusService.add_path('/Leds/Temperature', 0)
+
 
         elif self.devType == 'multi':
             self.inverter.type = 'multi'
