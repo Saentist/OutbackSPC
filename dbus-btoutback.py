@@ -59,13 +59,12 @@ def main():
 
 		return True
 
-	def get_btaddr() -> str:
+	def get_btaddr() -> list:
 		# Get the bluetooth address we need to use from the argument
 		if len(sys.argv) > 1:
 			return sys.argv[1:]
 		else:
-			OUTBACK_ADDRESS = config["DEFAULT"]["OUTBACK_ADDRESS"]
-			return [OUTBACK_ADDRESS]
+			return [config["DEFAULT"]["OUTBACK_ADDRESS"]]
 
 	logger.info(
 		"dbus-btoutback v" + str(utils.DRIVER_VERSION) + utils.DRIVER_SUBVERSION
