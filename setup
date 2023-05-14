@@ -28,7 +28,7 @@ if [ "$scriptAction" == 'NONE' ] ; then
     echo "This package reads an via bluetooth form an Outback SPC and forwards it to the Victron Dbus"
 
     # install needed bluetooth packages
-    opkg update; opkg install python3-pip; opkg install packagegroup-core-buildessential; opkg install libglib-2.0-dev; pip3 install bluepy
+    #opkg update; opkg install python3-pip; opkg install packagegroup-core-buildessential; opkg install libglib-2.0-dev; pip3 install bluepy
 
     scriptAction='INSTALL'
 fi
