@@ -45,7 +45,7 @@ https://github.com/kwindrem/SetupHelper
 
 Use the following details:
 
-Package Name: `dbus_outbackspc`<br>
+Package Name: `OutbackSPC`<br>
 GitHub User: `DonDavici` <br>
 Github branch or tag: `main` <br>
 
