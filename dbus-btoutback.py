@@ -20,12 +20,10 @@ from utils import logger
 import utils
 from inverter import Inverter
 from outbackbt import OutbackBt
-import configparser
 
 logger.info("Starting dbus-btoutback")
 
 def main():
-	config = configparser.ConfigParser()
 	useInverterDevice = False
 	useSolarchargerDevice = False
 	useVebusDevice = False
@@ -64,7 +62,7 @@ def main():
 		if len(sys.argv) > 1:
 			return sys.argv[1:]
 		else:
-			return [config["DEFAULT"]["OUTBACK_ADDRESS"]]
+			return [utils.OUTBACK_ADDRESS]
 
 	logger.info(
 		"dbus-btoutback v" + str(utils.DRIVER_VERSION) + utils.DRIVER_SUBVERSION
