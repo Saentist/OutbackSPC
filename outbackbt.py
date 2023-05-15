@@ -106,7 +106,8 @@ class OutbackBt(Inverter):
     def read_gen_data(self):
         # print('=> read_gen_data')
         self.mutex.acquire()
-        if self.a03Data is None or self.a11Data is None or self.a29Data is None:
+        #if self.a03Data is None or self.a11Data is None or self.a29Data is None:
+        if self.a03Data is None or self.a11Data is None:
             self.mutex.release()
             return False
 
