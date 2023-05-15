@@ -219,9 +219,9 @@ class OutbackBt(Inverter):
         if charType == "a03":
             self.a03Data = data
         elif charType == "a11":
-            self.a29Data = data
-        elif charType == "a29":
             self.a11Data = data
+        elif charType == "a29":
+            self.a29Data = data
         else:
             print("no characteristic given")
         self.mutex.release()
