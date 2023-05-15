@@ -41,16 +41,18 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 outbackService1 = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
                 outbackCharacteristicA03 = outbackService1.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")[0]
                 data = outbackCharacteristicA03.read()
-                self.generalDataCallback(data, 1)
+                self.generalDataCallback(data, "a03")
 
                 outbackService2 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
                 outbackCharacteristicA11 = outbackService2.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
                 data = outbackCharacteristicA11.read()
-                self.generalDataCallback(data, 0)
+                self.generalDataCallback(data, "a11")
 
-                # dritte potentielle characteristikcs uuid
-                # 00002a29-0000-1000-8000-00805f9b34fb
-                # todo bei zeiten ausprobieren
+                outbackService3 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
+                outbackCharacteristicA29 = outbackService3.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
+                data = outbackCharacteristicA29.read()
+                self.generalDataCallback(data, "a29")
+
             except BTLEDisconnectError:
                 logger.info('Disconnected')
                 connected = False
@@ -79,8 +81,9 @@ class OutbackBt(Inverter):
         self.bt.setDelegate(self)
 
         self.mutex = Lock()
-        self.generalData1 = None
-        self.generalData2 = None
+        self.a03Data = None
+        self.a11Data = None
+        self.a29Data = None
 
         self.address = address
         self.port = "/bt" + address.replace(":", "")
@@ -103,12 +106,12 @@ class OutbackBt(Inverter):
     def read_gen_data(self):
         # print('=> read_gen_data')
         self.mutex.acquire()
-        if self.generalData1 is None or self.generalData2 is None:
+        if self.a03Data is None or self.a11Data is None or self.a29Data is None:
             self.mutex.release()
             return False
 
         # print('A03')
-        a03Bytes = self.getExtractData(self.generalData1)
+        a03Bytes = self.getExtractData(self.a03Data)
         # print(a03Bytes)
 
         self.a03acvoltage = a03Bytes[0]
@@ -125,21 +128,21 @@ class OutbackBt(Inverter):
 
         # AUSGABE
         if self.debug:
-            print('a03acvoltage => ' + str(self.a03acvoltage))
-            print('acfrequency => ' + str(self.a03acfrequency))
-            print('outputvoltage => ' + str(self.a03outputvoltage))
-            print('outputfrequency => ' + str(self.a03outputfrequency))
-            print('outputapppower => ' + str(self.a03outputapppower))
-            print('outputactpower => ' + str(self.a03outputactpower))
-            print('loadpercent => ' + str(self.a03loadpercent))
-            print('unknown7 => ' + str(self.a03unknown7))
-            print('batteryvoltage => ' + str(self.a03batteryvoltage))
-            print('chargecurrent => ' + str(self.a03chargecurrent))
-            print('outputcurrent => ' + str(self.a03outputcurrent))
+            print('a03 acvoltage => ' + str(self.a03acvoltage))
+            print('a03 acfrequency => ' + str(self.a03acfrequency))
+            print('a03 outputvoltage => ' + str(self.a03outputvoltage))
+            print('a03 outputfrequency => ' + str(self.a03outputfrequency))
+            print('a03 outputapppower => ' + str(self.a03outputapppower))
+            print('a03 outputactpower => ' + str(self.a03outputactpower))
+            print('a03 loadpercent => ' + str(self.a03loadpercent))
+            print('a03 unknown7 => ' + str(self.a03unknown7))
+            print('a03 batteryvoltage => ' + str(self.a03batteryvoltage))
+            print('a03 chargecurrent => ' + str(self.a03chargecurrent))
+            print('a03 outputcurrent => ' + str(self.a03outputcurrent))
 
         # A11 Bereich
         # print('A11')
-        a11Bytes = self.getExtractData(self.generalData2)
+        a11Bytes = self.getExtractData(self.a11Data)
         # print(a11Bytes)
 
         self.a11unknown0 = a11Bytes[0]  #
@@ -160,17 +163,46 @@ class OutbackBt(Inverter):
 
         if self.debug:
             # AUSGABE
-            print('unknown0 => ' + str(self.a11unknown0))
-            print('unknown1 => ' + str(self.a11unknown1))
-            print('unknown2 => ' + str(self.a11unknown2))
-            print('unknown3 => ' + str(self.a11unknown3))
-            print('unknown4 => ' + str(self.a11unknown4))
-            print('unknown5 => ' + str(self.a11unknown5))
-            print('pvInputPower => ' + str(self.a11pvInputPower))
-            print('pvInputVoltage => ' + str(self.a11pvInputVoltage))
-            print('pvInputCurrent => ' + str(self.a11pvInputCurrent))
-            print('unknown8 => ' + str(self.a11unknown8))
-            print('unknown9 => ' + str(self.a11unknown9))
+            print('a11 unknown0 => ' + str(self.a11unknown0))
+            print('a11 unknown1 => ' + str(self.a11unknown1))
+            print('a11 unknown2 => ' + str(self.a11unknown2))
+            print('a11 unknown3 => ' + str(self.a11unknown3))
+            print('a11 unknown4 => ' + str(self.a11unknown4))
+            print('a11 unknown5 => ' + str(self.a11unknown5))
+            print('a11 pvInputPower => ' + str(self.a11pvInputPower))
+            print('a11 pvInputVoltage => ' + str(self.a11pvInputVoltage))
+            print('a11 unknown8 => ' + str(self.a11unknown8))
+            print('a11 unknown9 => ' + str(self.a11unknown9))
+            print('a11 calculated pvInputCurrent => ' + str(self.a11pvInputCurrent))
+
+            # A29 Bereich
+            # print('A29')
+            a29Bytes = self.getExtractData(self.a29Data)
+            # print(a29Bytes)
+
+            self.a29unknown0 = a29Bytes[0]  #
+            self.a29unknown1 = a29Bytes[1]  #
+            self.a29unknown2 = a29Bytes[2]  #
+            self.a29unknown3 = a29Bytes[3]  #
+            self.a29unknown4 = a29Bytes[4]  #
+            self.a29unknown5 = a29Bytes[5]  #
+            self.a29unknown6 = a29Bytes[6]  #
+            self.a29unknown7 = a29Bytes[7]  #
+            self.a29unknown8 = a29Bytes[8]  #
+            self.a29unknown9 = a29Bytes[9]  #
+
+            if self.debug:
+                # AUSGABE
+                print('a29 unknown0 => ' + str(self.a29unknown0))
+                print('a29 unknown1 => ' + str(self.a29unknown1))
+                print('a29 unknown2 => ' + str(self.a29unknown2))
+                print('a29 unknown3 => ' + str(self.a29unknown3))
+                print('a29 unknown4 => ' + str(self.a29unknown4))
+                print('a29 unknown5 => ' + str(self.a29unknown5))
+                print('a29 unknown6 => ' + str(self.a29unknown6))
+                print('a29 unknown7 => ' + str(self.a29unknown7))
+                print('a29 unknown8 => ' + str(self.a29unknown8))
+                print('a29 unknown9 => ' + str(self.a29unknown9))
 
         self.mutex.release()
         return True
@@ -182,12 +214,16 @@ class OutbackBt(Inverter):
 
         return bytesData
 
-    def generalDataCB(self, data, index):
+    def generalDataCB(self, data, charType):
         self.mutex.acquire()
-        if index == 1:
-            self.generalData1 = data
+        if charType == "a03":
+            self.a03Data = data
+        elif charType == "a11":
+            self.a29Data = data
+        elif charType == "a29":
+            self.a11Data = data
         else:
-            self.generalData2 = data
+            print("no characteristic given")
         self.mutex.release()
 
     def byte2short(self, integers):

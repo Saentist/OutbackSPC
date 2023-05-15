@@ -51,6 +51,17 @@ class Inverter(ABC):
         self.a11pvInputCurrent = None
         self.a11unknown8 = None
         self.a11unknown9 = None
+        # A29
+        self.a29unknown0 = None
+        self.a29unknown1 = None
+        self.a29unknown2 = None
+        self.a29unknown3 = None
+        self.a29unknown4 = None
+        self.a29unknown5 = None
+        self.a29unknown6 = None
+        self.a29unknown7 = None
+        self.a29unknown8 = None
+        self.a29unknown9 = None
 
     @abstractmethod
     def test_connection(self) -> bool:
