@@ -48,10 +48,10 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 data = outbackCharacteristicA11.read()
                 self.generalDataCallback(data, "a11")
 
-                outbackService3 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
-                outbackCharacteristicA29 = outbackService3.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
-                data = outbackCharacteristicA29.read()
-                self.generalDataCallback(data, "a29")
+                #outbackService3 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
+                #outbackCharacteristicA29 = outbackService3.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
+                #data = outbackCharacteristicA29.read()
+                #self.generalDataCallback(data, "a29")
 
             except BTLEDisconnectError:
                 logger.info('Disconnected')
@@ -175,34 +175,34 @@ class OutbackBt(Inverter):
             print('a11 unknown9 => ' + str(self.a11unknown9))
             print('a11 calculated pvInputCurrent => ' + str(self.a11pvInputCurrent))
 
-            # A29 Bereich
-            # print('A29')
-            a29Bytes = self.getExtractData(self.a29Data)
-            # print(a29Bytes)
+        # A29 Bereich
+        # print('A29')
+        #a29Bytes = self.getExtractData(self.a29Data)
+        # print(a29Bytes)
 
-            self.a29unknown0 = a29Bytes[0]  #
-            self.a29unknown1 = a29Bytes[1]  #
-            self.a29unknown2 = a29Bytes[2]  #
-            self.a29unknown3 = a29Bytes[3]  #
-            self.a29unknown4 = a29Bytes[4]  #
-            self.a29unknown5 = a29Bytes[5]  #
-            self.a29unknown6 = a29Bytes[6]  #
-            self.a29unknown7 = a29Bytes[7]  #
-            self.a29unknown8 = a29Bytes[8]  #
-            self.a29unknown9 = a29Bytes[9]  #
+        # self.a29unknown0 = a29Bytes[0]  #
+        # self.a29unknown1 = a29Bytes[1]  #
+        # self.a29unknown2 = a29Bytes[2]  #
+        # self.a29unknown3 = a29Bytes[3]  #
+        # self.a29unknown4 = a29Bytes[4]  #
+        # self.a29unknown5 = a29Bytes[5]  #
+        # self.a29unknown6 = a29Bytes[6]  #
+        # self.a29unknown7 = a29Bytes[7]  #
+        # self.a29unknown8 = a29Bytes[8]  #
+        # self.a29unknown9 = a29Bytes[9]  #
 
-            if self.debug:
-                # AUSGABE
-                print('a29 unknown0 => ' + str(self.a29unknown0))
-                print('a29 unknown1 => ' + str(self.a29unknown1))
-                print('a29 unknown2 => ' + str(self.a29unknown2))
-                print('a29 unknown3 => ' + str(self.a29unknown3))
-                print('a29 unknown4 => ' + str(self.a29unknown4))
-                print('a29 unknown5 => ' + str(self.a29unknown5))
-                print('a29 unknown6 => ' + str(self.a29unknown6))
-                print('a29 unknown7 => ' + str(self.a29unknown7))
-                print('a29 unknown8 => ' + str(self.a29unknown8))
-                print('a29 unknown9 => ' + str(self.a29unknown9))
+        # if self.debug:
+        #     # AUSGABE
+        #     print('a29 unknown0 => ' + str(self.a29unknown0))
+        #     print('a29 unknown1 => ' + str(self.a29unknown1))
+        #     print('a29 unknown2 => ' + str(self.a29unknown2))
+        #     print('a29 unknown3 => ' + str(self.a29unknown3))
+        #     print('a29 unknown4 => ' + str(self.a29unknown4))
+        #     print('a29 unknown5 => ' + str(self.a29unknown5))
+        #     print('a29 unknown6 => ' + str(self.a29unknown6))
+        #     print('a29 unknown7 => ' + str(self.a29unknown7))
+        #     print('a29 unknown8 => ' + str(self.a29unknown8))
+        #     print('a29 unknown9 => ' + str(self.a29unknown9))
 
         self.mutex.release()
         return True
