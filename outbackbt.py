@@ -2,6 +2,7 @@ from bluepy.btle import Peripheral, DefaultDelegate, BTLEException, BTLEDisconne
 from threading import Thread, Lock
 from inverter import Inverter
 from utils import *
+import utils
 import time
 import binascii
 import struct
@@ -71,7 +72,7 @@ class OutbackBt(Inverter):
         Inverter.__init__(self, 0, 0, address)
 
         self.type = ""
-        self.debug = False
+        self.debug = utils.OUTBACK_ADDRESS
 
         # Bluepy stuff
         self.bt = Peripheral()
