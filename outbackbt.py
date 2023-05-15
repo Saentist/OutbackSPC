@@ -216,6 +216,7 @@ class OutbackBt(Inverter):
 
     def generalDataCB(self, data, charType):
         self.mutex.acquire()
+        print('setting data' + "" + charType)
         if charType == "a03":
             self.a03Data = data
         elif charType == "a11":
