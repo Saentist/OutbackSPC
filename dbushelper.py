@@ -187,6 +187,9 @@ class DbusHelper:
             if success:
                 self.error_count = 0
                 self.inverter.online = True
+
+                # publish all the data from the battery object to dbus
+                self.publish_dbus()
             else:
                 self.error_count += 1
                 # If the battery is offline for more than 10 polls (polled every second for most batteries)
@@ -195,9 +198,6 @@ class DbusHelper:
                 # Has it completely failed
                 if self.error_count >= 60:
                     loop.quit()
-
-            # publish all the data from the battery object to dbus
-            self.publish_dbus()
         except:
             traceback.print_exc()
             loop.quit()
