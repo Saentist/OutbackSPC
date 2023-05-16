@@ -170,6 +170,15 @@ class DbusHelper:
             self._dbusService.add_path('/State', 9, writeable=True,)
             self._dbusService.add_path('/UpdateIndex', 0, writeable=True, gettextcallback=_x,)
 
+            self._dbusService.add_path('/Leds/Mains', 1)
+            self._dbusService.add_path('/Leds/Bulk', 0)
+            self._dbusService.add_path('/Leds/Absorption', 0)
+            self._dbusService.add_path('/Leds/Float', 0)
+            self._dbusService.add_path('/Leds/Inverter', 0)
+            self._dbusService.add_path('/Leds/Overload', 0)
+            self._dbusService.add_path('/Leds/LowBattery', 0)
+            self._dbusService.add_path('/Leds/Temperature', 0)
+
         else:
             self.inverter.type = 'Unknown'
 
