@@ -114,7 +114,7 @@ class OutbackBt(Inverter):
         # print('A03')
         # // QPIGS
         a03Bytes = self.getExtractData(self.a03Data)
-        # print(a03Bytes)
+        print(a03Bytes)
 
         self.a03gridvoltage = a03Bytes[0]
         self.a03gridfrequency = a03Bytes[1]
