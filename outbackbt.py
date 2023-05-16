@@ -116,31 +116,33 @@ class OutbackBt(Inverter):
         a03Bytes = self.getExtractData(self.a03Data)
         print(a03Bytes)
 
-        self.a03gridvoltage = a03Bytes[0]
-        self.a03gridfrequency = a03Bytes[1]
-        self.a03outputvoltage = a03Bytes[2] * 0.1
-        self.a03outputfrequency = a03Bytes[3] * 0.1
-        self.a03outputapppower = a03Bytes[4]
-        self.a03outputactpower = a03Bytes[5]
-        self.a03loadpercent = a03Bytes[6]
-        self.a03unknown7 = a03Bytes[7]
-        self.a03batteryvoltage = a03Bytes[8] * 0.01
-        self.a03chargecurrent = a03Bytes[9]
-        self.a03outputcurrent = self.a03outputapppower / self.a03outputvoltage
+        self.a03gridVoltage = a03Bytes[0]
+        self.a03gridFrequency = a03Bytes[1]
+        self.a03acOutputVoltage = a03Bytes[2] * 0.1
+        self.a03acFrequency = a03Bytes[3] * 0.1
+        self.a03acApparentPower = a03Bytes[4]
+        self.a03acActivePower = a03Bytes[5]
+        self.a03loadPercent = a03Bytes[6]
+        self.a03busVoltage = a03Bytes[7]
+        self.a03batteryVoltage = a03Bytes[8] * 0.01
+        self.a03batteryChargeCurrent = a03Bytes[9]
+        self.a03outputcurrent = self.a03acActivePower / self.a03acOutputVoltage
 
         # AUSGABE
         if self.debug:
-            print('a03 gridvoltage => ' + str(self.a03gridvoltage))
-            print('a03 acfrequency => ' + str(self.a03gridfrequency))
-            print('a03 outputvoltage => ' + str(self.a03outputvoltage))
-            print('a03 outputfrequency => ' + str(self.a03outputfrequency))
-            print('a03 outputapppower => ' + str(self.a03outputapppower))
-            print('a03 outputactpower => ' + str(self.a03outputactpower))
-            print('a03 loadpercent => ' + str(self.a03loadpercent))
-            print('a03 unknown7 => ' + str(self.a03unknown7))
-            print('a03 batteryvoltage => ' + str(self.a03batteryvoltage))
-            print('a03 chargecurrent => ' + str(self.a03chargecurrent))
-            print('a03 outputcurrent => ' + str(self.a03outputcurrent))
+            print('collected values')
+            print('a03gridVoltage => ' + str(self.a03gridVoltage))
+            print('a03gridFrequency => ' + str(self.a03gridFrequency))
+            print('a03acOutputVoltage => ' + str(self.a03acOutputVoltage))
+            print('a03acFrequency => ' + str(self.a03acFrequency))
+            print('a03acApparentPower => ' + str(self.a03acApparentPower))
+            print('a03acActivePower => ' + str(self.a03acActivePower))
+            print('a03loadPercent => ' + str(self.a03loadPercent))
+            print('a03busVoltage => ' + str(self.a03busVoltage))
+            print('a03batteryVoltage => ' + str(self.a03batteryVoltage))
+            print('a03batteryChargeCurrent => ' + str(self.a03batteryChargeCurrent))
+            print('calculated values')
+            print('a03outputcurrent => ' + str(self.a03outputcurrent))
 
         # A11 Bereich
         # print('A11')
