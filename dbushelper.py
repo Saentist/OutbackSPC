@@ -144,6 +144,8 @@ class DbusHelper:
         elif self.devType == 'multi':
             self.inverter.type = 'multi'
             self._dbusService.add_path("/Yield/Power", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Yield/User", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Yield/System", None, writeable=True, gettextcallback=_w, )
             self._dbusService.add_path("/Ac/In/1/L1/P", None, writeable=True, gettextcallback=_w, )
             self._dbusService.add_path("/Ac/In/1/L1/I", None, writeable=True, gettextcallback=_a, )
             self._dbusService.add_path("/Ac/In/1/L1/V", None, writeable=True, gettextcallback=_v, )
@@ -320,8 +322,8 @@ class DbusHelper:
             self._dbusService['/Pv/V'] = 5 #round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
             self._dbusService['/Pv/P'] = 50 #round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
             self._dbusService['/Yield/Power'] = 99 #round(self.inverter.a11pvInputPower, 2)                                                # <- PV array power (Watts)
-            # self._dbusService['/Yield/User'] = 1                                                  # <- Total kWh produced (user resettable)
-            # self._dbusService['/Yield/System'] = 1                                                # <- Total kWh produced (not resettable)
+            self._dbusService['/Yield/User'] = 97                                                  # <- Total kWh produced (user resettable)
+            self._dbusService['/Yield/System'] = 96                                                # <- Total kWh produced (not resettable)
             # self._dbusService['/MppOperationMode'] = 1
 
             index = self._dbusService['/UpdateIndex'] + 1  # increment index
