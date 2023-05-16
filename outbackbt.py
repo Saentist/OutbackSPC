@@ -56,6 +56,8 @@ class OutbackBtDev(DefaultDelegate, Thread):
         self.address = address
         self.interval = 5
 
+        self.debug = utils.DEBUG_MODE
+
         # Bluepy stuff
         self.bt = Peripheral()
         self.bt.setDelegate(self)
@@ -76,12 +78,12 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     time.sleep(3)
                     continue
             try:
-                #outbackService00001801 = self.bt.getServiceByUUID('00001801-0000-1000-8000-00805f9b34fb')
                 outbackService00001810 = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
                 outbackService00001811 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
                 outbackService0000180a = self.bt.getServiceByUUID('0000180a-0000-1000-8000-00805f9b34fb')
 
                 # kann  nicht gelesen werden, daher auskommentiert
+                #outbackService00001801 = self.bt.getServiceByUUID('00001801-0000-1000-8000-00805f9b34fb')
                 #outbackService00001801a01 = outbackService00001801.getCharacteristics("00002a05-0000-1000-8000-00805f9b34fb")[0]
                 #outbackService00001801a01Data = outbackService00001801a01.read()
                 #print(outbackService00001801a01Data)
@@ -112,19 +114,20 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 outbackService00001810a0bData = self.getExtractData(outbackService00001810a0b.read())
                 outbackService00001810a0cData = self.getExtractData(outbackService00001810a0c.read())
                 outbackService00001810a0dData = self.getExtractData(outbackService00001810a0d.read())
-                print(outbackService00001810a01Data)
-                print(outbackService00001810a02Data)
-                print(outbackService00001810a03Data)
-                print(outbackService00001810a04Data)
-                print(outbackService00001810a05Data)
-                print(outbackService00001810a06Data)
-                print(outbackService00001810a07Data)
-                print(outbackService00001810a08Data)
-                print(outbackService00001810a09Data)
-                print(outbackService00001810a0aData)
-                print(outbackService00001810a0bData)
-                print(outbackService00001810a0cData)
-                print(outbackService00001810a0dData)
+                if self.debug:
+                    print(outbackService00001810a01Data)
+                    print(outbackService00001810a02Data)
+                    print(outbackService00001810a03Data)
+                    print(outbackService00001810a04Data)
+                    print(outbackService00001810a05Data)
+                    print(outbackService00001810a06Data)
+                    print(outbackService00001810a07Data)
+                    print(outbackService00001810a08Data)
+                    print(outbackService00001810a09Data)
+                    print(outbackService00001810a0aData)
+                    print(outbackService00001810a0bData)
+                    print(outbackService00001810a0cData)
+                    print(outbackService00001810a0dData)
 
                 outbackService00001811a11 = outbackService00001811.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
                 outbackService00001811a12 = outbackService00001811.getCharacteristics("00002a12-0000-1000-8000-00805f9b34fb")[0]
@@ -134,26 +137,22 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 outbackService00001811a12Data = self.getExtractData(outbackService00001811a12.read())
                 outbackService00001811a13Data = self.getExtractData(outbackService00001811a13.read())
                 outbackService00001811a14Data = self.getExtractData(outbackService00001811a14.read())
-                print(outbackService00001811a11Data)
-                print(outbackService00001811a12Data)
-                print(outbackService00001811a13Data)
-                print(outbackService00001811a14Data)
-
+                if self.debug:
+                    print(outbackService00001811a11Data)
+                    print(outbackService00001811a12Data)
+                    print(outbackService00001811a13Data)
+                    print(outbackService00001811a14Data)
 
                 outbackService0000180aa29 = outbackService0000180a.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
                 outbackService0000180aa2a = outbackService0000180a.getCharacteristics("00002a2a-0000-1000-8000-00805f9b34fb")[0]
                 outbackService0000180aa29Data = outbackService0000180aa29.read()
                 outbackService0000180aa2aData = outbackService0000180aa2a.read()
-                print(outbackService0000180aa29Data)
-                print(outbackService0000180aa2aData)
+                if self.debug:
+                    print(outbackService0000180aa29Data)
+                    print(outbackService0000180aa2aData)
 
                 # read our data
-                #outbackCharacteristicA03 = outbackService00001810.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")[0]
-                #data = outbackCharacteristicA03.read()
                 self.generalDataCallback(outbackService00001810a03Data, "a03")
-
-                #outbackCharacteristicA11 = outbackService00001811.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
-                #data = outbackCharacteristicA11.read()
                 self.generalDataCallback(outbackService00001811a11Data, "a11")
 
             except BTLEDisconnectError:
@@ -187,7 +186,7 @@ class OutbackBt(Inverter):
         Inverter.__init__(self, 0, 0, address)
 
         self.type = ""
-        self.debug = utils.OUTBACK_ADDRESS
+        self.debug = utils.DEBUG_MODE
 
         # Bluepy stuff
         self.bt = Peripheral()
