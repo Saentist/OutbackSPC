@@ -227,7 +227,7 @@ class OutbackBt(Inverter):
         if self.a03Data:
             # print('A03')
             # // QPIGS
-            +a03Bytes = self.getExtractData(self.a03Data)
+            #a03Bytes = self.getExtractData(self.a03Data)
             a03Bytes = self.a03Data
             print(a03Bytes)
 
