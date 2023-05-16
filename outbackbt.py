@@ -99,19 +99,19 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 outbackService00001810a0b = outbackService00001810.getCharacteristics("00002a0b-0000-1000-8000-00805f9b34fb")[0]
                 outbackService00001810a0c = outbackService00001810.getCharacteristics("00002a0c-0000-1000-8000-00805f9b34fb")[0]
                 outbackService00001810a0d = outbackService00001810.getCharacteristics("00002a0d-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a01Data = outbackService00001810a01.read()
-                outbackService00001810a02Data = outbackService00001810a02.read()
-                outbackService00001810a03Data = outbackService00001810a03.read()
-                outbackService00001810a04Data = outbackService00001810a04.read()
-                outbackService00001810a05Data = outbackService00001810a05.read()
-                outbackService00001810a06Data = outbackService00001810a06.read()
-                outbackService00001810a07Data = outbackService00001810a07.read()
-                outbackService00001810a08Data = outbackService00001810a08.read()
-                outbackService00001810a09Data = outbackService00001810a09.read()
-                outbackService00001810a0aData = outbackService00001810a0a.read()
-                outbackService00001810a0bData = outbackService00001810a0b.read()
-                outbackService00001810a0cData = outbackService00001810a0c.read()
-                outbackService00001810a0dData = outbackService00001810a0d.read()
+                outbackService00001810a01Data = self.getExtractData(outbackService00001810a01.read())
+                outbackService00001810a02Data = self.getExtractData(outbackService00001810a02.read())
+                outbackService00001810a03Data = self.getExtractData(outbackService00001810a03.read())
+                outbackService00001810a04Data = self.getExtractData(outbackService00001810a04.read())
+                outbackService00001810a05Data = self.getExtractData(outbackService00001810a05.read())
+                outbackService00001810a06Data = self.getExtractData(outbackService00001810a06.read())
+                outbackService00001810a07Data = self.getExtractData(outbackService00001810a07.read())
+                outbackService00001810a08Data = self.getExtractData(outbackService00001810a08.read())
+                outbackService00001810a09Data = self.getExtractData(outbackService00001810a09.read())
+                outbackService00001810a0aData = self.getExtractData(outbackService00001810a0a.read())
+                outbackService00001810a0bData = self.getExtractData(outbackService00001810a0b.read())
+                outbackService00001810a0cData = self.getExtractData(outbackService00001810a0c.read())
+                outbackService00001810a0dData = self.getExtractData(outbackService00001810a0d.read())
                 print(outbackService00001810a01Data)
                 print(outbackService00001810a02Data)
                 print(outbackService00001810a03Data)
@@ -171,6 +171,15 @@ class OutbackBtDev(DefaultDelegate, Thread):
 
     def addGeneralDataCallback(self, func):
         self.generalDataCallback = func
+
+    def getExtractData(self, byteArrayObject):
+        print(byteArrayObject)
+        tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
+        print(tuple_of_shorts)
+        bytesData = self.byte2short(tuple_of_shorts)
+        print(bytesData)
+
+        return bytesData
 
 
 class OutbackBt(Inverter):
