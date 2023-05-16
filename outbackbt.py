@@ -154,6 +154,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 # read our data
                 self.generalDataCallback(outbackService00001810a03Data, "a03")
                 self.generalDataCallback(outbackService00001811a11Data, "a11")
+                sleep(self.interval)
 
             except BTLEDisconnectError:
                 logger.info('Disconnected')
