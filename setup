@@ -39,6 +39,8 @@ if [ "$scriptAction" == 'INSTALL' ] ; then
     logMessage "++ Installing Victron Dbus Bluetooth Outback SPC service"
 
     installService "$packageName"
+
+    rebootNeeded=true
 fi
 
 #### uninstalling - check scriptAction again
