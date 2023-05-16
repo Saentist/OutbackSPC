@@ -26,8 +26,8 @@ logger.info("Starting dbus-btoutback")
 def main():
 	useInverterDevice = False
 	useSolarchargerDevice = False
-	useVebusDevice = False
-	useMultiDevice = True
+	useVebusDevice = True
+	useMultiDevice = False
 
 	def poll_inverter(loop):
 		# Run in separate thread. Pass in the mainloop so the thread can kill us if there is an exception.
