@@ -82,7 +82,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 self.generalDataCallback(data, "a03")
 
                 outbackService2 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
-                outbackCharacteristicA11 = outbackService2.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
+                outbackCharacteristicA11 = outbackService2.getCharacteristics("00002a12-0000-1000-8000-00805f9b34fb")[0]
                 data = outbackCharacteristicA11.read()
                 self.generalDataCallback(data, "a11")
 
