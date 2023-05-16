@@ -149,102 +149,105 @@ class OutbackBt(Inverter):
             self.mutex.release()
             return False
 
-        # print('A03')
-        # // QPIGS
-        a03Bytes = self.getExtractData(self.a03Data)
-        print(a03Bytes)
+        if self.a03Data:
+            # print('A03')
+            # // QPIGS
+            a03Bytes = self.getExtractData(self.a03Data)
+            print(a03Bytes)
 
-        self.a03gridVoltage = a03Bytes[0]
-        self.a03gridFrequency = a03Bytes[1]
-        self.a03acOutputVoltage = a03Bytes[2] * 0.1
-        self.a03acFrequency = a03Bytes[3] * 0.1
-        self.a03acApparentPower = a03Bytes[4]
-        self.a03acActivePower = a03Bytes[5]
-        self.a03loadPercent = a03Bytes[6]
-        self.a03busVoltage = a03Bytes[7]
-        self.a03batteryVoltage = a03Bytes[8] * 0.01
-        self.a03batteryChargeCurrent = a03Bytes[9]
-        self.a03acOutputCurrent = self.a03acActivePower / self.a03acOutputVoltage
+            self.a03gridVoltage = a03Bytes[0]
+            self.a03gridFrequency = a03Bytes[1]
+            self.a03acOutputVoltage = a03Bytes[2] * 0.1
+            self.a03acFrequency = a03Bytes[3] * 0.1
+            self.a03acApparentPower = a03Bytes[4]
+            self.a03acActivePower = a03Bytes[5]
+            self.a03loadPercent = a03Bytes[6]
+            self.a03busVoltage = a03Bytes[7]
+            self.a03batteryVoltage = a03Bytes[8] * 0.01
+            self.a03batteryChargeCurrent = a03Bytes[9]
+            self.a03acOutputCurrent = self.a03acActivePower / self.a03acOutputVoltage
 
-        # AUSGABE
-        if self.debug:
-            print('collected values')
-            print('a03gridVoltage => ' + str(self.a03gridVoltage))
-            print('a03gridFrequency => ' + str(self.a03gridFrequency))
-            print('a03acOutputVoltage => ' + str(self.a03acOutputVoltage))
-            print('a03acFrequency => ' + str(self.a03acFrequency))
-            print('a03acApparentPower => ' + str(self.a03acApparentPower))
-            print('a03acActivePower => ' + str(self.a03acActivePower))
-            print('a03loadPercent => ' + str(self.a03loadPercent))
-            print('a03busVoltage => ' + str(self.a03busVoltage))
-            print('a03batteryVoltage => ' + str(self.a03batteryVoltage))
-            print('a03batteryChargeCurrent => ' + str(self.a03batteryChargeCurrent))
-            print('calculated values')
-            print('a03acOutputCurrent => ' + str(self.a03acOutputCurrent))
-
-        # A11 Bereich
-        # print('A11')
-        a11Bytes = self.getExtractData(self.a11Data)
-        # print(a11Bytes)
-
-        self.a11unknown0 = a11Bytes[0]  #
-        self.a11unknown1 = a11Bytes[1]  #
-        self.a11unknown2 = a11Bytes[2]  #
-        self.a11unknown3 = a11Bytes[3]  #
-        self.a11unknown4 = a11Bytes[4]  #
-        self.a11unknown5 = a11Bytes[5]  #
-        self.a11pvInputVoltage = a11Bytes[6] * 0.1  # Volt
-        self.a11pvInputPower = a11Bytes[7]  # Watt
-        self.a11unknown8 = a11Bytes[8]  #
-        self.a11unknown9 = a11Bytes[9]  #
-
-        if self.a11pvInputPower > 0:
-            self.a11pvInputCurrent = self.a11pvInputPower / self.a11pvInputVoltage
-        else:
-            self.a11pvInputCurrent = 0
-
-        if self.debug:
             # AUSGABE
-            print('a11 unknown0 => ' + str(self.a11unknown0))
-            print('a11 unknown1 => ' + str(self.a11unknown1))
-            print('a11 unknown2 => ' + str(self.a11unknown2))
-            print('a11 unknown3 => ' + str(self.a11unknown3))
-            print('a11 unknown4 => ' + str(self.a11unknown4))
-            print('a11 unknown5 => ' + str(self.a11unknown5))
-            print('a11 pvInputPower => ' + str(self.a11pvInputPower))
-            print('a11 pvInputVoltage => ' + str(self.a11pvInputVoltage))
-            print('a11 unknown8 => ' + str(self.a11unknown8))
-            print('a11 unknown9 => ' + str(self.a11unknown9))
-            print('a11 calculated pvInputCurrent => ' + str(self.a11pvInputCurrent))
+            if self.debug:
+                print('collected values')
+                print('a03gridVoltage => ' + str(self.a03gridVoltage))
+                print('a03gridFrequency => ' + str(self.a03gridFrequency))
+                print('a03acOutputVoltage => ' + str(self.a03acOutputVoltage))
+                print('a03acFrequency => ' + str(self.a03acFrequency))
+                print('a03acApparentPower => ' + str(self.a03acApparentPower))
+                print('a03acActivePower => ' + str(self.a03acActivePower))
+                print('a03loadPercent => ' + str(self.a03loadPercent))
+                print('a03busVoltage => ' + str(self.a03busVoltage))
+                print('a03batteryVoltage => ' + str(self.a03batteryVoltage))
+                print('a03batteryChargeCurrent => ' + str(self.a03batteryChargeCurrent))
+                print('calculated values')
+                print('a03acOutputCurrent => ' + str(self.a03acOutputCurrent))
 
-        # A29 Bereich
-        print('A29')
-        a29Bytes = self.getExtractData(self.a29Data)
-        print(a29Bytes)
+        if self.a11Data:
+            # A11 Bereich
+            # print('A11')
+            a11Bytes = self.getExtractData(self.a11Data)
+            # print(a11Bytes)
 
-        self.a29unknown0 = a29Bytes[0]  #
-        self.a29unknown1 = a29Bytes[1]  #
-        self.a29unknown2 = a29Bytes[2]  #
-        self.a29unknown3 = a29Bytes[3]  #
-        self.a29unknown4 = a29Bytes[4]  #
-        self.a29unknown5 = a29Bytes[5]  #
-        self.a29unknown6 = a29Bytes[6]  #
-        self.a29unknown7 = a29Bytes[7]  #
-        self.a29unknown8 = a29Bytes[8]  #
-        self.a29unknown9 = a29Bytes[9]  #
+            self.a11unknown0 = a11Bytes[0]  #
+            self.a11unknown1 = a11Bytes[1]  #
+            self.a11unknown2 = a11Bytes[2]  #
+            self.a11unknown3 = a11Bytes[3]  #
+            self.a11unknown4 = a11Bytes[4]  #
+            self.a11unknown5 = a11Bytes[5]  #
+            self.a11pvInputVoltage = a11Bytes[6] * 0.1  # Volt
+            self.a11pvInputPower = a11Bytes[7]  # Watt
+            self.a11unknown8 = a11Bytes[8]  #
+            self.a11unknown9 = a11Bytes[9]  #
 
-        if self.debug:
-            # AUSGABE
-            print('a29 unknown0 => ' + str(self.a29unknown0))
-            print('a29 unknown1 => ' + str(self.a29unknown1))
-            print('a29 unknown2 => ' + str(self.a29unknown2))
-            print('a29 unknown3 => ' + str(self.a29unknown3))
-            print('a29 unknown4 => ' + str(self.a29unknown4))
-            print('a29 unknown5 => ' + str(self.a29unknown5))
-            print('a29 unknown6 => ' + str(self.a29unknown6))
-            print('a29 unknown7 => ' + str(self.a29unknown7))
-            print('a29 unknown8 => ' + str(self.a29unknown8))
-            print('a29 unknown9 => ' + str(self.a29unknown9))
+            if self.a11pvInputPower > 0:
+                self.a11pvInputCurrent = self.a11pvInputPower / self.a11pvInputVoltage
+            else:
+                self.a11pvInputCurrent = 0
+
+            if self.debug:
+                # AUSGABE
+                print('a11 unknown0 => ' + str(self.a11unknown0))
+                print('a11 unknown1 => ' + str(self.a11unknown1))
+                print('a11 unknown2 => ' + str(self.a11unknown2))
+                print('a11 unknown3 => ' + str(self.a11unknown3))
+                print('a11 unknown4 => ' + str(self.a11unknown4))
+                print('a11 unknown5 => ' + str(self.a11unknown5))
+                print('a11 pvInputPower => ' + str(self.a11pvInputPower))
+                print('a11 pvInputVoltage => ' + str(self.a11pvInputVoltage))
+                print('a11 unknown8 => ' + str(self.a11unknown8))
+                print('a11 unknown9 => ' + str(self.a11unknown9))
+                print('a11 calculated pvInputCurrent => ' + str(self.a11pvInputCurrent))
+
+        if self.a29Data:
+            # A29 Bereich
+            print('A29')
+            a29Bytes = self.getExtractData(self.a29Data)
+            print(a29Bytes)
+
+            self.a29unknown0 = a29Bytes[0]  #
+            self.a29unknown1 = a29Bytes[1]  #
+            self.a29unknown2 = a29Bytes[2]  #
+            self.a29unknown3 = a29Bytes[3]  #
+            self.a29unknown4 = a29Bytes[4]  #
+            self.a29unknown5 = a29Bytes[5]  #
+            self.a29unknown6 = a29Bytes[6]  #
+            self.a29unknown7 = a29Bytes[7]  #
+            self.a29unknown8 = a29Bytes[8]  #
+            self.a29unknown9 = a29Bytes[9]  #
+
+            if self.debug:
+                # AUSGABE
+                print('a29 unknown0 => ' + str(self.a29unknown0))
+                print('a29 unknown1 => ' + str(self.a29unknown1))
+                print('a29 unknown2 => ' + str(self.a29unknown2))
+                print('a29 unknown3 => ' + str(self.a29unknown3))
+                print('a29 unknown4 => ' + str(self.a29unknown4))
+                print('a29 unknown5 => ' + str(self.a29unknown5))
+                print('a29 unknown6 => ' + str(self.a29unknown6))
+                print('a29 unknown7 => ' + str(self.a29unknown7))
+                print('a29 unknown8 => ' + str(self.a29unknown8))
+                print('a29 unknown9 => ' + str(self.a29unknown9))
 
         self.mutex.release()
         return True
