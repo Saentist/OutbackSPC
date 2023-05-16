@@ -110,8 +110,8 @@ class DbusHelper:
             self._dbusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=_v, )
             self._dbusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=_a, )
             self._dbusService.add_path("/Ac/Out/L1/F", None, writeable=True, gettextcallback=_h, )
-            self._dbusService.add_path('/Mode', 3, writeable=True,)  #  1=Charger Only;2=Inverter Only;3=On;4=Off
-            self._dbusService.add_path('/ModeIsAdjustable ', 3, writeable=True,)  #  0. Switch position cannot be controlled remotely (typically because a VE.Bus BMS is present).
+            self._dbusService.add_path("/Mode", 3, writeable=True,)  #  1=Charger Only;2=Inverter Only;3=On;4=Off
+            self._dbusService.add_path("/ModeIsAdjustable", 3, writeable=True,)  #  0. Switch position cannot be controlled remotely (typically because a VE.Bus BMS is present).
                                                                                    #  1. Switch position can be controlled remotely
             self._dbusService.add_path('/State', 9, writeable=True, )       #  0=Off;1=Low Power Mode;2=Fault;3=Bulk;4=Absorption;5=Float;
                                                                             #  6=Storage;7=Equalize;8=Passthru;9=Inverting;10=Power assist;
