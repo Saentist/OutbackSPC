@@ -218,6 +218,8 @@ class OutbackBt(Inverter):
             while not result:
                 result = self.read_gen_data()
             return result
+        else:
+            return False
 
     def read_gen_data(self):
         self.mutex.acquire()
