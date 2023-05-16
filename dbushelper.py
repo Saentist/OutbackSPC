@@ -198,7 +198,6 @@ class DbusHelper:
 
             # publish all the data from the battery object to dbus
             self.publish_dbus()
-
         except:
             traceback.print_exc()
             loop.quit()
