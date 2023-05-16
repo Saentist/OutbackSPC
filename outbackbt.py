@@ -76,21 +76,68 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     time.sleep(3)
                     continue
             try:
-                outbackService1 = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
-                outbackCharacteristicA03 = outbackService1.getCharacteristics("00002a01-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001801 = self.bt.getServiceByUUID('00001801-0000-1000-8000-00805f9b34fb')
+                outbackService00001801a01 = outbackService00001801.getCharacteristics("00002a05-0000-1000-8000-00805f9b34fb")[0]
+                print(outbackService00001801a01.read)
+
+                outbackService0000180a = self.bt.getServiceByUUID('0000180a-0000-1000-8000-00805f9b34fb')
+                outbackService0000180aa29 = outbackService0000180a.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
+                outbackService0000180aa2a = outbackService0000180a.getCharacteristics("00002a2a-0000-1000-8000-00805f9b34fb")[0]
+                print(outbackService0000180aa29.read)
+                print(outbackService0000180aa2a.read)
+
+                outbackService00001810 = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
+                outbackService00001810a01 = outbackService00001810.getCharacteristics("00002a01-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a02 = outbackService00001810.getCharacteristics("00002a02-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a03 = outbackService00001810.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a04 = outbackService00001810.getCharacteristics("00002a04-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a05 = outbackService00001810.getCharacteristics("00002a05-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a06 = outbackService00001810.getCharacteristics("00002a06-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a07 = outbackService00001810.getCharacteristics("00002a07-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a08 = outbackService00001810.getCharacteristics("00002a08-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a09 = outbackService00001810.getCharacteristics("00002a09-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a0a = outbackService00001810.getCharacteristics("00002a0a-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a0b = outbackService00001810.getCharacteristics("00002a0b-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a0c = outbackService00001810.getCharacteristics("00002a0c-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a0d = outbackService00001810.getCharacteristics("00002a0d-0000-1000-8000-00805f9b34fb")[0]
+                print(outbackService00001810a01.read)
+                print(outbackService00001810a02.read)
+                print(outbackService00001810a03.read)
+                print(outbackService00001810a04.read)
+                print(outbackService00001810a05.read)
+                print(outbackService00001810a06.read)
+                print(outbackService00001810a07.read)
+                print(outbackService00001810a08.read)
+                print(outbackService00001810a09.read)
+                print(outbackService00001810a0a.read)
+                print(outbackService00001810a0b.read)
+                print(outbackService00001810a0c.read)
+                print(outbackService00001810a0d.read)
+
+                outbackService00001811 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
+                outbackService00001811a11 = outbackService00001811.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001811a12 = outbackService00001811.getCharacteristics("00002a12-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001811a13 = outbackService00001811.getCharacteristics("00002a13-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001811a14 = outbackService00001811.getCharacteristics("00002a14-0000-1000-8000-00805f9b34fb")[0]
+                print(outbackService00001811a11.read)
+                print(outbackService00001811a12.read)
+                print(outbackService00001811a13.read)
+                print(outbackService00001811a14.read)
+
+                outbackService0000180a = self.bt.getServiceByUUID('0000180a-0000-1000-8000-00805f9b34fb')
+                outbackService0000180aa29 = outbackService0000180a.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
+                outbackService0000180aa2a = outbackService0000180a.getCharacteristics("00002a2a-0000-1000-8000-00805f9b34fb")[0]
+                print(outbackService0000180aa29.read)
+                print(outbackService0000180aa2a.read)
+
+                # read our data
+                outbackCharacteristicA03 = outbackService00001810.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")[0]
                 data = outbackCharacteristicA03.read()
                 self.generalDataCallback(data, "a03")
 
-                outbackService2 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
-                outbackCharacteristicA11 = outbackService2.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
+                outbackCharacteristicA11 = outbackService00001811.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
                 data = outbackCharacteristicA11.read()
                 self.generalDataCallback(data, "a11")
-
-                outbackService3 = self.bt.getServiceByUUID('0000180a-0000-1000-8000-00805f9b34fb')
-                outbackCharacteristicA29 = outbackService3.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
-                outbackCharacteristicA29 = outbackService3.getCharacteristics("00002a2a-0000-1000-8000-00805f9b34fb")[0]
-                data = outbackCharacteristicA29.read()
-                #self.generalDataCallback(data, "a29")
 
             except BTLEDisconnectError:
                 logger.info('Disconnected')
