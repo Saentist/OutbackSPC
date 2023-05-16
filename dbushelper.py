@@ -48,6 +48,8 @@ class DbusHelper:
         _w = lambda p, v: (str(v) + 'W')        # lambda p, v: "{:0.0f}W".format(v)
         _v = lambda p, v: (str(v) + 'V')        # lambda p, v: "{:2.2f}V".format(v)
         _h = lambda p, v: (str(v) + 'Hz')        # lambda p, v: "{:2.2f}V".format(v)
+        _ms = lambda p, v: (str(v or '') + "ms")
+        _x = lambda p, v: (str(v or ''))
 
         # Set up dbus service and device instance
         # and notify of all the attributes we intend to update
@@ -164,6 +166,7 @@ class DbusHelper:
             self._dbusService.add_path('/NrOfTrackers', 1)
             self._dbusService.add_path('/Mode', 3, writeable=True,)
             self._dbusService.add_path('/State', 9, writeable=True,)
+            self._dbusService.add_path('/UpdateIndex', 0, writeable=True, gettextcallback=_x,)
 
         else:
             self.inverter.type = 'Unknown'
@@ -320,6 +323,11 @@ class DbusHelper:
             # self._dbusService['/Yield/User'] = 1                                                  # <- Total kWh produced (user resettable)
             # self._dbusService['/Yield/System'] = 1                                                # <- Total kWh produced (not resettable)
             # self._dbusService['/MppOperationMode'] = 1
+
+            index = self._dbusService['/UpdateIndex'] + 1  # increment index
+            if index > 255:  # maximum value of the index
+                index = 0  # overflow from 255 to 0
+            self._dbusService['/UpdateIndex'] = index
 
         if self.devType == 'inverter':
             # print('grid 1')
