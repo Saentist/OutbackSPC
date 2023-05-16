@@ -88,6 +88,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 
                 outbackService3 = self.bt.getServiceByUUID('0000180a-0000-1000-8000-00805f9b34fb')
                 outbackCharacteristicA29 = outbackService3.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
+                outbackCharacteristicA29 = outbackService3.getCharacteristics("00002a2a-0000-1000-8000-00805f9b34fb")[0]
                 data = outbackCharacteristicA29.read()
                 self.generalDataCallback(data, "a29")
 
@@ -207,17 +208,19 @@ class OutbackBt(Inverter):
 
             if self.debug:
                 # AUSGABE
+                print('collected values')
                 print('a11 unknown0 => ' + str(self.a11unknown0))
                 print('a11 unknown1 => ' + str(self.a11unknown1))
                 print('a11 unknown2 => ' + str(self.a11unknown2))
                 print('a11 unknown3 => ' + str(self.a11unknown3))
                 print('a11 unknown4 => ' + str(self.a11unknown4))
                 print('a11 unknown5 => ' + str(self.a11unknown5))
-                print('a11 pvInputPower => ' + str(self.a11pvInputPower))
-                print('a11 pvInputVoltage => ' + str(self.a11pvInputVoltage))
+                print('a11pvInputPower => ' + str(self.a11pvInputPower))
+                print('a11pvInputVoltage => ' + str(self.a11pvInputVoltage))
                 print('a11 unknown8 => ' + str(self.a11unknown8))
                 print('a11 unknown9 => ' + str(self.a11unknown9))
-                print('a11 calculated pvInputCurrent => ' + str(self.a11pvInputCurrent))
+                print('calculated values')
+                print('a11pvInputCurrent => ' + str(self.a11pvInputCurrent))
 
         if self.a29Data:
             # A29 Bereich
