@@ -81,71 +81,71 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 outbackService00001811 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
                 outbackService0000180a = self.bt.getServiceByUUID('0000180a-0000-1000-8000-00805f9b34fb')
 
-                outbackService00001801a01 = outbackService00001801.getCharacteristics("00002a05-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001801a01Data = outbackService00001801a01.read()
-                print(outbackService00001801a01Data)
-
-                outbackService00001810a01 = outbackService00001810.getCharacteristics("00002a01-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a02 = outbackService00001810.getCharacteristics("00002a02-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a03 = outbackService00001810.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a04 = outbackService00001810.getCharacteristics("00002a04-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a05 = outbackService00001810.getCharacteristics("00002a05-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a06 = outbackService00001810.getCharacteristics("00002a06-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a07 = outbackService00001810.getCharacteristics("00002a07-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a08 = outbackService00001810.getCharacteristics("00002a08-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a09 = outbackService00001810.getCharacteristics("00002a09-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a0a = outbackService00001810.getCharacteristics("00002a0a-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a0b = outbackService00001810.getCharacteristics("00002a0b-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a0c = outbackService00001810.getCharacteristics("00002a0c-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a0d = outbackService00001810.getCharacteristics("00002a0d-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a01Data = outbackService00001810a01.read()
-                outbackService00001810a02Data = outbackService00001810a02.read()
-                outbackService00001810a03Data = outbackService00001810a03.read()
-                outbackService00001810a04Data = outbackService00001810a04.read()
-                outbackService00001810a05Data = outbackService00001810a05.read()
-                outbackService00001810a06Data = outbackService00001810a06.read()
-                outbackService00001810a07Data = outbackService00001810a07.read()
-                outbackService00001810a08Data = outbackService00001810a08.read()
-                outbackService00001810a09Data = outbackService00001810a09.read()
-                outbackService00001810a0aData = outbackService00001810a0a.read()
-                outbackService00001810a0bData = outbackService00001810a0b.read()
-                outbackService00001810a0cData = outbackService00001810a0c.read()
-                outbackService00001810a0dData = outbackService00001810a0d.read()
-                print(outbackService00001810a01Data)
-                print(outbackService00001810a02Data)
-                print(outbackService00001810a03Data)
-                print(outbackService00001810a04Data)
-                print(outbackService00001810a05Data)
-                print(outbackService00001810a06Data)
-                print(outbackService00001810a07Data)
-                print(outbackService00001810a08Data)
-                print(outbackService00001810a09Data)
-                print(outbackService00001810a0aData)
-                print(outbackService00001810a0bData)
-                print(outbackService00001810a0cData)
-                print(outbackService00001810a0dData)
-
-
-                outbackService00001811a11 = outbackService00001811.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001811a12 = outbackService00001811.getCharacteristics("00002a12-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001811a13 = outbackService00001811.getCharacteristics("00002a13-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001811a14 = outbackService00001811.getCharacteristics("00002a14-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001811a11Data = outbackService00001811a11.read()
-                outbackService00001811a12Data = outbackService00001811a12.read()
-                outbackService00001811a13Data = outbackService00001811a13.read()
-                outbackService00001811a14Data = outbackService00001811a14.read()
-                print(outbackService00001811a11Data)
-                print(outbackService00001811a12Data)
-                print(outbackService00001811a13Data)
-                print(outbackService00001811a14Data)
-
-
-                outbackService0000180aa29 = outbackService0000180a.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
-                outbackService0000180aa2a = outbackService0000180a.getCharacteristics("00002a2a-0000-1000-8000-00805f9b34fb")[0]
-                outbackService0000180aa29Data = outbackService0000180aa29.read()
-                outbackService0000180aa2aData = outbackService0000180aa2a.read()
-                print(outbackService0000180aa29Data)
-                print(outbackService0000180aa2aData)
+                # outbackService00001801a01 = outbackService00001801.getCharacteristics("00002a05-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001801a01Data = outbackService00001801a01.read()
+                # print(outbackService00001801a01Data)
+                #
+                # outbackService00001810a01 = outbackService00001810.getCharacteristics("00002a01-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a02 = outbackService00001810.getCharacteristics("00002a02-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a03 = outbackService00001810.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a04 = outbackService00001810.getCharacteristics("00002a04-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a05 = outbackService00001810.getCharacteristics("00002a05-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a06 = outbackService00001810.getCharacteristics("00002a06-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a07 = outbackService00001810.getCharacteristics("00002a07-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a08 = outbackService00001810.getCharacteristics("00002a08-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a09 = outbackService00001810.getCharacteristics("00002a09-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a0a = outbackService00001810.getCharacteristics("00002a0a-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a0b = outbackService00001810.getCharacteristics("00002a0b-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a0c = outbackService00001810.getCharacteristics("00002a0c-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a0d = outbackService00001810.getCharacteristics("00002a0d-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001810a01Data = outbackService00001810a01.read()
+                # outbackService00001810a02Data = outbackService00001810a02.read()
+                # outbackService00001810a03Data = outbackService00001810a03.read()
+                # outbackService00001810a04Data = outbackService00001810a04.read()
+                # outbackService00001810a05Data = outbackService00001810a05.read()
+                # outbackService00001810a06Data = outbackService00001810a06.read()
+                # outbackService00001810a07Data = outbackService00001810a07.read()
+                # outbackService00001810a08Data = outbackService00001810a08.read()
+                # outbackService00001810a09Data = outbackService00001810a09.read()
+                # outbackService00001810a0aData = outbackService00001810a0a.read()
+                # outbackService00001810a0bData = outbackService00001810a0b.read()
+                # outbackService00001810a0cData = outbackService00001810a0c.read()
+                # outbackService00001810a0dData = outbackService00001810a0d.read()
+                # print(outbackService00001810a01Data)
+                # print(outbackService00001810a02Data)
+                # print(outbackService00001810a03Data)
+                # print(outbackService00001810a04Data)
+                # print(outbackService00001810a05Data)
+                # print(outbackService00001810a06Data)
+                # print(outbackService00001810a07Data)
+                # print(outbackService00001810a08Data)
+                # print(outbackService00001810a09Data)
+                # print(outbackService00001810a0aData)
+                # print(outbackService00001810a0bData)
+                # print(outbackService00001810a0cData)
+                # print(outbackService00001810a0dData)
+                #
+                #
+                # outbackService00001811a11 = outbackService00001811.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001811a12 = outbackService00001811.getCharacteristics("00002a12-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001811a13 = outbackService00001811.getCharacteristics("00002a13-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001811a14 = outbackService00001811.getCharacteristics("00002a14-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService00001811a11Data = outbackService00001811a11.read()
+                # outbackService00001811a12Data = outbackService00001811a12.read()
+                # outbackService00001811a13Data = outbackService00001811a13.read()
+                # outbackService00001811a14Data = outbackService00001811a14.read()
+                # print(outbackService00001811a11Data)
+                # print(outbackService00001811a12Data)
+                # print(outbackService00001811a13Data)
+                # print(outbackService00001811a14Data)
+                #
+                #
+                # outbackService0000180aa29 = outbackService0000180a.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService0000180aa2a = outbackService0000180a.getCharacteristics("00002a2a-0000-1000-8000-00805f9b34fb")[0]
+                # outbackService0000180aa29Data = outbackService0000180aa29.read()
+                # outbackService0000180aa2aData = outbackService0000180aa2a.read()
+                # print(outbackService0000180aa29Data)
+                # print(outbackService0000180aa2aData)
 
                 # read our data
                 outbackCharacteristicA03 = outbackService00001810.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")[0]
