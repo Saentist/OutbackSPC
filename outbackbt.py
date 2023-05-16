@@ -76,12 +76,13 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     time.sleep(3)
                     continue
             try:
-                outbackService00001801 = self.bt.getServiceByUUID('00001801-0000-1000-8000-00805f9b34fb')
+                #outbackService00001801 = self.bt.getServiceByUUID('00001801-0000-1000-8000-00805f9b34fb')
                 outbackService00001810 = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
                 outbackService00001811 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
                 outbackService0000180a = self.bt.getServiceByUUID('0000180a-0000-1000-8000-00805f9b34fb')
 
-                outbackService00001801a01 = outbackService00001801.getCharacteristics("00002a05-0000-1000-8000-00805f9b34fb")[0]
+                # kann  nicht gelesen werden, daher auskommentiert
+                #outbackService00001801a01 = outbackService00001801.getCharacteristics("00002a05-0000-1000-8000-00805f9b34fb")[0]
                 #outbackService00001801a01Data = outbackService00001801a01.read()
                 #print(outbackService00001801a01Data)
 
