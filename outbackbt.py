@@ -99,7 +99,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 if self.debug:
                     print(outbackService00001810a01Data)
                     print(outbackService00001810a02Data)
-                    print("a03: " + outbackService00001810a03Data)
+                    print("a03: " + str(outbackService00001810a03Data))
                     print(outbackService00001810a04Data)
                     print(outbackService00001810a05Data)
                     print(outbackService00001810a06Data)
@@ -120,7 +120,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 outbackService00001811a13Data = self.getExtractData(outbackService00001811a13.read())
                 outbackService00001811a14Data = self.getExtractData(outbackService00001811a14.read())
                 if self.debug:
-                    print("a11: " +  outbackService00001811a11Data)
+                    print("a11: " +  str(outbackService00001811a11Data))
                     print(outbackService00001811a12Data)
                     print(outbackService00001811a13Data)
                     print(outbackService00001811a14Data)
