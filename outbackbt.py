@@ -82,7 +82,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 self.generalDataCallback(data, "a03")
 
                 outbackService2 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
-                outbackCharacteristicA11 = outbackService2.getCharacteristics("00002a12-0000-1000-8000-00805f9b34fb")[0]
+                outbackCharacteristicA11 = outbackService2.getCharacteristics("00002a13-0000-1000-8000-00805f9b34fb")[0]
                 data = outbackCharacteristicA11.read()
                 self.generalDataCallback(data, "a11")
 
@@ -90,7 +90,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 outbackCharacteristicA29 = outbackService3.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
                 outbackCharacteristicA29 = outbackService3.getCharacteristics("00002a2a-0000-1000-8000-00805f9b34fb")[0]
                 data = outbackCharacteristicA29.read()
-                self.generalDataCallback(data, "a29")
+                #self.generalDataCallback(data, "a29")
 
             except BTLEDisconnectError:
                 logger.info('Disconnected')
