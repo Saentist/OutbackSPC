@@ -82,8 +82,8 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 outbackService0000180a = self.bt.getServiceByUUID('0000180a-0000-1000-8000-00805f9b34fb')
 
                 outbackService00001801a01 = outbackService00001801.getCharacteristics("00002a05-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001801a01Data = outbackService00001801a01.read()
-                print(outbackService00001801a01Data)
+                #outbackService00001801a01Data = outbackService00001801a01.read()
+                #print(outbackService00001801a01Data)
 
                 outbackService00001810a01 = outbackService00001810.getCharacteristics("00002a01-0000-1000-8000-00805f9b34fb")[0]
                 outbackService00001810a02 = outbackService00001810.getCharacteristics("00002a02-0000-1000-8000-00805f9b34fb")[0]
