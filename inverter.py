@@ -38,7 +38,7 @@ class Inverter(ABC):
         self.a03busVoltage = None
         self.a03batteryVoltage = None
         self.a03batteryChargeCurrent = None
-        self.a03outputcurrent = None
+        self.a03acOutputCurrent = None
         # A11
         self.a11unknown0 = None
         self.a11unknown1 = None

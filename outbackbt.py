@@ -126,7 +126,7 @@ class OutbackBt(Inverter):
         self.a03busVoltage = a03Bytes[7]
         self.a03batteryVoltage = a03Bytes[8] * 0.01
         self.a03batteryChargeCurrent = a03Bytes[9]
-        self.a03outputcurrent = self.a03acActivePower / self.a03acOutputVoltage
+        self.a03acOutputCurrent = self.a03acActivePower / self.a03acOutputVoltage
 
         # AUSGABE
         if self.debug:
@@ -142,7 +142,7 @@ class OutbackBt(Inverter):
             print('a03batteryVoltage => ' + str(self.a03batteryVoltage))
             print('a03batteryChargeCurrent => ' + str(self.a03batteryChargeCurrent))
             print('calculated values')
-            print('a03outputcurrent => ' + str(self.a03outputcurrent))
+            print('a03acOutputCurrent => ' + str(self.a03acOutputCurrent))
 
         # A11 Bereich
         # print('A11')
@@ -212,7 +212,9 @@ class OutbackBt(Inverter):
         return True
 
     def getExtractData(self, byteArrayObject):
+        print(byteArrayObject)
         tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
+        print(tuple_of_shorts)
         bytesData = self.byte2short(tuple_of_shorts)
         print(bytesData)
 
