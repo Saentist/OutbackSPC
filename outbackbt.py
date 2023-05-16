@@ -176,11 +176,12 @@ class OutbackBtDev(DefaultDelegate, Thread):
         print(byteArrayObject)
         tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
         print(tuple_of_shorts)
-        bytesData = self.byte2short(tuple_of_shorts)
-        print(bytesData)
-
-        return bytesData
-
+        myResult = []
+        for s in tuple_of_shorts:
+            newVal = (((s >> 8) & 255) + (((s & 255) << 8) & 65280))
+            resultValue = newVal  # * 0.01
+            myResult.append(resultValue)
+        return myResult
 
 class OutbackBt(Inverter):
     def __init__(self, address):
