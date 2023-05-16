@@ -173,9 +173,9 @@ class OutbackBtDev(DefaultDelegate, Thread):
         self.generalDataCallback = func
 
     def getExtractData(self, byteArrayObject):
-        print(byteArrayObject)
+        #print(byteArrayObject)
         tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
-        print(tuple_of_shorts)
+        #print(tuple_of_shorts)
         myResult = []
         for s in tuple_of_shorts:
             newVal = (((s >> 8) & 255) + (((s & 255) << 8) & 65280))
