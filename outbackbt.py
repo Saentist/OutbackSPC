@@ -4,7 +4,6 @@ from inverter import Inverter
 from utils import *
 import utils
 import time
-import binascii
 import struct
 
 # QPIGS
@@ -22,23 +21,6 @@ import struct
 # battery_voltage_from_scc        0.0             V
 # bus_voltage                     449             V
 # inverter_heat_sink_temperature  29              Deg_C
-# is_ac_charging_on               0               True - 1/False - 0
-# is_battery_voltage_to_steady_while_charging     0               True - 1/False - 0
-# is_charging_on                  0               True - 1/False - 0
-# is_charging_to_float            0               True - 1/False - 0
-# is_configuration_changed        0               True - 1/False - 0
-# is_load_on                      1               True - 1/False - 0
-# is_reserved                     0               True - 1/False - 0
-# is_sbu_priority_version_added   0               True - 1/False - 0
-# is_scc_charging_on              0               True - 1/False - 0
-# is_scc_firmware_updated         0               True - 1/False - 0
-# is_switched_on                  1               True - 1/False - 0
-# pv_input_current_for_battery    3.0             A
-# pv_input_power                  909             W
-# pv_input_voltage                298.9           V
-# rsv1                            0               A
-# rsv2                            0               A
-
 
 # battery_voltage_from_scc        0.0             V
 # inverter_heat_sink_temperature  29              Deg_C
@@ -143,13 +125,13 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     print(outbackService00001811a13Data)
                     print(outbackService00001811a14Data)
 
-                outbackService0000180aa29 = outbackService0000180a.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
-                outbackService0000180aa2a = outbackService0000180a.getCharacteristics("00002a2a-0000-1000-8000-00805f9b34fb")[0]
-                outbackService0000180aa29Data = outbackService0000180aa29.read()
-                outbackService0000180aa2aData = outbackService0000180aa2a.read()
-                if self.debug:
-                    print(outbackService0000180aa29Data)
-                    print(outbackService0000180aa2aData)
+                #outbackService0000180aa29 = outbackService0000180a.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
+                #outbackService0000180aa2a = outbackService0000180a.getCharacteristics("00002a2a-0000-1000-8000-00805f9b34fb")[0]
+                #outbackService0000180aa29Data = outbackService0000180aa29.read()
+                #outbackService0000180aa2aData = outbackService0000180aa2a.read()
+                #if self.debug:
+                    #print(outbackService0000180aa29Data)
+                    #print(outbackService0000180aa2aData)
 
                 # read our data
                 self.generalDataCallback(outbackService00001810a03Data, "a03")
