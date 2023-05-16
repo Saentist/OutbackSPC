@@ -54,7 +54,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
         self.generalDataCallback = None
         self.generalDataP2Len = 0
         self.address = address
-        self.interval = 5
+        self.interval = 1
 
         self.debug = utils.DEBUG_MODE
 
