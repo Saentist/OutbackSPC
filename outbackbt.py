@@ -126,15 +126,14 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 print(outbackService00001810a0cData)
                 print(outbackService00001810a0dData)
 
-
                 outbackService00001811a11 = outbackService00001811.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
                 outbackService00001811a12 = outbackService00001811.getCharacteristics("00002a12-0000-1000-8000-00805f9b34fb")[0]
                 outbackService00001811a13 = outbackService00001811.getCharacteristics("00002a13-0000-1000-8000-00805f9b34fb")[0]
                 outbackService00001811a14 = outbackService00001811.getCharacteristics("00002a14-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001811a11Data = outbackService00001811a11.read()
-                outbackService00001811a12Data = outbackService00001811a12.read()
-                outbackService00001811a13Data = outbackService00001811a13.read()
-                outbackService00001811a14Data = outbackService00001811a14.read()
+                outbackService00001811a11Data = self.getExtractData(outbackService00001811a11.read())
+                outbackService00001811a12Data = self.getExtractData(outbackService00001811a12.read())
+                outbackService00001811a13Data = self.getExtractData(outbackService00001811a13.read())
+                outbackService00001811a14Data = self.getExtractData(outbackService00001811a14.read())
                 print(outbackService00001811a11Data)
                 print(outbackService00001811a12Data)
                 print(outbackService00001811a13Data)
