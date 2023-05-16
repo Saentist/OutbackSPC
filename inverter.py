@@ -28,16 +28,16 @@ class Inverter(ABC):
 
         # OUTBACK
         # A03
-        self.a03acvoltage = None
-        self.a03acfrequency = None
-        self.a03outputvoltage = None
-        self.a03outputfrequency = None
-        self.a03outputapppower = None
-        self.a03outputactpower = None
-        self.a03loadpercent = None
-        self.a03unknown7 = None
-        self.a03batteryvoltage = None
-        self.a03chargecurrent = None
+        self.a03gridVoltage = None
+        self.a03gridFrequency = None
+        self.a03acOutputVoltage = None
+        self.a03acFrequency = None
+        self.a03acApparentPower = None
+        self.a03acActivePower = None
+        self.a03loadPercent = None
+        self.a03busVoltage = None
+        self.a03batteryVoltage = None
+        self.a03batteryChargeCurrent = None
         self.a03outputcurrent = None
         # A11
         self.a11unknown0 = None

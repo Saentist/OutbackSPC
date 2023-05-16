@@ -41,8 +41,7 @@ degree_sign = "\N{DEGREE SIGN}"
 #CELL_VOLTAGES_WHILE_CHARGING = _get_list_from_config("DEFAULT", "CELL_VOLTAGES_WHILE_CHARGING", lambda v: float(v))
 #PUBLISH_CONFIG_VALUES = int(config["DEFAULT"]["PUBLISH_CONFIG_VALUES"])
 OUTBACK_ADDRESS = config["DEFAULT"]["OUTBACK_ADDRESS"]
-DEBUG_MODE = config["DEFAULT"]["DEBUG_MODE" \
-                               ""]
+DEBUG_MODE = config["DEFAULT"]["DEBUG_MODE"]
 def constrain(val, min_val, max_val):
     if min_val > max_val:
         min_val, max_val = max_val, min_val

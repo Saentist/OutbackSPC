@@ -112,11 +112,12 @@ class OutbackBt(Inverter):
             return False
 
         # print('A03')
+        # // QPIGS
         a03Bytes = self.getExtractData(self.a03Data)
         # print(a03Bytes)
 
-        self.a03acvoltage = a03Bytes[0]
-        self.a03acfrequency = a03Bytes[1]
+        self.a03gridvoltage = a03Bytes[0]
+        self.a03gridfrequency = a03Bytes[1]
         self.a03outputvoltage = a03Bytes[2] * 0.1
         self.a03outputfrequency = a03Bytes[3] * 0.1
         self.a03outputapppower = a03Bytes[4]
@@ -129,8 +130,8 @@ class OutbackBt(Inverter):
 
         # AUSGABE
         if self.debug:
-            print('a03 acvoltage => ' + str(self.a03acvoltage))
-            print('a03 acfrequency => ' + str(self.a03acfrequency))
+            print('a03 gridvoltage => ' + str(self.a03gridvoltage))
+            print('a03 acfrequency => ' + str(self.a03gridfrequency))
             print('a03 outputvoltage => ' + str(self.a03outputvoltage))
             print('a03 outputfrequency => ' + str(self.a03outputfrequency))
             print('a03 outputapppower => ' + str(self.a03outputapppower))

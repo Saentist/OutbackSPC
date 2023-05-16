@@ -218,20 +218,20 @@ class DbusHelper:
 
         if self.devType == 'vebus':
             # AC Input measurements:
-            # self._dbusService["/Ac/In/1/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)                                               # <- Real power of AC IN1 on L1
+            # self._dbusService["/Ac/In/1/L1/P"] = round(self.inverter.a03acApparentPower - 30, 2)                                               # <- Real power of AC IN1 on L1
             # self._dbusService["/Ac/In/1/L1/I"] = round(self.inverter.a03outputcurrent, 2)                                                # <- Current of AC IN1 on L1
-            # self._dbusService["/Ac/In/1/L1/V"] = round(self.inverter.a03acvoltage, 2)               # <- Voltage of AC IN1 on L1
-            # self._dbusService["/Ac/In/1/L1/F"] = round(self.inverter.a03acfrequency, 2)             # <- Frequency of AC IN1 on L1
+            # self._dbusService["/Ac/In/1/L1/V"] = round(self.inverter.a03gridVoltage, 2)               # <- Voltage of AC IN1 on L1
+            # self._dbusService["/Ac/In/1/L1/F"] = round(self.inverter.a03gridFrequency, 2)             # <- Frequency of AC IN1 on L1
 
             # AC Input settings:
             # self._dbusService["/Ac/In/1/Type"] = 2                                                  # <- AC IN1 type: 0 (Not used), 1 (Grid), 2(Generator), 3(Shore)
 
             # AC Output measurements:
-            # self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)    # <- Frequency of AC OUT1 on L1
-            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower, 2)    # <- Frequency of AC OUT1 on L1
-            self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03outputvoltage, 2)          # <- Voltage of AC OUT1 on L1
+            # self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03acApparentPower - 30, 2)    # <- Frequency of AC OUT1 on L1
+            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03acApparentPower, 2)    # <- Frequency of AC OUT1 on L1
+            self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03acOutputVoltage, 2)          # <- Voltage of AC OUT1 on L1
             self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03outputcurrent, 2)          # <- Current of AC OUT1 on L1
-            self._dbusService["/Ac/Out/L1/F"] = round(self.inverter.a03outputfrequency, 2)        # <- Real power of AC OUT1 on L1
+            self._dbusService["/Ac/Out/L1/F"] = round(self.inverter.a03acFrequency, 2)        # <- Real power of AC OUT1 on L1
 
             # self._dbusService["/Ac/ActiveIn/ActiveInput"] = 1                                       # <- Active input: 0 = ACin-1, 1 = ACin-2,
             # self._dbusService["/Ac/NumberOfPhases"] = 1
@@ -271,20 +271,20 @@ class DbusHelper:
 
         if self.devType == 'multi':
             # AC Input measurements:
-            # self._dbusService["/Ac/In/1/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)                                               # <- Real power of AC IN1 on L1
+            # self._dbusService["/Ac/In/1/L1/P"] = round(self.inverter.a03acApparentPower - 30, 2)                                               # <- Real power of AC IN1 on L1
             # self._dbusService["/Ac/In/1/L1/I"] = round(self.inverter.a03outputcurrent, 2)                                                # <- Current of AC IN1 on L1
-            # self._dbusService["/Ac/In/1/L1/V"] = round(self.inverter.a03acvoltage, 2)               # <- Voltage of AC IN1 on L1
-            # self._dbusService["/Ac/In/1/L1/F"] = round(self.inverter.a03acfrequency, 2)             # <- Frequency of AC IN1 on L1
+            # self._dbusService["/Ac/In/1/L1/V"] = round(self.inverter.a03gridVoltage, 2)               # <- Voltage of AC IN1 on L1
+            # self._dbusService["/Ac/In/1/L1/F"] = round(self.inverter.a03gridFrequency, 2)             # <- Frequency of AC IN1 on L1
 
             # AC Input settings:
             # self._dbusService["/Ac/In/1/Type"] = 2                                                  # <- AC IN1 type: 0 (Not used), 1 (Grid), 2(Generator), 3(Shore)
 
             # AC Output measurements:
-            # self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)    # <- Frequency of AC OUT1 on L1
-            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower, 2)    # <- Frequency of AC OUT1 on L1
-            self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03outputvoltage, 2)          # <- Voltage of AC OUT1 on L1
+            # self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03acApparentPower - 30, 2)    # <- Frequency of AC OUT1 on L1
+            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03acApparentPower, 2)    # <- Frequency of AC OUT1 on L1
+            self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03acOutputVoltage, 2)          # <- Voltage of AC OUT1 on L1
             self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03outputcurrent, 2)          # <- Current of AC OUT1 on L1
-            self._dbusService["/Ac/Out/L1/F"] = round(self.inverter.a03outputfrequency, 2)        # <- Real power of AC OUT1 on L1
+            self._dbusService["/Ac/Out/L1/F"] = round(self.inverter.a03acFrequency, 2)        # <- Real power of AC OUT1 on L1
 
             # self._dbusService["/Ac/ActiveIn/ActiveInput"] = 1                                       # <- Active input: 0 = ACin-1, 1 = ACin-2,
             # self._dbusService["/Ac/NumberOfPhases"] = 1
@@ -326,8 +326,8 @@ class DbusHelper:
             # print('grid 1')
             self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
-            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03outputapppower - 30, 2)
-            self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03outputvoltage, 2)
+            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03acApparentPower - 30, 2)
+            self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03acOutputVoltage, 2)
             self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03outputcurrent, 2)
             # self._dbusService["/Yield/Power"] = round(1234, 2) # ist die summe die von der PV Anlage kommt errechnet sich automatisch
             # print('grid 2')
