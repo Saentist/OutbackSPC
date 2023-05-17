@@ -83,8 +83,8 @@ class DbusHelper:
             self.inverter.type = 'Inverter'
             self._dbusService.add_path('/Mode', 2)
             self._dbusService.add_path('/State', 9)
-            # self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=_v, )
-            # self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
+            self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=_v, )
+            self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
             self._dbusService.add_path("/Ac/Out/L1/P", None, writeable=True, gettextcallback=_w, )
             self._dbusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=_v, )
             self._dbusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=_a, )
