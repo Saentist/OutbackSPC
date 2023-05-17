@@ -72,7 +72,7 @@ class DbusHelper:
         self._dbusService.add_path("/Connected", 1)
 
         if self.devType == 'solarcharger':
-            self.inverter.type = ''
+            self.inverter.type = 'Solarcharger'
             # self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=_v, )
             # self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
             # self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=_w, )
