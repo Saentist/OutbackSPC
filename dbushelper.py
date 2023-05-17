@@ -83,8 +83,8 @@ class DbusHelper:
             self._dbusService.add_path('/Load/I', 0, writeable=True)
             self._dbusService.add_path('/ErrorCode', 0)
             self._dbusService.add_path('/Yield/Power', 0, writeable=True)  # Actual input power (Watts)
-            self._dbusService.add_path('/Yield/User')  # Total kWh produced (user resettable)
-            self._dbusService.add_path('/Yield/System')  # Total kWh produced (not resettable)
+            self._dbusService.add_path('/Yield/User', 0)  # Total kWh produced (user resettable)
+            self._dbusService.add_path('/Yield/System', 0)  # Total kWh produced (not resettable)
             self._dbusService.add_path('/Mode', 0, writeable=True)
             self._dbusService.add_path('/MppOperationMode', 2)
 
