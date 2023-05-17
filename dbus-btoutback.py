@@ -57,7 +57,7 @@ def main():
 			poller4.start()
 
 		if usePvInverterDevice:
-			poller5 = Thread(target=lambda: multiDevice.publish_inverter(loop))
+			poller5 = Thread(target=lambda: pvInverterDevice.publish_inverter(loop))
 			# Thread will die with us if deamon
 			poller5.daemon = True
 			poller5.start()
