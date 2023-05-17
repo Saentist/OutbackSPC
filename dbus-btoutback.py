@@ -27,8 +27,8 @@ def main():
 	useInverterDevice = False
 	useSolarchargerDevice = False
 	useVebusDevice = False
-	useMultiDevice = False
-	usePvInverterDevice = True
+	useMultiDevice = True
+	usePvInverterDevice = False
 
 	def poll_inverter(loop):
 		# Run in separate thread. Pass in the mainloop so the thread can kill us if there is an exception.
