@@ -92,9 +92,9 @@ def main():
 
 	if usePvInverterDevice:
 		# Get the initial values for the battery used by setup_vedbus
-		inverterDevice = DbusHelper(outbackInverterObject, 'pvinverter', 1)
+		pvInverterDevice = DbusHelper(outbackInverterObject, 'pvinverter', 1)
 
-		if not inverterDevice.setup_vedbus():
+		if not pvInverterDevice.setup_vedbus():
 			logger.error("ERROR >>> Problem with pvinverter " + str(btaddr))
 			sys.exit(1)
 
