@@ -72,7 +72,24 @@ class DbusHelper:
         self._dbusService.add_path("/Connected", 1)
 
         if self.devType == 'solarcharger':
-            self.inverter.type = 'pvinverter'
+            self.inverter.type = 'Solarcharger'
+            self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=_v, )
+            self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
+            self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Pv/I", None, writeable=True, gettextcallback=_a, )
+            self._dbusService.add_path("/Pv/V", None, writeable=True, gettextcallback=_v, )
+            self._dbusService.add_path('/State', 0, writeable=True)
+            self._dbusService.add_path('/Load/State', 0, writeable=True)
+            self._dbusService.add_path('/Load/I', 0, writeable=True)
+            self._dbusService.add_path('/ErrorCode', 0)
+            self._dbusService.add_path('/Yield/Power', 0, writeable=True)  # Actual input power (Watts)
+            self._dbusService.add_path('/Yield/User', 0)  # Total kWh produced (user resettable)
+            self._dbusService.add_path('/Yield/System', 0)  # Total kWh produced (not resettable)
+            self._dbusService.add_path('/Mode', 0, writeable=True)
+            self._dbusService.add_path('/MppOperationMode', 2)
+
+        if self.devType == 'pvinverter':
+            self.inverter.type = 'PV Inverter'
             self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=_v, )
             self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
             self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=_w, )
@@ -224,6 +241,17 @@ class DbusHelper:
         logger.info("Publishing to dbus")
         print('devType=' + self.devType)
         if self.devType == 'solarcharger':
+            # Update SOC, DC and System items
+            # print('solarcharger 1')
+            self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
+            self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
+            self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
+            self._dbusService["/Yield/Power"] = round(self.inverter.a11pvInputPower, 2)
+            self._dbusService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
+            self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
+            # print('solarcharger 2')
+
+        if self.devType == 'pvinverter':
             # Update SOC, DC and System items
             # print('solarcharger 1')
             self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)

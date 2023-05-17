@@ -25,9 +25,10 @@ logger.info("Starting dbus-btoutback")
 
 def main():
 	useInverterDevice = False
-	useSolarchargerDevice = True
+	useSolarchargerDevice = False
 	useVebusDevice = False
 	useMultiDevice = False
+	usePvInverterDevice = True
 
 	def poll_inverter(loop):
 		# Run in separate thread. Pass in the mainloop so the thread can kill us if there is an exception.
@@ -54,6 +55,12 @@ def main():
 			# Thread will die with us if deamon
 			poller4.daemon = True
 			poller4.start()
+
+		if usePvInverterDevice:
+			poller5 = Thread(target=lambda: multiDevice.publish_inverter(loop))
+			# Thread will die with us if deamon
+			poller5.daemon = True
+			poller5.start()
 
 		return True
 
@@ -83,6 +90,14 @@ def main():
 		gobject.threads_init()
 	mainloop = gobject.MainLoop()
 
+	if usePvInverterDevice:
+		# Get the initial values for the battery used by setup_vedbus
+		inverterDevice = DbusHelper(outbackInverterObject, 'pvinverter', 1)
+
+		if not inverterDevice.setup_vedbus():
+			logger.error("ERROR >>> Problem with pvinverter " + str(btaddr))
+			sys.exit(1)
+
 	if useInverterDevice:
 		# Get the initial values for the battery used by setup_vedbus
 		inverterDevice = DbusHelper(outbackInverterObject, 'inverter', 1)
@@ -96,7 +111,7 @@ def main():
 		solarchargerDevice = DbusHelper(outbackInverterObject, 'solarcharger', 2)
 
 		if not solarchargerDevice.setup_vedbus():
-			logger.error("ERROR >>> Problem with inverter " + str(btaddr))
+			logger.error("ERROR >>> Problem with solarcharger " + str(btaddr))
 			sys.exit(1)
 
 	if useVebusDevice:
@@ -104,7 +119,7 @@ def main():
 		vebusDevice = DbusHelper(outbackInverterObject, 'vebus', 3)
 
 		if not vebusDevice.setup_vedbus():
-			logger.error("ERROR >>> Problem with inverter " + str(btaddr))
+			logger.error("ERROR >>> Problem with vebus " + str(btaddr))
 			sys.exit(1)
 
 	if useMultiDevice:
@@ -112,7 +127,7 @@ def main():
 		multiDevice = DbusHelper(outbackInverterObject, 'multi', 4)
 
 		if not multiDevice.setup_vedbus():
-			logger.error("ERROR >>> Problem with inverter " + str(btaddr))
+			logger.error("ERROR >>> Problem with multi " + str(btaddr))
 			sys.exit(1)
 
 	# Poll the battery at INTERVAL and run the main loop
