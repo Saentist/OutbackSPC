@@ -90,14 +90,6 @@ def main():
 		gobject.threads_init()
 	mainloop = gobject.MainLoop()
 
-	if usePvInverterDevice:
-		# Get the initial values for the battery used by setup_vedbus
-		pvInverterDevice = DbusHelper(outbackInverterObject, 'pvinverter', 1)
-
-		if not pvInverterDevice.setup_vedbus():
-			logger.error("ERROR >>> Problem with pvinverter " + str(btaddr))
-			sys.exit(1)
-
 	if useInverterDevice:
 		# Get the initial values for the battery used by setup_vedbus
 		inverterDevice = DbusHelper(outbackInverterObject, 'inverter', 1)
@@ -128,6 +120,14 @@ def main():
 
 		if not multiDevice.setup_vedbus():
 			logger.error("ERROR >>> Problem with multi " + str(btaddr))
+			sys.exit(1)
+
+	if usePvInverterDevice:
+		# Get the initial values for the battery used by setup_vedbus
+		pvInverterDevice = DbusHelper(outbackInverterObject, 'pvinverter', 5)
+
+		if not pvInverterDevice.setup_vedbus():
+			logger.error("ERROR >>> Problem with pvinverter " + str(btaddr))
 			sys.exit(1)
 
 	# Poll the battery at INTERVAL and run the main loop
