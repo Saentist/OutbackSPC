@@ -348,9 +348,9 @@ class DbusHelper:
             # self._dbusService["/Alarms/Ripple"] = 0                                               # <- High DC ripple
 
             # Battery Values
-            # self._dbusService["/Dc/0/Voltage"] = 1  # round(self.inverter.a11pvInputVoltage, 2)        # <- Battery Voltage
-            # self._dbusService["/Dc/0/Current"] = 2  # round(self.inverter.a11pvInputCurrent, 2)        # <- Battery current in Ampere, positive when charging
-            # self._dbusService["/Dc/0/Power"] = 2 #  round(self.inverter.a11pvInputPower, 2)            # <- Battery Power
+            self._dbusService["/Dc/0/Voltage"] = 1  # round(self.inverter.a11pvInputVoltage, 2)        # <- Battery Voltage
+            self._dbusService["/Dc/0/Current"] = 2  # round(self.inverter.a11pvInputCurrent, 2)        # <- Battery current in Ampere, positive when charging
+            self._dbusService["/Dc/0/Power"] = 2 #  round(self.inverter.a11pvInputPower, 2)            # <- Battery Power
             # self._dbusService["/Dc/0/Temperature "] = round(self.inverter.a11pvInputPower, 2)     # <- Battery temperature in degrees Celsius
 
             # Additional Data
