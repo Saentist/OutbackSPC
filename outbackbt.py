@@ -5,6 +5,8 @@ from utils import *
 import utils
 import time
 import struct
+import sys
+import os
 
 # QPIGS
 # ac_input_frequency              50.0            Hz
@@ -57,6 +59,12 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 except BTLEException as ex:
                     print(ex)
                     logger.info('Connection failed')
+                    logger.info("There was an error in this run! Waiting 5 seconds")
+                    e = sys.exc_info()
+                    logger.info(e)
+                    time.sleep(2)
+                    logger.info('restarting and reseting bluetooth')
+                    os.system('/etc/init.d/bluetooth restart; hciconfig hci0 reset')
                     time.sleep(3)
                     continue
             try:
