@@ -219,6 +219,8 @@ class DbusHelper:
         try:
             # Call the battery's refresh_data function
             success = self.inverter.refresh_data()
+            print(success)
+            sleep(2)
             if success:
                 print('SUCCESS')
                 self.error_count = 0
