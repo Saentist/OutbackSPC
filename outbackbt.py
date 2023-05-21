@@ -214,9 +214,9 @@ class OutbackBt(Inverter):
     def read_gen_data(self):
         self.mutex.acquire()
 
-        if self.a03Data is None and self.a11Data is None and self.a29Data is None:
-            self.mutex.release()
-            return False
+        #if self.a03Data is None and self.a11Data is None and self.a29Data is None:
+            #self.mutex.release()
+            #return False
 
         if self.a03Data:
             self.a03gridVoltage = self.a03Data[0]
