@@ -41,6 +41,7 @@ class DbusHelper:
         self.devType = devType
         self.inverter.role = self.devType
         self.debug = utils.DEBUG_MODE
+        self.interval = 1
         self._dbusService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
 
     def setup_vedbus(self):
@@ -227,6 +228,7 @@ class DbusHelper:
 
                 # publish all the data from the battery object to dbus
                 self.publish_dbus()
+                sleep(self.interval)
             else:
                 logger.info("INFO >>> Waiting for inverter data")
                 self.error_count += 1
