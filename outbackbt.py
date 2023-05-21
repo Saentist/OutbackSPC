@@ -192,7 +192,7 @@ class OutbackBt(Inverter):
 
         self.address = address
         self.port = "/bt" + address.replace(":", "")
-        self.interval = 1
+        self.interval = 2
 
         dev = OutbackBtDev(self.address)
         dev.addGeneralDataCallback(self.generalDataCB)
@@ -203,7 +203,7 @@ class OutbackBt(Inverter):
 
     def refresh_data(self):
         #if self.newData:
-        print("=> refresh_data")
+        print("=> refresh_data2")
         result = self.read_gen_data()
         while not result:
             result = self.read_gen_data()
