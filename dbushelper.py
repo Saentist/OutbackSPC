@@ -220,6 +220,7 @@ class DbusHelper:
             # Call the battery's refresh_data function
             success = self.inverter.refresh_data()
             if success:
+                print('SUCCESS')
                 self.error_count = 0
                 self.inverter.online = True
 
