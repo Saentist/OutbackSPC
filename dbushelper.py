@@ -359,13 +359,13 @@ class DbusHelper:
                 self._importedDbusValues["/Dc/0/Voltage"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Voltage')  # <- Battery Voltage
                 self._importedDbusValues["/Dc/0/Current"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Current') # <- Battery current in Ampere, positive when charging
                 self._importedDbusValues["/Dc/0/Power"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Power')  # <- Battery Power
-                self._importedDbusValues["/Dc/0/Temperature"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Temperature')  # <- Battery temperature in degrees Celsius
+                #self._importedDbusValues["/Dc/0/Temperature"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Temperature')  # <- Battery temperature in degrees Celsius
                 self._importedDbusValues["/Soc"] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', '/Soc')  # <- Battery temperature in degrees Celsius
 
                 self._dbusService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value())     # <- Battery Voltage
                 self._dbusService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value())    # <- Battery current in Ampere, positive when charging
                 self._dbusService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value())           # <- Battery Power
-                self._dbusService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value())     # <- Battery temperature in degrees Celsius
+                #self._dbusService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value())     # <- Battery temperature in degrees Celsius
                 self._dbusService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value())     # <- Battery temperature in degrees Celsius
 
             # Additional Data
