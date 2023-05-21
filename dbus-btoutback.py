@@ -16,7 +16,7 @@ else:
 # from ve_utils import exit_on_error
 
 from dbushelper import DbusHelper
-from utils import logger
+from utils import *
 import utils
 from inverter import Inverter
 from outbackbt import OutbackBt
