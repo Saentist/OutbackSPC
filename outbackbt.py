@@ -208,6 +208,7 @@ class OutbackBt(Inverter):
         result = self.read_gen_data()
         while not result:
             result = self.read_gen_data()
+            sleep(self.interval)
             return result  # False
 
         return result  # True
