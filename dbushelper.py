@@ -228,11 +228,12 @@ class DbusHelper:
                 # publish all the data from the battery object to dbus
                 self.publish_dbus()
             else:
+                logger.info("INFO >>> Waiting for inverter data")
                 self.error_count += 1
                 # If the battery is offline for more than 10 polls (polled every second for most batteries)
                 if self.error_count >= 20:
                     self.inverter.online = False
-                    logger.warning("Warning >>> inverter seems to be offline")
+                    logger.warning("WARNING >>> Inverter possbily offline")
                 # Has it completely failed
                 if self.error_count >= 100:
                     logger.error("ERROR >>> Loop quited")

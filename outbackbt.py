@@ -219,6 +219,7 @@ class OutbackBt(Inverter):
 
         if self.a03Data is None and self.a11Data is None and self.a29Data is None:
             self.mutex.release()
+            logger.info("INFO >>> Currently no data at all")
             return False
 
         if self.a03Data:
@@ -320,10 +321,13 @@ class OutbackBt(Inverter):
             print('setting data' + "" + charType)
         if charType == "a03":
             self.a03Data = data
+            logger.warning("INFO a03>>> " + str(data))
         elif charType == "a11":
             self.a11Data = data
+            logger.warning("INFO a11>>> " + str(data))
         elif charType == "a29":
             self.a29Data = data
+            logger.warning("INFO a29>>> " + str(data))
         else:
             if self.debug:
                 print("no characteristic given")
