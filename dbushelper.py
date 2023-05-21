@@ -42,9 +42,8 @@ class DbusHelper:
         self.inverter.role = self.devType
         self.debug = utils.DEBUG_MODE
         self.interval = 1
-        self._dbusConnenction = dbusconnection()
-
-        self._dbusService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], self._dbusConnenction)
+        self._dbusConnection = dbusconnection()
+        self._dbusService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], self._dbusConnection)
 
     def setup_vedbus(self):
         # formating
@@ -352,10 +351,13 @@ class DbusHelper:
             # self._dbusService["/Alarms/Ripple"] = 0                                               # <- High DC ripple
 
             # Battery Values
-            self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)        # <- Battery Voltage
-            self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)        # <- Battery current in Ampere, positive when charging
-            self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)            # <- Battery Power
-            # self._dbusService["/Dc/0/Temperature "] = round(self.inverter.a11pvInputPower, 2)     # <- Battery temperature in degrees Celsius
+            hasVictronBMS = 'com.victronenergy.battery.ttyUSB0' in self._dbusConnection.list_names()
+            if hasVictronBMS:
+                self._dbusService["/Dc/0/Voltage"] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', 'Dc/0/Voltage')        # <- Battery Voltage
+                self._dbusService["/Dc/0/Current"] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', 'Dc/0/Current')        # <- Battery current in Ampere, positive when charging
+                self._dbusService["/Dc/0/Power"] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', 'Dc/0/Power')           # <- Battery Power
+                self._dbusService["/Dc/0/Temperature "] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', '/Dc/I')     # <- Battery temperature in degrees Celsius
+                self._dbusService["/Soc "] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', '/Soc')     # <- Battery temperature in degrees Celsius
 
             # Additional Data
             # self._dbusService['/Mode'] = 3                                                          # <- Position of the switch. 1=Charger Only;2=Inverter Only;3=On;4=Off
