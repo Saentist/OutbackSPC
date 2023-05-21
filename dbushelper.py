@@ -195,6 +195,7 @@ class DbusHelper:
             self._dbusService.add_path("/Dc/0/Voltage", None, writeable=True, gettextcallback=_v, )
             self._dbusService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
             self._dbusService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=_w, )
+            self._dbusService.add_path("/Dc/0/Temperature", 0, writeable=True, gettextcallback=_w, )
             self._dbusService.add_path('/MppOperationMode', 1, writeable=True,)
             self._dbusService.add_path("/Ac/ActiveIn/ActiveInput", 0)
             self._dbusService.add_path("/Ac/NumberOfPhases", 1)
@@ -203,6 +204,7 @@ class DbusHelper:
             self._dbusService.add_path('/NrOfTrackers', 1)
             self._dbusService.add_path('/Mode', 3, writeable=True,)
             self._dbusService.add_path('/State', 9, writeable=True,)
+            self._dbusService.add_path('/Soc', 0, writeable=True,)
             self._dbusService.add_path('/UpdateIndex', 0, writeable=True, gettextcallback=_x,)
 
         else:
