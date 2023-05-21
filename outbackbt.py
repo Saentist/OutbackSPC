@@ -55,6 +55,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     logger.info('Connecting ' + self.address)
                     self.bt.connect(self.address, iface=0)
                     logger.info('Connected ' + self.address)
+                    logger.info('Debug mode ' + str(self.debug))
                     connected = True
                 except BTLEException as ex:
                     print(ex)
