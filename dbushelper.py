@@ -363,7 +363,7 @@ class DbusHelper:
 
                 self._dbusService["/Dc/0/Voltage"] = self._importedDbusValues["/Dc/0/Voltage"].get_value()      # <- Battery Voltage
                 self._dbusService["/Dc/0/Current"] = self._importedDbusValues["/Dc/0/Current"].get_value()       # <- Battery current in Ampere, positive when charging
-                self._dbusService["/Dc/0/Power"] = self._importedDbusValues["/Dc/0/Power"]g.et_value()           # <- Battery Power
+                self._dbusService["/Dc/0/Power"] = self._importedDbusValues["/Dc/0/Power"].get_value()           # <- Battery Power
                 self._dbusService["/Dc/0/Temperature"] = self._importedDbusValues["/Dc/0/Temperature "].get_value()     # <- Battery temperature in degrees Celsius
                 self._dbusService["/Soc"] = self._importedDbusValues["/Soc "].get_value()     # <- Battery temperature in degrees Celsius
 
