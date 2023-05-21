@@ -218,8 +218,11 @@ class DbusHelper:
         # This is called every battery.poll_interval milli second as set up per battery type to read and update the data
         try:
             # Call the battery's refresh_data function
+            print('1')
             success = self.inverter.refresh_data()
+            print('2')
             print(success)
+            print('3')
             sleep(2)
             if success:
                 print('SUCCESS')

@@ -83,6 +83,7 @@ class Inverter(ABC):
 
         :return:  false when fail, true if successful
         """
+        print('xxxx')
         return False
 
     def log_settings(self) -> None:
