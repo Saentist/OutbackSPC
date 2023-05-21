@@ -188,7 +188,7 @@ class OutbackBt(Inverter):
         self.a11Data = None
         self.a29Data = None
 
-        #self.newData = False
+        self.newData = False
 
         self.address = address
         self.port = "/bt" + address.replace(":", "")
@@ -202,17 +202,17 @@ class OutbackBt(Inverter):
         return False
 
     def refresh_data(self):
-        #if self.newData:
-        if self.debug:
-            print("=> refresh_data")
-        result = False  #  self.read_gen_data()
-        while not result:
-            result = self.read_gen_data()
-            return result  # False
+        if self.newData:
+            if self.debug:
+                print("=> refresh_data")
+            result = False  #  self.read_gen_data()
+            while not result:
+                result = self.read_gen_data()
+                return result  # False
 
-        return result  # True
-        #else:
-            #return False
+            return result  # True
+        else:
+            return False
 
     def read_gen_data(self):
         self.mutex.acquire()
@@ -311,7 +311,7 @@ class OutbackBt(Inverter):
                 print('a29 unknown9 => ' + str(self.a29unknown9))
 
         self.mutex.release()
-        #self.newData = False
+        self.newData = False
         return True
 
 
@@ -332,7 +332,7 @@ class OutbackBt(Inverter):
             if self.debug:
                 print("no characteristic given")
 
-        #self.newData = True
+        self.newData = True
         self.mutex.release()
 
 
