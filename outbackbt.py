@@ -205,7 +205,7 @@ class OutbackBt(Inverter):
         #if self.newData:
         if self.debug:
             print("=> refresh_data")
-        result = self.read_gen_data()
+        result = False  #  self.read_gen_data()
         while not result:
             result = self.read_gen_data()
             return result  # False
