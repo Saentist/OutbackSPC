@@ -218,14 +218,8 @@ class DbusHelper:
         # This is called every battery.poll_interval milli second as set up per battery type to read and update the data
         try:
             # Call the battery's refresh_data function
-            print('1')
             success = self.inverter.refresh_data()
-            print('2')
-            print(success)
-            print('3')
-            sleep(2)
             if success:
-                print('SUCCESS')
                 self.error_count = 0
                 self.inverter.online = True
 
@@ -233,14 +227,14 @@ class DbusHelper:
                 self.publish_dbus()
             else:
                 self.error_count += 1
-                print('error' + str(self.error_count))
                 # If the battery is offline for more than 10 polls (polled every second for most batteries)
-                if self.error_count >= 10:
+                if self.error_count >= 20:
                     self.inverter.online = False
-                    print('inverter seems to be offline')
+                    logger.warning("Warning >>> inverter seems to be offline")
+                    print('')
                 # Has it completely failed
-                if self.error_count >= 60:
-                    print('loop quited')
+                if self.error_count >= 100:
+                    logger.error("ERROR >>> Loop quited")
                     loop.quit()
         except:
             traceback.print_exc()

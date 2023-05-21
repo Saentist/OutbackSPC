@@ -203,14 +203,15 @@ class OutbackBt(Inverter):
 
     def refresh_data(self):
         #if self.newData:
-        print("=> refresh_data2")
+        print("=> refresh_data")
         result = self.read_gen_data()
         print('x1')
         while not result:
             print('x2')
             result = self.read_gen_data()
-            return result
-        return result
+            return result # False
+
+        return result # True
         #else:
             #return False
 
@@ -219,7 +220,6 @@ class OutbackBt(Inverter):
 
         if self.a03Data is None and self.a11Data is None and self.a29Data is None:
             self.mutex.release()
-            print('all NONE')
             return False
 
         if self.a03Data:
