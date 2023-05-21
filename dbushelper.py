@@ -359,14 +359,14 @@ class DbusHelper:
                 self._importedDbusValues["/Dc/0/Voltage"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Voltage')  # <- Battery Voltage
                 self._importedDbusValues["/Dc/0/Current"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Current') # <- Battery current in Ampere, positive when charging
                 self._importedDbusValues["/Dc/0/Power"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Power')  # <- Battery Power
-                #self._importedDbusValues["/Dc/0/Temperature"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Temperature')  # <- Battery temperature in degrees Celsius
+                # self._importedDbusValues["/Dc/0/Temperature"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Temperature')  # <- Battery temperature in degrees Celsius
                 self._importedDbusValues["/Soc"] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', '/Soc')  # <- Battery temperature in degrees Celsius
 
-                self._dbusService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value())     # <- Battery Voltage
-                self._dbusService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value())    # <- Battery current in Ampere, positive when charging
-                self._dbusService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value())           # <- Battery Power
-                #self._dbusService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value())     # <- Battery temperature in degrees Celsius
-                self._dbusService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value())     # <- Battery temperature in degrees Celsius
+                self._dbusService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(), 2)     # <- Battery Voltage
+                self._dbusService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(), 2)    # <- Battery current in Ampere, positive when charging
+                self._dbusService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(), 2)           # <- Battery Power
+                # self._dbusService["/Dc/0/Temperature"] = if self._importedDbusValues["/Dc/0/Temperature"].get_value() : round(self._importedDbusValues["/Dc/0/Temperature"].get_value())     # <- Battery temperature in degrees Celsius
+                self._dbusService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(), 2)     # <- Battery temperature in degrees Celsius
 
             # Additional Data
             # self._dbusService['/Mode'] = 3                                                          # <- Position of the switch. 1=Charger Only;2=Inverter Only;3=On;4=Off
@@ -375,9 +375,9 @@ class DbusHelper:
 
             # PV tracker information:
             # self._dbusService['/NrOfTrackers'] = 1                                                  # <- number of trackers
-            self._dbusService['/Pv/I'] = round(self.inverter.a11pvInputCurrent, 2)                # <- PV array voltage from 1st tracker
+            #self._dbusService['/Pv/I'] = round(self.inverter.a11pvInputCurrent, 2)                # <- PV array voltage from 1st tracker
             self._dbusService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
-            self._dbusService['/Pv/P'] = round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
+            #self._dbusService['/Pv/P'] = round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
             self._dbusService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2)                                                # <- PV array power (Watts)
             # self._dbusService['/Yield/User'] = 97                                                  # <- Total kWh produced (user resettable)
             # self._dbusService['/Yield/System'] = 96                                                # <- Total kWh produced (not resettable)
