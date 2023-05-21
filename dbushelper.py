@@ -39,6 +39,7 @@ class DbusHelper:
         self.error_count = 0
         self.devType = devType
         self.inverter.role = self.devType
+        self.debug = utils.DEBUG_MODE
         self._dbusService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
 
     def setup_vedbus(self):
@@ -231,7 +232,6 @@ class DbusHelper:
                 if self.error_count >= 20:
                     self.inverter.online = False
                     logger.warning("Warning >>> inverter seems to be offline")
-                    print('')
                 # Has it completely failed
                 if self.error_count >= 100:
                     logger.error("ERROR >>> Loop quited")
@@ -242,28 +242,23 @@ class DbusHelper:
 
     def publish_dbus(self):
         logger.info("Publishing to dbus")
-        print('devType=' + self.devType)
+        if self.debug:
+            print('devType=' + self.devType)
         if self.devType == 'solarcharger':
-            # Update SOC, DC and System items
-            # print('solarcharger 1')
             self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
             self._dbusService["/Yield/Power"] = round(self.inverter.a11pvInputPower, 2)
             self._dbusService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
-            # print('solarcharger 2')
 
         if self.devType == 'pvinverter':
-            # Update SOC, DC and System items
-            # print('solarcharger 1')
             self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
             self._dbusService["/Yield/Power"] = round(self.inverter.a11pvInputPower, 2)
             self._dbusService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
-            # print('solarcharger 2')
 
         if self.devType == 'vebus':
             # AC Input measurements:
@@ -377,13 +372,10 @@ class DbusHelper:
             self._dbusService['/UpdateIndex'] = index
 
         if self.devType == 'inverter':
-            # print('grid 1')
             self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03acActivePower - 30, 2)
             self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03acOutputVoltage, 2)
             self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03acOutputCurrent, 2)
             # self._dbusService["/Yield/Power"] = round(1234, 2) # ist die summe die von der PV Anlage kommt errechnet sich automatisch
-            # print('grid 2')
 
-        # logger.debug("logged to dbus [%s]" % str(round(self.inverter.soc, 2)))

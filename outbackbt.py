@@ -58,9 +58,9 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     logger.info('Debug mode ' + str(self.debug))
                     connected = True
                 except BTLEException as ex:
-                    print(ex)
                     logger.info('Connection failed')
                     logger.info("There was an error in this run! Waiting 5 seconds")
+                    logger.info(ex)
                     e = sys.exc_info()
                     logger.info(e)
                     time.sleep(2)
@@ -153,7 +153,8 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 continue
 
     def connect(self):
-        print('=> connect')
+        if self.debug:
+            print('=> connect')
         self.start()
 
     def stop(self):
@@ -163,9 +164,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
         self.generalDataCallback = func
 
     def getExtractData(self, byteArrayObject):
-        #print(byteArrayObject)
         tuple_of_shorts = struct.unpack('>' + 'h' * (len(byteArrayObject) // 2), byteArrayObject)
-        #print(tuple_of_shorts)
         myResult = []
         for s in tuple_of_shorts:
             newVal = (((s >> 8) & 255) + (((s & 255) << 8) & 65280))
@@ -204,15 +203,14 @@ class OutbackBt(Inverter):
 
     def refresh_data(self):
         #if self.newData:
-        print("=> refresh_data")
+        if self.debug:
+            print("=> refresh_data")
         result = self.read_gen_data()
-        print('x1')
         while not result:
-            print('x2')
             result = self.read_gen_data()
             return result # False
 
-        return result # True
+        return result  # True
         #else:
             #return False
 
@@ -318,7 +316,8 @@ class OutbackBt(Inverter):
 
     def generalDataCB(self, data, charType):
         self.mutex.acquire()
-        print('setting data' + "" + charType)
+        if self.debug:
+            print('setting data' + "" + charType)
         if charType == "a03":
             self.a03Data = data
         elif charType == "a11":
@@ -326,7 +325,8 @@ class OutbackBt(Inverter):
         elif charType == "a29":
             self.a29Data = data
         else:
-            print("no characteristic given")
+            if self.debug:
+                print("no characteristic given")
 
         #self.newData = True
         self.mutex.release()
