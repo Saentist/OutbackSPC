@@ -13,7 +13,7 @@ sys.path.insert(
         "/opt/victronenergy/dbus-systemcalc-py/ext/velib_python",
     ),
 )
-from vedbus import VeDbusService
+from vedbus import VeDbusService, VeDbusItemImport
 from utils import *
 import utils
 
@@ -42,7 +42,8 @@ class DbusHelper:
         self.inverter.role = self.devType
         self.debug = utils.DEBUG_MODE
         self.interval = 1
-        self._dbusService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
+        self._dbusConnenction = dbusconnection()
+        self._dbusService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], self._dbusConnenction)
 
     def setup_vedbus(self):
         # formating
