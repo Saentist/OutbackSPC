@@ -43,6 +43,7 @@ class DbusHelper:
         self.debug = utils.DEBUG_MODE
         self.interval = 1
         self._dbusConnenction = dbusconnection()
+
         self._dbusService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], self._dbusConnenction)
 
     def setup_vedbus(self):
