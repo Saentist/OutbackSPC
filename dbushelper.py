@@ -276,7 +276,7 @@ class DbusHelper:
             self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03acOutputCurrent, 2)
             self._dbusService["/Ac/Out/L1/F"] = round(self.inverter.a03acFrequency, 2)
             # self._dbusService["/Ac/Out/L1/S"] = round(self.inverter.a03acOutputCurrent, 2)
-            self._dbusService["/Yield/Power"] = round(1234, 2) # ist die summe die von der PV Anlage kommt errechnet sich automatisch
+            self._dbusService["/Yield/Power"] = round(self.inverter.a11pvInputPower, 2)
             self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
 
             if hasVictronBMS:
