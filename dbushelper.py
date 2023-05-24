@@ -252,13 +252,42 @@ class DbusHelper:
         logger.info("Publishing to dbus")
         if self.debug:
             print('devType=' + self.devType)
-        if self.devType == 'solarcharger':
+
+        # Battery Values
+        hasVictronBMS = 'com.victronenergy.battery.ttyUSB0' in self._dbusConnection.list_names()
+        if hasVictronBMS:
+            self._importedDbusValues["/Dc/0/Voltage"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Voltage')  # <- Battery Voltage
+            self._importedDbusValues["/Dc/0/Current"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Current') # <- Battery current in Ampere, positive when charging
+            self._importedDbusValues["/Dc/0/Power"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Power')  # <- Battery Power
+            # self._importedDbusValues["/Dc/0/Temperature"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Temperature')  # <- Battery temperature in degrees Celsius
+            self._importedDbusValues["/Soc"] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', '/Soc')  # <- Battery temperature in degrees Celsius
+
+        if self.devType == 'inverter':
             self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
-            self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
+            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03acActivePower - 30, 2)
+            self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03acOutputVoltage, 2)
+            self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03acOutputCurrent, 2)
+            # self._dbusService["/Yield/Power"] = round(1234, 2) # ist die summe die von der PV Anlage kommt errechnet sich automatisch
+
+            if hasVictronBMS:
+                self._dbusService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(),2)  # <- Battery Voltage
+                self._dbusService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(),2)  # <- Battery current in Ampere, positive when charging
+                self._dbusService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)     # <- Battery temperature in degrees Celsius
+                # self._dbusService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(),2)  # <- Battery temperature in degrees Celsius
+                # self._dbusService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(),2)  # <- Battery Power
+
+        if self.devType == 'solarcharger':
             self._dbusService["/Yield/Power"] = round(self.inverter.a11pvInputPower, 2)
             self._dbusService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
+
+            if hasVictronBMS:
+                self._dbusService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(),2)  # <- Battery Voltage
+                self._dbusService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(),2)  # <- Battery current in Ampere, positive when charging
+                self._dbusService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)     # <- Battery temperature in degrees Celsius
+                self._dbusService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(),2)  # <- Battery Power
+                # self._dbusService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(),2)  # <- Battery temperature in degrees Celsius
 
         if self.devType == 'pvinverter':
             self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
@@ -353,14 +382,6 @@ class DbusHelper:
             # self._dbusService["/Alarms/Overload"] = 0                                             # <- Inverter overload
             # self._dbusService["/Alarms/Ripple"] = 0                                               # <- High DC ripple
 
-            # Battery Values
-            hasVictronBMS = 'com.victronenergy.battery.ttyUSB0' in self._dbusConnection.list_names()
-            if hasVictronBMS:
-                self._importedDbusValues["/Dc/0/Voltage"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Voltage')  # <- Battery Voltage
-                self._importedDbusValues["/Dc/0/Current"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Current') # <- Battery current in Ampere, positive when charging
-                self._importedDbusValues["/Dc/0/Power"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Power')  # <- Battery Power
-                # self._importedDbusValues["/Dc/0/Temperature"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Temperature')  # <- Battery temperature in degrees Celsius
-                self._importedDbusValues["/Soc"] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', '/Soc')  # <- Battery temperature in degrees Celsius
 
                 self._dbusService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(), 2)     # <- Battery Voltage
                 self._dbusService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(), 2)    # <- Battery current in Ampere, positive when charging
@@ -388,11 +409,5 @@ class DbusHelper:
                 index = 0  # overflow from 255 to 0
             self._dbusService['/UpdateIndex'] = index
 
-        if self.devType == 'inverter':
-            self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
-            self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
-            self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03acActivePower - 30, 2)
-            self._dbusService["/Ac/Out/L1/V"] = round(self.inverter.a03acOutputVoltage, 2)
-            self._dbusService["/Ac/Out/L1/I"] = round(self.inverter.a03acOutputCurrent, 2)
-            # self._dbusService["/Yield/Power"] = round(1234, 2) # ist die summe die von der PV Anlage kommt errechnet sich automatisch
+
 
