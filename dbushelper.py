@@ -92,6 +92,7 @@ class DbusHelper:
             self._dbusService.add_path('/Yield/System', 0)  # Total kWh produced (not resettable)
             self._dbusService.add_path('/Mode', 0, writeable=True)
             self._dbusService.add_path('/MppOperationMode', 2)
+            self._dbusService.add_path('/Dc/0/Temperature', None, writeable=True)
 
         if self.devType == 'pvinverter':
             self.inverter.type = 'PV Inverter'
