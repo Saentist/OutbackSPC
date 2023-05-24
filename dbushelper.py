@@ -286,7 +286,7 @@ class DbusHelper:
             if hasVictronBMS:
                 self._dbusService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(),2)  # <- Battery Voltage
                 self._dbusService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(),2)  # <- Battery current in Ampere, positive when charging
-                self._dbusService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)     # <- Battery temperature in degrees Celsius
+                # self._dbusService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)     # <- Battery temperature in degrees Celsius
                 self._dbusService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(),2)  # <- Battery Power
                 # self._dbusService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(),2)  # <- Battery temperature in degrees Celsius
 
