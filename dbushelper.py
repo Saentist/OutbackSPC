@@ -382,13 +382,6 @@ class DbusHelper:
             # self._dbusService["/Alarms/Overload"] = 0                                             # <- Inverter overload
             # self._dbusService["/Alarms/Ripple"] = 0                                               # <- High DC ripple
 
-
-                self._dbusService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(), 2)     # <- Battery Voltage
-                self._dbusService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(), 2)    # <- Battery current in Ampere, positive when charging
-                self._dbusService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(), 2)           # <- Battery Power
-                # self._dbusService["/Dc/0/Temperature"] = if self._importedDbusValues["/Dc/0/Temperature"].get_value() : round(self._importedDbusValues["/Dc/0/Temperature"].get_value())     # <- Battery temperature in degrees Celsius
-                self._dbusService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(), 2)     # <- Battery temperature in degrees Celsius
-
             # Additional Data
             # self._dbusService['/Mode'] = 3                                                          # <- Position of the switch. 1=Charger Only;2=Inverter Only;3=On;4=Off
             # self._dbusService['/State'] = 252                                                       # <- Charger state 0=Off 2=Fault 3=Bulk 4=Absorption 5=Float 6=Storage 7=Equalize 8=Passthrough 9=Inverting 245=Wake-up 25-=Blocked 252=External control
