@@ -3,6 +3,7 @@
 from typing import Union
 
 from time import sleep
+from outbackbt import OutbackBtDev
 from dbus.mainloop.glib import DBusGMainLoop
 from threading import Thread
 import sys
@@ -40,7 +41,10 @@ def main():
 	logger.info("dbus-btoutback v" + str(utils.DRIVER_VERSION) + utils.DRIVER_SUBVERSION)
 
 	btaddr = get_btaddr()
-	outbackInverterObject: Inverter = OutbackBt(btaddr[0])
+
+	outbackBtDevConnection = OutbackBtDev(btaddr[0])
+	outbackInverterObject: Inverter = OutbackBt(outbackBtDevConnection)
+	outbackBtDevConnection.connect()
 
 	if outbackInverterObject is None:
 		logger.error("ERROR >>> No Inverter connection at " + str(btaddr))

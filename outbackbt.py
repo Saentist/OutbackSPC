@@ -151,7 +151,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
         return myResult
 
 class OutbackBt(Inverter):
-    def __init__(self, address):
+    def __init__(self, btConnectionObject):
         Inverter.__init__(self, 0, 0, address)
 
         self.type = ""
@@ -172,7 +172,7 @@ class OutbackBt(Inverter):
         self.port = "/bt" + address.replace(":", "")
         self.interval = 2
 
-        dev = OutbackBtDev(self.address)
+        dev = btConnectionObject
         dev.addGeneralDataCallback(self.generalDataCB)
         dev.connect()
 
