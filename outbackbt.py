@@ -174,7 +174,7 @@ class OutbackBt(Inverter):
 
         dev = btConnectionObject
         dev.addGeneralDataCallback(self.generalDataCB)
-        dev.connect()
+        # dev.connect()
 
     def test_connection(self):
         return False
