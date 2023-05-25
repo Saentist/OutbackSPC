@@ -73,7 +73,7 @@ class DbusHelper:
         if self.useInverterDevice:
             devType = "inverter"
             logger.info("%s" % ("com.victronenergy." + devType + "." + short_port))
-            self._dbusInverterService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:],self._dbusConnection)
+            self._dbusInverterService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
 
             # Create the management objects, as specified in the ccgx dbus-api document
             self._dbusInverterService.add_path("/Mgmt/ProcessName", __file__)
@@ -106,7 +106,7 @@ class DbusHelper:
         if self.useSolarchargerDevice:
             devType = "solarcharger"
             logger.info("%s" % ("com.victronenergy." + devType + "." + short_port))
-            self._dbusSolarChargerService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:],self._dbusConnection)
+            self._dbusSolarChargerService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
 
             # Create the management objects, as specified in the ccgx dbus-api document
             self._dbusSolarChargerService.add_path("/Mgmt/ProcessName", __file__)
@@ -142,7 +142,7 @@ class DbusHelper:
         if self.usePvInverterDevice:
             devType = "pvinverter"
             logger.info("%s" % ("com.victronenergy." + devType + "." + short_port))
-            self._dbusPvinverterService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:],self._dbusConnection)
+            self._dbusPvinverterService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
 
             # Create the management objects, as specified in the ccgx dbus-api document
             self._dbusPvinverterService.add_path("/Mgmt/ProcessName", __file__)
@@ -177,7 +177,7 @@ class DbusHelper:
         if self.useVebusDevice:
             devType = "vebus"
             logger.info("%s" % ("com.victronenergy." + devType + "." + short_port))
-            self._dbusVebusService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:],self._dbusConnection)
+            self._dbusVebusService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
 
             # Create the management objects, as specified in the ccgx dbus-api document
             self._dbusVebusService.add_path("/Mgmt/ProcessName", __file__)
@@ -231,7 +231,7 @@ class DbusHelper:
         if self.useMultiDevice:
             devType = "multi"
             logger.info("%s" % ("com.victronenergy." + devType + "." + short_port))
-            self._dbusMulitService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:],self._dbusConnection)
+            self._dbusMulitService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
 
             # Create the management objects, as specified in the ccgx dbus-api document
             self._dbusMulitService.add_path("/Mgmt/ProcessName", __file__)
