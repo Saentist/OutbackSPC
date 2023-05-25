@@ -1,8 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from typing import Union
-
-from time import sleep
 from outbackbt import OutbackBtDev
 from dbus.mainloop.glib import DBusGMainLoop
 from threading import Thread
