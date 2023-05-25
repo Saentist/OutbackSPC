@@ -323,11 +323,6 @@ class DbusHelper:
             self._importedDbusValues["/Soc"] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', '/Soc')
             # self._importedDbusValues["/Dc/0/Temperature"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Temperature')
 
-            index = self._importedDbusValues['/UpdateIndex'] + 1  # increment index
-            if index > 255:  # maximum value of the index
-                index = 0  # overflow from 255 to 0
-            self._importedDbusValues['/UpdateIndex'] = index
-
         if self.useInverterDevice:
             logger.info("==> writing inverter data ")
             self._dbusInverterService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
@@ -365,10 +360,10 @@ class DbusHelper:
                 self._dbusSolarChargerService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(),2)  # <- Battery Power
                 # self._dbusSolarChargerService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(),2)  # <- Battery temperature in degrees Celsius
 
-                index = self._dbusSolarChargerService['/UpdateIndex'] + 1  # increment index
-                if index > 255:  # maximum value of the index
-                    index = 0  # overflow from 255 to 0
-                self._dbusSolarChargerService['/UpdateIndex'] = index
+            index = self._dbusSolarChargerService['/UpdateIndex'] + 1  # increment index
+            if index > 255:  # maximum value of the index
+                index = 0  # overflow from 255 to 0
+            self._dbusSolarChargerService['/UpdateIndex'] = index
 
         if self.usePvInverterDevice:
             logger.info("==> writing pv inverter data ")
