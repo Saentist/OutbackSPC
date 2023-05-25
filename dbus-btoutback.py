@@ -54,7 +54,7 @@ def main():
 	mainloop = gobject.MainLoop()
 
 	# Get the initial values for the battery used by setup_vedbus
-	inverterDevice = DbusHelper(outbackInverterObject, 'inverter', 1)
+	inverterDevice = DbusHelper(outbackInverterObject, 1)
 
 	if not inverterDevice.setup_vedbus():
 		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
@@ -75,6 +75,7 @@ def main():
 		mainloop.run()
 	except KeyboardInterrupt:
 		pass
+
 
 if __name__ == "__main__":
 	main()
