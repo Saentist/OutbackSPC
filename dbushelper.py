@@ -270,6 +270,7 @@ class DbusHelper:
             self._importedDbusValues["/Soc"] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', '/Soc')  # <- Battery temperature in degrees Celsius
 
         if self.devType == 'inverter':
+            logger.info("==> " + str(self.devType))
             self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03acActivePower, 2)
@@ -288,6 +289,7 @@ class DbusHelper:
                 # self._dbusService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(),2)  # <- Battery Power
 
         if self.devType == 'solarcharger':
+            logger.info("==> " + str(self.devType))
             self._dbusService["/Yield/Power"] = round(self.inverter.a11pvInputPower, 2)
             self._dbusService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
@@ -300,6 +302,7 @@ class DbusHelper:
                 # self._dbusService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(),2)  # <- Battery temperature in degrees Celsius
 
         if self.devType == 'pvinverter':
+            logger.info("==> " + str(self.devType))
             self._dbusService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
             self._dbusService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusService["/Dc/0/Power"] = round(self.inverter.a11pvInputPower, 2)
@@ -308,6 +311,7 @@ class DbusHelper:
             self._dbusService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
 
         if self.devType == 'vebus':
+            logger.info("==> " + str(self.devType))
             # AC Input measurements:
             # self._dbusService["/Ac/In/1/L1/P"] = round(self.inverter.a03acApparentPower - 30, 2)                                               # <- Real power of AC IN1 on L1
             # self._dbusService["/Ac/In/1/L1/I"] = round(self.inverter.a03acOutputCurrent, 2)                                                # <- Current of AC IN1 on L1
@@ -361,6 +365,7 @@ class DbusHelper:
             # self._dbusService['/MppOperationMode'] = 1                                              # <- 0 = Off 1 = Voltage or Current limited 2 = MPPT Tracker active
 
         if self.devType == 'multi':
+            logger.info("==> " + str(self.devType))
             # AC Input measurements:
             # self._dbusService["/Ac/In/1/L1/P"] = round(self.inverter.a03acApparentPower - 30, 2)                                               # <- Real power of AC IN1 on L1
             # self._dbusService["/Ac/In/1/L1/I"] = round(self.inverter.a03acOutputCurrent, 2)                                                # <- Current of AC IN1 on L1
