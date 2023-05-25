@@ -17,7 +17,6 @@ from vedbus import VeDbusService, VeDbusItemImport
 from utils import *
 import utils
 
-
 # Again not all of these needed this is just duplicating the Victron code.
 class SystemBus(dbus.bus.BusConnection):
     def __new__(cls):
@@ -48,6 +47,7 @@ class DbusHelper:
         self.debug = utils.DEBUG_MODE
         self.interval = 1
         self._importedDbusValues = {}
+        self._dbusConnection = dbusconnection()
 
         # ON / OFF SWITCHES
         self.useInverterDevice = True
