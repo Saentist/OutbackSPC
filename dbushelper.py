@@ -324,22 +324,22 @@ class DbusHelper:
 
         if self.useInverterDevice:
             logger.info("==> writing inverter data ")
-            self._dbusInverterService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
-            self._dbusInverterService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
+            # self._dbusInverterService["/Dc/0/Voltage"] = round(self.inverter.a11pvInputVoltage, 2)
+            # self._dbusInverterService["/Dc/0/Current"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusInverterService["/Ac/Out/L1/P"] = round(self.inverter.a03acActivePower, 2)
             self._dbusInverterService["/Ac/Out/L1/V"] = round(self.inverter.a03acOutputVoltage, 2)
             self._dbusInverterService["/Ac/Out/L1/I"] = round(self.inverter.a03acOutputCurrent, 2)
             self._dbusInverterService["/Ac/Out/L1/F"] = round(self.inverter.a03acFrequency, 2)
             # self._dbusInverterService["/Ac/Out/L1/S"] = round(self.inverter.a03acOutputCurrent, 2)
-            self._dbusInverterService["/Yield/Power"] = round(self.inverter.a11pvInputPower, 2)
-            self._dbusInverterService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
+            # self._dbusInverterService["/Yield/Power"] = round(self.inverter.a11pvInputPower, 2)
+            # self._dbusInverterService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
 
-            if hasVictronBMS:
-                self._dbusInverterService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(),2)
-                self._dbusInverterService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(),2)
+            # if hasVictronBMS:
+                # self._dbusInverterService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(),2)
+                # self._dbusInverterService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(),2)
                 # self._dbusInverterService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)
                 # self._dbusInverterService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(),2)
-                self._dbusInverterService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(), 2)
+                # self._dbusInverterService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(), 2)
 
             index = self._dbusInverterService['/UpdateIndex'] + 1  # increment index
             if index > 255:  # maximum value of the index
