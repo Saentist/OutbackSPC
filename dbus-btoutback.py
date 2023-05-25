@@ -43,7 +43,7 @@ def main():
 	btaddr = get_btaddr()
 
 	outbackBtDevConnection = OutbackBtDev(btaddr[0])
-	outbackInverterObject: Inverter = OutbackBt(outbackBtDevConnection)
+	outbackInverterObject: Inverter = OutbackBt(outbackBtDevConnection, btaddr[0])
 	outbackBtDevConnection.connect()
 
 	if outbackInverterObject is None:
