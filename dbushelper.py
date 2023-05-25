@@ -53,7 +53,7 @@ class DbusHelper:
         self.useInverterDevice = True
         self.useSolarchargerDevice = True
         self.usePvInverterDevice = False
-        self.useVebusDevice = False
+        self.useVebusDevice = True
         self.useMultiDevice = False
 
     def setup_vedbus(self):
