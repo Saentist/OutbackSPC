@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3 test
 from bluepy.btle import Scanner, DefaultDelegate
 
 class ScanDelegate(DefaultDelegate):
