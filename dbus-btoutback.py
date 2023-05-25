@@ -25,11 +25,6 @@ from outbackbt import OutbackBt
 logger.info("Starting dbus-btoutback")
 
 def main():
-	useInverterDevice = True
-	useSolarchargerDevice = True
-	useVebusDevice = False
-	useMultiDevice = False
-	usePvInverterDevice = False
 
 	def get_btaddr() -> list:
 		# Get the bluetooth address we need to use from the argument
