@@ -47,7 +47,6 @@ class DbusHelper:
         self.error_count = 0
         self.debug = utils.DEBUG_MODE
         self.interval = 1
-        self._dbusConnection = dbusconnection()
         self._importedDbusValues = {}
 
         # ON / OFF SWITCHES
@@ -297,16 +296,16 @@ class DbusHelper:
                 sleep(self.interval)
             else:
                 logger.info("INFO >>> Waiting for inverter data")
-                # logger.info("INFO >>> Waiting for inverter data")
-                # self.error_count += 1
-                # # If the battery is offline for more than 10 polls (polled every second for most batteries)
-                # if self.error_count >= 20:
-                #     self.inverter.online = False
-                #     logger.warning("WARNING >>> Inverter possbily offline")
-                # # Has it completely failed
-                # if self.error_count >= 100:
-                #     logger.error("ERROR >>> Loop quited")
-                #     loop.quit()
+                logger.info("INFO >>> Waiting for inverter data")
+                self.error_count += 1
+                # If the battery is offline for more than 10 polls (polled every second for most batteries)
+                if self.error_count >= 20:
+                    self.inverter.online = False
+                    logger.warning("WARNING >>> Inverter possbily offline")
+                # Has it completely failed
+                if self.error_count >= 100:
+                    logger.error("ERROR >>> Loop quited")
+                    loop.quit()
         except:
             traceback.print_exc()
             loop.quit()
