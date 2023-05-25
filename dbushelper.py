@@ -101,6 +101,7 @@ class DbusHelper:
             self._dbusInverterService.add_path("/Yield/Power", None, writeable=True, gettextcallback=_w, )
             self._dbusInverterService.add_path("/Pv/V", None, writeable=True, gettextcallback=_v, )
             self._dbusInverterService.add_path('/Soc', 0, writeable=True, gettextcallback=_p, )
+            self._dbusInverterService.add_path('/UpdateIndex', 0, writeable=True, gettextcallback=_x, )
             self._dbusInverterService.add_path("/CustomName", "Outback Inverter", writeable=True)
 
         if self.useSolarchargerDevice:
@@ -137,6 +138,7 @@ class DbusHelper:
             self._dbusSolarChargerService.add_path('/Mode', 0, writeable=True)
             self._dbusSolarChargerService.add_path('/MppOperationMode', 2)
             self._dbusSolarChargerService.add_path('/Dc/0/Temperature', None, writeable=True)
+            self._dbusSolarChargerService.add_path('/UpdateIndex', 0, writeable=True, gettextcallback=_x, )
             self._dbusSolarChargerService.add_path("/CustomName", "Outback Solarcharger", writeable=True)
 
         if self.usePvInverterDevice:
@@ -172,6 +174,7 @@ class DbusHelper:
             self._dbusPvinverterService.add_path('/Yield/System', 0)  # Total kWh produced (not resettable)
             self._dbusPvinverterService.add_path('/Mode', 0, writeable=True)
             self._dbusPvinverterService.add_path('/MppOperationMode', 2)
+            self._dbusPvinverterService.add_path('/UpdateIndex', 0, writeable=True, gettextcallback=_x, )
             self._dbusPvinverterService.add_path("/CustomName", "Outback PV Inverter", writeable=True)
 
         if self.useVebusDevice:
@@ -226,6 +229,7 @@ class DbusHelper:
             self._dbusVebusService.add_path('/Leds/Overload', 0)
             self._dbusVebusService.add_path('/Leds/LowBattery', 0)
             self._dbusVebusService.add_path('/Leds/Temperature', 0)
+            self._dbusVebusService.add_path('/UpdateIndex', 0, writeable=True, gettextcallback=_x, )
             self._dbusVebusService.add_path("/CustomName", "Outback Vebus", writeable=True)
 
         if self.useMultiDevice:
