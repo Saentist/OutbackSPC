@@ -352,11 +352,11 @@ class DbusHelper:
             self._dbusSolarChargerService["/Pv/I"] = round(self.inverter.a11pvInputCurrent, 2)
             self._dbusSolarChargerService["/Pv/V"] = round(self.inverter.a11pvInputVoltage, 2)
 
-            if hasVictronBMS:
-                self._dbusSolarChargerService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(),2)  # <- Battery Voltage
-                self._dbusSolarChargerService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(),2)  # <- Battery current in Ampere, positive when charging
+            # if hasVictronBMS:
+                # self._dbusSolarChargerService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(),2)  # <- Battery Voltage
+                # self._dbusSolarChargerService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(),2)  # <- Battery current in Ampere, positive when charging
                 # self._dbusSolarChargerService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)     # <- Battery temperature in degrees Celsius
-                self._dbusSolarChargerService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(),2)  # <- Battery Power
+                # self._dbusSolarChargerService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(),2)  # <- Battery Power
                 # self._dbusSolarChargerService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(),2)  # <- Battery temperature in degrees Celsius
 
             index = self._dbusSolarChargerService['/UpdateIndex'] + 1  # increment index
