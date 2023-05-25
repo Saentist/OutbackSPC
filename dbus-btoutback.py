@@ -53,77 +53,19 @@ def main():
 		gobject.threads_init()
 	mainloop = gobject.MainLoop()
 
-	if useInverterDevice:
-		# Get the initial values for the battery used by setup_vedbus
-		inverterDevice = DbusHelper(outbackInverterObject, 'inverter', 1)
+	# Get the initial values for the battery used by setup_vedbus
+	inverterDevice = DbusHelper(outbackInverterObject, 'inverter', 1)
 
-		if not inverterDevice.setup_vedbus():
-			logger.error("ERROR >>> Problem with inverter " + str(btaddr))
-			sys.exit(1)
-
-	if useSolarchargerDevice:
-		# Get the initial values for the battery used by setup_vedbus
-		solarchargerDevice = DbusHelper(outbackInverterObject, 'solarcharger', 2)
-
-		if not solarchargerDevice.setup_vedbus():
-			logger.error("ERROR >>> Problem with solarcharger " + str(btaddr))
-			sys.exit(1)
-
-	if useVebusDevice:
-		# Get the initial values for the battery used by setup_vedbus
-		vebusDevice = DbusHelper(outbackInverterObject, 'vebus', 3)
-
-		if not vebusDevice.setup_vedbus():
-			logger.error("ERROR >>> Problem with vebus " + str(btaddr))
-			sys.exit(1)
-
-	if useMultiDevice:
-		# Get the initial values for the battery used by setup_vedbus
-		multiDevice = DbusHelper(outbackInverterObject, 'multi', 4)
-
-		if not multiDevice.setup_vedbus():
-			logger.error("ERROR >>> Problem with multi " + str(btaddr))
-			sys.exit(1)
-
-	if usePvInverterDevice:
-		# Get the initial values for the battery used by setup_vedbus
-		pvInverterDevice = DbusHelper(outbackInverterObject, 'pvinverter', 5)
-
-		if not pvInverterDevice.setup_vedbus():
-			logger.error("ERROR >>> Problem with pvinverter " + str(btaddr))
-			sys.exit(1)
+	if not inverterDevice.setup_vedbus():
+		logger.error("ERROR >>> Problem with inverter " + str(btaddr))
+		sys.exit(1)
 
 	def poll_inverter(loop):
 		# Run in separate thread. Pass in the mainloop so the thread can kill us if there is an exception.
-		if useInverterDevice:
-			poller = Thread(target=lambda: inverterDevice.publish_inverter(loop))
-			# Thread will die with us if deamon
-			poller.daemon = True
-			poller.start()
-
-		if useSolarchargerDevice:
-			poller2 = Thread(target=lambda: solarchargerDevice.publish_inverter(loop))
-			# Thread will die with us if deamon
-			poller2.daemon = True
-			poller2.start()
-
-		if useVebusDevice:
-			poller3 = Thread(target=lambda: vebusDevice.publish_inverter(loop))
-			# Thread will die with us if deamon
-			poller3.daemon = True
-			poller3.start()
-
-		if useMultiDevice:
-			poller4 = Thread(target=lambda: multiDevice.publish_inverter(loop))
-			# Thread will die with us if deamon
-			poller4.daemon = True
-			poller4.start()
-
-		if usePvInverterDevice:
-			poller5 = Thread(target=lambda: pvInverterDevice.publish_inverter(loop))
-			# Thread will die with us if deamon
-			poller5.daemon = True
-			poller5.start()
+		poller = Thread(target=lambda: inverterDevice.publish_inverter(loop))
+		# Thread will die with us if deamon
+		poller.daemon = True
+		poller.start()
 
 		return True
 
