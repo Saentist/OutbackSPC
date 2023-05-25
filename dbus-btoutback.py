@@ -30,40 +30,6 @@ def main():
 	useMultiDevice = False
 	usePvInverterDevice = False
 
-	def poll_inverter(loop):
-		# Run in separate thread. Pass in the mainloop so the thread can kill us if there is an exception.
-		if useInverterDevice:
-			poller = Thread(target=lambda: inverterDevice.publish_inverter(loop))
-			# Thread will die with us if deamon
-			poller.daemon = True
-			poller.start()
-
-		if useSolarchargerDevice:
-			poller2 = Thread(target=lambda: solarchargerDevice.publish_inverter(loop))
-			# Thread will die with us if deamon
-			poller2.daemon = True
-			poller2.start()
-
-		if useVebusDevice:
-			poller3 = Thread(target=lambda: vebusDevice.publish_inverter(loop))
-			# Thread will die with us if deamon
-			poller3.daemon = True
-			poller3.start()
-
-		if useMultiDevice:
-			poller4 = Thread(target=lambda: multiDevice.publish_inverter(loop))
-			# Thread will die with us if deamon
-			poller4.daemon = True
-			poller4.start()
-
-		if usePvInverterDevice:
-			poller5 = Thread(target=lambda: pvInverterDevice.publish_inverter(loop))
-			# Thread will die with us if deamon
-			poller5.daemon = True
-			poller5.start()
-
-		return True
-
 	def get_btaddr() -> list:
 		# Get the bluetooth address we need to use from the argument
 		if len(sys.argv) > 1:
@@ -71,9 +37,7 @@ def main():
 		else:
 			return [utils.OUTBACK_ADDRESS]
 
-	logger.info(
-		"dbus-btoutback v" + str(utils.DRIVER_VERSION) + utils.DRIVER_SUBVERSION
-	)
+	logger.info("dbus-btoutback v" + str(utils.DRIVER_VERSION) + utils.DRIVER_SUBVERSION)
 
 	btaddr = get_btaddr()
 	outbackInverterObject: Inverter = OutbackBt(btaddr[0])
@@ -130,13 +94,46 @@ def main():
 			logger.error("ERROR >>> Problem with pvinverter " + str(btaddr))
 			sys.exit(1)
 
+	def poll_inverter(loop):
+		# Run in separate thread. Pass in the mainloop so the thread can kill us if there is an exception.
+		if useInverterDevice:
+			poller = Thread(target=lambda: inverterDevice.publish_inverter(loop))
+			# Thread will die with us if deamon
+			poller.daemon = True
+			poller.start()
+
+		if useSolarchargerDevice:
+			poller2 = Thread(target=lambda: solarchargerDevice.publish_inverter(loop))
+			# Thread will die with us if deamon
+			poller2.daemon = True
+			poller2.start()
+
+		if useVebusDevice:
+			poller3 = Thread(target=lambda: vebusDevice.publish_inverter(loop))
+			# Thread will die with us if deamon
+			poller3.daemon = True
+			poller3.start()
+
+		if useMultiDevice:
+			poller4 = Thread(target=lambda: multiDevice.publish_inverter(loop))
+			# Thread will die with us if deamon
+			poller4.daemon = True
+			poller4.start()
+
+		if usePvInverterDevice:
+			poller5 = Thread(target=lambda: pvInverterDevice.publish_inverter(loop))
+			# Thread will die with us if deamon
+			poller5.daemon = True
+			poller5.start()
+
+		return True
+
 	# Poll the battery at INTERVAL and run the main loop
 	gobject.timeout_add(outbackInverterObject.poll_interval, lambda: poll_inverter(mainloop))
 	try:
 		mainloop.run()
 	except KeyboardInterrupt:
 		pass
-
 
 if __name__ == "__main__":
 	main()

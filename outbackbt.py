@@ -8,28 +8,6 @@ import struct
 import sys
 import os
 
-# QPIGS
-# ac_input_frequency              50.0            Hz
-# ac_input_voltage                235.7           V
-# ac_output_active_power          940             W
-# ac_output_apparent_power        942             VA
-# ac_output_frequency             49.9            Hz
-# ac_output_load                  31              %
-# ac_output_voltage               229.9           V
-# battery_capacity                100             %
-# battery_charging_current        0               A
-# battery_discharge_current       3               A
-# battery_voltage                 28.9            V
-# battery_voltage_from_scc        0.0             V
-# bus_voltage                     449             V
-# inverter_heat_sink_temperature  29              Deg_C
-
-# battery_voltage_from_scc        0.0             V
-# inverter_heat_sink_temperature  29              Deg_C
-# pv_input_current_for_battery    3.0             A
-# pv_input_power                  909             W
-# pv_input_voltage                298.9           V
-
 class OutbackBtDev(DefaultDelegate, Thread):
     def __init__(self, address):
         DefaultDelegate.__init__(self)
