@@ -240,7 +240,7 @@ class DbusHelper:
                 self.publish_dbus()
                 sleep(self.interval)
             else:
-                logger.info("INFO >>> Waiting for inverter data")
+                logger.info("INFO >>> Waiting for inverter data" + str(self.devType))
                 # logger.info("INFO >>> Waiting for inverter data")
                 # self.error_count += 1
                 # # If the battery is offline for more than 10 polls (polled every second for most batteries)
@@ -256,7 +256,7 @@ class DbusHelper:
             loop.quit()
 
     def publish_dbus(self):
-        logger.info("Publishing to dbus")
+        logger.info("Publishing to dbus " + str(self.devType))
         if self.debug:
             print('devType=' + self.devType)
 
