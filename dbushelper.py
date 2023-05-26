@@ -50,11 +50,11 @@ class DbusHelper:
         self._dbusConnection = dbusconnection()
 
         # ON / OFF SWITCHES
-        self.useInverterDevice = True
+        self.useInverterDevice = False
         self.useSolarchargerDevice = True
         self.usePvInverterDevice = False
-        self.useVebusDevice = True
-        self.useMultiDevice = False
+        self.useVebusDevice = False
+        self.useMultiDevice = True
 
     def setup_vedbus(self):
         # formating
