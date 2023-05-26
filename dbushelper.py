@@ -477,10 +477,10 @@ class DbusHelper:
 
             # PV tracker information:
             # self._dbusMulitService['/NrOfTrackers'] = 1                                                  # <- number of trackers
-            self._dbusMulitService['/Pv/I'] = round(self.inverter.a11pvInputCurrent, 2)                # <- PV array voltage from 1st tracker
-            self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
-            self._dbusMulitService['/Pv/P'] = round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
-            self._dbusMulitService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2)                                                # <- PV array power (Watts)
+            # self._dbusMulitService['/Pv/I'] = round(self.inverter.a11pvInputCurrent, 2)                # <- PV array voltage from 1st tracker
+            # self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
+            # self._dbusMulitService['/Pv/P'] = round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
+            # self._dbusMulitService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2)                                                # <- PV array power (Watts)
             # self._dbusMulitService['/Yield/User'] = 97                                                  # <- Total kWh produced (user resettable)
             # self._dbusMulitService['/Yield/System'] = 96                                                # <- Total kWh produced (not resettable)
             # self._dbusMulitService['/MppOperationMode'] = 1
