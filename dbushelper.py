@@ -50,11 +50,11 @@ class DbusHelper:
         self._dbusConnection = dbusconnection()
 
         # ON / OFF SWITCHES
-        self.useInverterDevice = False
+        self.useInverterDevice = True
         self.useSolarchargerDevice = True
         self.usePvInverterDevice = False
-        self.useVebusDevice = False
-        self.useMultiDevice = True
+        self.useVebusDevice = True
+        self.useMultiDevice = False
 
     def setup_vedbus(self):
         # formating
@@ -138,7 +138,7 @@ class DbusHelper:
             self._dbusSolarChargerService.add_path('/MppOperationMode', 2)
             self._dbusSolarChargerService.add_path('/Dc/0/Temperature', None, writeable=True)
             self._dbusSolarChargerService.add_path('/UpdateIndex', 0, writeable=True, gettextcallback=_x, )
-            self._dbusSolarChargerService.add_path("/CustomName", "Outback Solarcharger", writeable=True)
+            self._dbusSolarChargerService.add_path("/CustomName", "Outback SPCIII", writeable=True)
 
         if self.usePvInverterDevice:
             devType = "pvinverter"
