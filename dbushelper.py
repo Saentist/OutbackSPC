@@ -516,7 +516,7 @@ class DbusHelper:
             self._dbusMulitService['/UpdateIndex'] = index
             
         if self.useGensetDevice:
-            logger.info(”==> writing genset data”) 
+            logger.info("==> writing genset data") 
             self._dbusGensetService["/Engine/Load"] = round(self.inverter.a03loadPercent, 2)
          
             index = self._dbusGensetService['/UpdateIndex'] + 1  # increment index
