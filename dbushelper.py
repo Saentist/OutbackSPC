@@ -515,11 +515,11 @@ class DbusHelper:
                 index = 0  # overflow from 255 to 0
             self._dbusMulitService['/UpdateIndex'] = index
             
-      if self.useGensetDevice: 
-         self._dbusGensetService["/Engine/Load"] = round(self.inverter.a03loadPercent, 2)
+        if self.useGensetDevice: 
+            self._dbusGensetService["/Engine/Load"] = round(self.inverter.a03loadPercent, 2)
          
-         index = self._dbusGensetService['/UpdateIndex'] + 1  # increment index
-               if index > 255:  # maximum value of the index
-                   index = 0  # overflow from 255 to 0
-               self._dbusGensetService['/UpdateIndex'] = index
+            index = self._dbusGensetService['/UpdateIndex'] + 1  # increment index
+            if index > 255:  # maximum value of the index
+               index = 0  # overflow from 255 to 0
+            self._dbusGensetService['/UpdateIndex'] = index
 
