@@ -52,7 +52,7 @@ class DbusHelper:
 		
 		# ON / OFF SWITCHES
 		self.useInverterDevice = False
-		self.useSolarchargerDevice = False
+		self.useSolarchargerDevice = True
 		self.usePvInverterDevice = False
 		self.useVebusDevice = True
 		self.useMultiDevice = False
