@@ -516,7 +516,7 @@ class DbusHelper:
             self._dbusMulitService['/UpdateIndex'] = index
             
         if self.useGensetDevice: 
-            self._dbusGensetService["/Engine/Load"] = round(self.inverter.a03loadPercent, 2)
+            self._dbusGensetService["/Engine/Load"] = 39 #round(self.inverter.a03loadPercent, 2)
          
             index = self._dbusGensetService['/UpdateIndex'] + 1  # increment index
             if index > 255:  # maximum value of the index
