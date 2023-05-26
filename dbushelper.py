@@ -52,7 +52,7 @@ class DbusHelper:
 
         # ON / OFF SWITCHES
         self.useInverterDevice = False
-        self.useSolarchargerDevice = True
+        self.useSolarchargerDevice = False
         self.usePvInverterDevice = False
         self.useVebusDevice = True
         self.useMultiDevice = False
@@ -467,16 +467,16 @@ class DbusHelper:
             # self._dbusVebusService['/Yield/System'] = 1                                                # <- Total kWh produced (not resettable)
             # self._dbusVebusService['/MppOperationMode'] = 1                                              # <- 0 = Off 1 = Voltage or Current limited 2 = MPPT Tracker active
             
-						self._dbusVebusService['/Energy/AcIn1ToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
-						self._dbusVebusService['/Energy/AcIn1ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
-						self._dbusVebusService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
-						self._dbusVebusService['/Energy/AcIn2ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
-						self._dbusVebusService['/Energy/AcOutToAcIn1'] = round(self.inverter.a11pvInputVoltage, 2)
-						self._dbusVebusService['/Energy/AcOutToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
-						self._dbusVebusService['/Energy/InverterToAcIn1'] = round(self.inverter.a11pvInputVoltage, 2)
-						self._dbusVebusService['/Energy/InverterToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
-						self._dbusVebusService['/Energy/InverterToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
-						self._dbusVebusService['/Energy/OutToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
+						self._dbusVebusService['/Energy/AcIn1ToAcOut'] = 0 # später generator
+						self._dbusVebusService['/Energy/InverterToAcOut'] = round(self.inverter.a03acActivePower, 2)
+						# self._dbusVebusService['/Energy/AcIn1ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
+						# self._dbusVebusService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
+						# self._dbusVebusService['/Energy/AcIn2ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
+						# self._dbusVebusService['/Energy/AcOutToAcIn1'] = round(self.inverter.a11pvInputVoltage, 2)
+						# self._dbusVebusService['/Energy/AcOutToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
+						# self._dbusVebusService['/Energy/InverterToAcIn1'] = round(self.inverter.a11pvInputVoltage, 2)
+						# self._dbusVebusService['/Energy/InverterToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
+						# self._dbusVebusService['/Energy/OutToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
 
             index = self._dbusVebusService['/UpdateIndex'] + 1  # increment index
             if index > 255:  # maximum value of the index
