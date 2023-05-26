@@ -213,6 +213,18 @@ class DbusHelper:
 			self._dbusVebusService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=_v, )
 			self._dbusVebusService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=_a, )
 			self._dbusVebusService.add_path("/Ac/Out/L1/F", None, writeable=True, gettextcallback=_h, )
+			
+			self._dbusVebusService.add_path(“/Energy/AcIn1ToAcOut”, None, writeable=True, )
+			self._dbusVebusService.add_path(“/Energy/AcIn1ToInverter”, None, writeable=True, )
+			self._dbusVebusService.add_path(“/Energy/AcIn2ToAcOut”, None, writeable=True, )
+			self._dbusVebusService.add_path(“/Energy/AcIn2ToInverter”, None, writeable=True, )
+			self._dbusVebusService.add_path(“/Energy/AcOutToAcIn1”, None, writeable=True, )
+			self._dbusVebusService.add_path(“/Energy/AcOutToAcIn2”, None, writeable=True, )
+			self._dbusVebusService.add_path(“/Energy/InverterToAcIn1”, None, writeable=True, )
+			self._dbusVebusService.add_path(“/Energy/InverterToAcIn2”, None, writeable=True, )
+			self._dbusVebusService.add_path(“/Energy/InverterToAcOut”, None, writeable=True, )
+			self._dbusVebusService.add_path(“/Energy/OutToInverter”, None, writeable=True, )
+			
 			self._dbusVebusService.add_path('/Pv/I', None, writeable=True, gettextcallback=_a, )
 			self._dbusVebusService.add_path('/Pv/V', None, writeable=True, gettextcallback=_v, )
 			self._dbusVebusService.add_path('/Pv/P', None, writeable=True, gettextcallback=_w, )
