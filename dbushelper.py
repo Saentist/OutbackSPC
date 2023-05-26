@@ -51,12 +51,12 @@ class DbusHelper:
         self._dbusConnection = dbusconnection()
 
         # ON / OFF SWITCHES
-        self.useInverterDevice = True
+        self.useInverterDevice = False
         self.useSolarchargerDevice = True
         self.usePvInverterDevice = False
         self.useVebusDevice = True
         self.useMultiDevice = False
-        self.useGensetDevice = True
+        self.useGensetDevice = False
 
     def setup_vedbus(self):
         # formating
@@ -263,6 +263,16 @@ class DbusHelper:
             self._dbusMulitService.add_path("/Ac/Out/L1/V", None, writeable=True, gettextcallback=_v, )
             self._dbusMulitService.add_path("/Ac/Out/L1/I", None, writeable=True, gettextcallback=_a, )
             self._dbusMulitService.add_path("/Ac/Out/L1/F", None, writeable=True, gettextcallback=_h, )
+            self._dbusMulitService.add_path("/Energy/AcIn1ToAcOut", None, writeable=True, )
+            self._dbusMulitService.add_path("/Energy/AcIn1ToInverter", None, writeable=True, )
+            self._dbusMulitService.add_path("/Energy/AcIn2ToAcOut", None, writeable=True, )
+            self._dbusMulitService.add_path("/Energy/AcIn2ToInverter", None, writeable=True, )
+            self._dbusMulitService.add_path("/Energy/AcOutToAcIn1", None, writeable=True, )
+            self._dbusMulitService.add_path("/Energy/AcOutToAcIn2", None, writeable=True, )
+            self._dbusMulitService.add_path("/Energy/InverterToAcIn1", None, writeable=True, )
+            self._dbusMulitService.add_path("/Energy/InverterToAcIn2", None, writeable=True, )
+            self._dbusMulitService.add_path("/Energy/InverterToAcOut", None, writeable=True, )
+            self._dbusMulitService.add_path("/Energy/OutToInvertert", None, writeable=True, )
             self._dbusMulitService.add_path('/Pv/V', None, writeable=True, gettextcallback=_v, )
             self._dbusMulitService.add_path('/Pv/P', None, writeable=True, gettextcallback=_w, )
             self._dbusMulitService.add_path('/Pv/I', None, writeable=True, gettextcallback=_a, )
@@ -456,6 +466,17 @@ class DbusHelper:
             # self._dbusVebusService['/Yield/User'] = 1                                                  # <- Total kWh produced (user resettable)
             # self._dbusVebusService['/Yield/System'] = 1                                                # <- Total kWh produced (not resettable)
             # self._dbusVebusService['/MppOperationMode'] = 1                                              # <- 0 = Off 1 = Voltage or Current limited 2 = MPPT Tracker active
+            
+						self._dbusVebusService['/Energy/AcIn1ToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
+						self._dbusVebusService['/Energy/AcIn1ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
+						self._dbusVebusService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
+						self._dbusVebusService['/Energy/AcIn2ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
+						self._dbusVebusService['/Energy/AcOutToAcIn1'] = round(self.inverter.a11pvInputVoltage, 2)
+						self._dbusVebusService['/Energy/AcOutToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
+						self._dbusVebusService['/Energy/InverterToAcIn1'] = round(self.inverter.a11pvInputVoltage, 2)
+						self._dbusVebusService['/Energy/InverterToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
+						self._dbusVebusService['/Energy/InverterToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
+						self._dbusVebusService['/Energy/OutToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
 
             index = self._dbusVebusService['/UpdateIndex'] + 1  # increment index
             if index > 255:  # maximum value of the index
