@@ -282,28 +282,28 @@ class DbusHelper:
             self._dbusMulitService.add_path('/UpdateIndex', 0, writeable=True, gettextcallback=_x,)
             self._dbusMulitService.add_path("/CustomName", "Outback Multi", writeable=True)
             
-            if self.useGensetDevice:
-                  devType = "genset"
-                  logger.info("%s" % ("com.victronenergy." + devType + "." + short_port))
-                  self._dbusGensetService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
+        if self.useGensetDevice:
+            devType = "genset"
+            logger.info("%s" % ("com.victronenergy." + devType + "." + short_port))
+        self._dbusGensetService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
 
-                  # Create the management objects, as specified in the ccgx dbus-api document
-                  self._dbusGensetService.add_path("/Mgmt/ProcessName", __file__)
-                  self._dbusGensetService.add_path("/Mgmt/ProcessVersion", "Python " + platform.python_version())
-                  self._dbusGensetService.add_path("/Mgmt/Connection", "Bluetooth " + self.inverter.port)
+            # Create the management objects, as specified in the ccgx dbus-api document
+            self._dbusGensetService.add_path("/Mgmt/ProcessName", __file__)
+            self._dbusGensetService.add_path("/Mgmt/ProcessVersion", "Python " + platform.python_version())
+            self._dbusGensetService.add_path("/Mgmt/Connection", "Bluetooth " + self.inverter.port)
 
-                  # Create the mandatory objects
-                  self._dbusGensetService.add_path("/DeviceInstance", self.instance)
-                  self._dbusGensetService.add_path("/ProductId", 0x0)
-                  self._dbusGensetService.add_path("/ProductName", "Champion Hybrid")
-                  self._dbusGensetService.add_path("/FirmwareVersion", str(DRIVER_VERSION) + DRIVER_SUBVERSION)
-                  self._dbusGensetService.add_path("/HardwareVersion", '3KW')
-                  self._dbusGensetService.add_path("/Connected", 1)
+            # Create the mandatory objects
+            self._dbusGensetService.add_path("/DeviceInstance", self.instance)
+            self._dbusGensetService.add_path("/ProductId", 0x0)
+            self._dbusGensetService.add_path("/ProductName", "Champion Hybrid")
+            self._dbusGensetService.add_path("/FirmwareVersion", str(DRIVER_VERSION) + DRIVER_SUBVERSION)
+            self._dbusGensetService.add_path("/HardwareVersion", '3KW')
+            self._dbusGensetService.add_path("/Connected", 1)
 
-                  # Create device specific objects
-                  self._dbusGensetService.add_path("/Engine/Load", 0, writeable=True, gettextcallback=_p, )
-                  self._dbusGensetService.add_path('/UpdateIndex', 0, writeable=True, gettextcallback=_x, )
-                  self._dbusGensetService.add_path("/CustomName", "Champion Hybrid", writeable=True)  
+            # Create device specific objects
+            self._dbusGensetService.add_path("/Engine/Load", 0, writeable=True, gettextcallback=_p, )
+            self._dbusGensetService.add_path('/UpdateIndex', 0, writeable=True, gettextcallback=_x, )
+            self._dbusGensetService.add_path("/CustomName", "Champion Hybrid", writeable=True)  
 
         return True
 
@@ -516,7 +516,7 @@ class DbusHelper:
             self._dbusMulitService['/UpdateIndex'] = index
             
         if self.useGensetDevice: 
-            self._dbusGensetService["/Engine/Load"] = 39 #round(self.inverter.a03loadPercent, 2)
+            self._dbusGensetService["/Engine/Load"] = round(self.inverter.a03loadPercent, 2)
          
             index = self._dbusGensetService['/UpdateIndex'] + 1  # increment index
             if index > 255:  # maximum value of the index
