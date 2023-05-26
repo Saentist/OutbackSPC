@@ -285,7 +285,7 @@ class DbusHelper:
         if self.useGensetDevice:
             devType = "genset"
             logger.info("%s" % ("com.victronenergy." + devType + "." + short_port))
-        self._dbusGensetService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
+            self._dbusGensetService = VeDbusService("com.victronenergy." + devType + "." + self.inverter.port[self.inverter.port.rfind("/") + 1:], dbusconnection())
 
             # Create the management objects, as specified in the ccgx dbus-api document
             self._dbusGensetService.add_path("/Mgmt/ProcessName", __file__)
