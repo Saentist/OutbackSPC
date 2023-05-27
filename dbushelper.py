@@ -225,8 +225,8 @@ class DbusHelper:
 		fromOutbackAcOutputLoadPercentage = self.inverter.a03loadPercent
 		
 		fromOutbackPvInputPower = self.inverter.a11pvInputPower
-		formOutbackPvInputCurrent = self.inverter.a11pvInputCurrent
-		fromOutbackPcInputVoltage = self.inverter.a11pvInputVoltage
+		fromOutbackPvInputCurrent = self.inverter.a11pvInputCurrent
+		fromOutbackPvInputVoltage = self.inverter.a11pvInputVoltage
 		
 		###########
 		# EXPORTING
@@ -248,6 +248,10 @@ class DbusHelper:
 		toVictronAcOutputCurrent = fromOutbackAcOutputCurrent
 		toVictronAcOutputFrequency = fromOutbackAcOutputFrequency
 		toVictronAcOutputLoadPercentage = fromOutbackAcOutputLoadPercentage
+		
+		toVictronPvInputPower = fromOutbackPvInputPower
+		toVictronPvInputCurrent = fromOutbackPvInputCurrent
+		toVictronPvInputVoltage = fromOutbackPvInputVoltage
 		
 		toVictronAlarmLowSoc = 0
 		toVictronAlarmLowVoltage = 0
@@ -280,38 +284,48 @@ class DbusHelper:
 		##########
 		# CHANGING
 		##########
+		# PV ARRAY
+		# battery discharge amount + pv input amount smaller than pv output amount => needs to correct pv output
+		if (fromBmsDcPower + fromOutbackPvInputPower) < fromOutbackAcOutputActivePower:
+			toVictronPvInputPower = fromOutbackAcOutputActivePower - (fromBmsDcPower * -1)
+			toVictronPvInputCurrent = toVictronPvInputPower / toVictronPvInputVoltage
+			if self.debug:
+				logger.info("==> changing Pv Power to " + str(toVictronPvInputPower))
+				logger.info("==> changing Pv Current to " + str(toVictronPvInputCurrent))
+		
+		# BATTERY
+		# battery is charging
 		if fromBmsDcPower > 0:
-				# Batterie erhält Strom
-				toVictronEnergySolarToBattery = fromBmsDcPower/1000
-				logger.info("==> Batterie wird zusätzlich geladen mit " + str(fromBmsDcPower))
+				toVictronEnergySolarToBattery = fromBmsDcPower
+				toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower
+				if self.debug:
+					logger.info("==> charging battery with " + str(toVictronEnergySolarToBattery))
+					logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
 			
-			# wenn batterie 0 weder gibt noch nimmt
+			# no charging
 			elif fromBmsDcPower == 0:
-				# wenn wir strom verbrauchen
 				if fromOutbackAcOutputActivePower > 0:
-					calculatedPvFromYield = self.inverter.a03acActivePower
-					logger.info("==> Alles von PV mit " + str(calculatedPvFromYield))
-					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(calculatedPvFromYield/1000, 2) # direkt von pv in ac
+					toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower
+					if self.debug:
+						logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
 				else:
 					logger.info("==> new situation, needs to be solved Case C")
 			
-			# wenn wir strom aus der batterie ziehen z.b -10 Watts
+			# battery is discharging -10 Watts
 			elif fromBmsDcPower < 0:
 				# wenn der strom aus der batterie kleiner ist als der strom den wir verbrauchen z.b. -10 Watts / 70 Watts => DIFF 60 Watts
 				# muss der rest direkt aus der pv anlage kommen
-				if fromBmsDcPower < self.inverter.a03acActivePower:
-					completePower = self.inverter.a03acActivePower
-					fromBattery = fromBmsDcPower * -1 # is a negative value and will be substracted
-					calculatedPvFromYield = completePower - fromBattery
-					logger.info("==> Batterie hilf aus mit " + str(fromBattery) + "/" + str(completePower) + "/" + str(fromBmsDcPower))
-					logger.info("==> Rest von PV mit " + str(calculatedPvFromYield))
-					self._dbusMulitService['/Energy/InverterToAcOut'] =  round(fromBattery/1000, 2) # von batterie zu ac
-					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(calculatedPvFromYield/1000, 2) # direkt von pv in ac
+				if fromBmsDcPower < fromOutbackAcOutputActivePower:
+					toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower - (fromBmsDcPower * -1)
+					toVictronEnergyInverterToAcOut = fromBmsDcPower * -1
+					if self.debug:
+						logger.info("==> discharging battery with " + str(toVictronEnergyInverterToAcOut))
+						logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
 				else:
 					logger.info("==> new situation, needs to be solved Case B")
 			else:
 				logger.info("==> new situation, needs to be solved Case A")
-		
+						
 		###########################
 		# WRITING
 		###########################				
@@ -366,34 +380,14 @@ class DbusHelper:
 			self._dbusMulitService['/Energy/SolarToBattery'] = round(toVictronEnergySolarToBattery/1000, 2)
 				
 			# PV tracker information:
-			self._dbusMulitService['/NrOfTrackers'] = 1   
-			logger.info("==> Werte  " + str(fromBmsDcPower) + "/" + str(self.inverter.a11pvInputPower) + "/" + str(self.inverter.a03acActivePower))
-			if (fromBmsDcPower + self.inverter.a11pvInputPower) < self.inverter.a03acActivePower:
-				logger.info("PV Wert zu niedrig trotz output ohne genügend abnahme von batterie")
-				self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)    
-				calculatedPvPower = self.inverter.a03acActivePower - (fromBmsDcPower * -1)
-				self._dbusMulitService['/Pv/P'] = round(calculatedPvPower,2)
-				self._dbusMulitService['/Pv/I'] = round(calculatedPvPower / self.inverter.a11pvInputVoltage, 2)
-				self._dbusMulitService['/Yield/Power'] = round(calculatedPvPower, 2) 
-			else: 
-				self._dbusMulitService['/Pv/I'] = round(self.inverter.a11pvInputCurrent, 2)                # <- PV array voltage from 1st tracker
-				self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
-				self._dbusMulitService['/Pv/P'] = round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
-				self._dbusMulitService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2)           # <- PV array power (Watts)
-				# self._dbusMulitService['/Yield/User'] = round(self.inverter.a11pvInputPower, 2)            # <- Total kWh produced (user resettable)
-			
-				
+			self._dbusMulitService['/NrOfTrackers'] = 1
+			self._dbusMulitService['/Pv/P'] = round(toVictronPvInputPower,2)
+			self._dbusMulitService['/Pv/I'] = round(toVictronPvInputCurrent, 2)
+			self._dbusMulitService['/Pv/V'] = round(toVictronPvInputVoltage, 2) 
+			self._dbusMulitService['/Yield/Power'] = round(toVictronPvInputPower, 2)  
+						
 			index = self._dbusMulitService['/UpdateIndex'] + 1  # increment index
 			if index > 255:  # maximum value of the index
 				index = 0  # overflow from 255 to 0
 			self._dbusMulitService['/UpdateIndex'] = index
 			
-		if self.useGensetDevice:
-			logger.info("==> writing genset data")
-			self._dbusGensetService["/Engine/Load"] = round(self.inverter.a03loadPercent, 2)
-			
-			index = self._dbusGensetService['/UpdateIndex'] + 1  # increment index
-			if index > 255:  # maximum value of the index
-				index = 0  # overflow from 255 to 0
-			self._dbusGensetService['/UpdateIndex'] = index
-
