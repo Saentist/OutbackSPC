@@ -546,7 +546,7 @@ class DbusHelper:
 			# Generic alarms:
 			self._dbusMulitService["/Alarms/LowSoc"] = 0                                               # <- Low state of charge
 			self._dbusMulitService["/Alarms/LowVoltage"] = 0                                           # <- Low battery voltage
-			self._dbusMulitService["/Alarms/HighVoltage "] = 0                                         # <- High battery voltage
+			#self._dbusMulitService["/Alarms/HighVoltage "] = 0                                         # <- High battery voltage
 			self._dbusMulitService["/Alarms/LowVoltageAcOut"] = 0                                      # <- Low AC Out voltage
 			self._dbusMulitService["/Alarms/HighVoltageAcOut"] = 0                                     # <- High AC Out voltage
 			self._dbusMulitService["/Alarms/HighTemperature"] = 0                                      # <- High device temperature
