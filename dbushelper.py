@@ -371,7 +371,7 @@ class DbusHelper:
 			self._importedDbusValues["/Dc/0/Current"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Current')
 			self._importedDbusValues["/Dc/0/Power"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Power')
 			self._importedDbusValues["/Soc"] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', '/Soc')
-			self._importedDbusValues["/Dc/0/Temperature"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Temperature')
+			# self._importedDbusValues["/Dc/0/Temperature"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Temperature')
 			
 		if self.useInverterDevice:
 			logger.info("==> writing inverter data ")
@@ -437,7 +437,7 @@ class DbusHelper:
 			if hasVictronBMS:
 				self._dbusVebusService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(),2)
 				self._dbusVebusService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(),2)
-				self._dbusVebusService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)
+				#self._dbusVebusService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)
 				self._dbusVebusService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(), 2)
 				
 			# AC Input measurements:
