@@ -305,6 +305,14 @@ class DbusHelper:
 			self._dbusMulitService.add_path('/Mode', 3, writeable=True,)
 			self._dbusMulitService.add_path('/State', 9, writeable=True,)
 			self._dbusMulitService.add_path('/Soc', 0, writeable=True,)
+			self._dbusMulitService.add_path("/Alarms/LowSoc", 0, writeable=True,)                                              # <- Low state of charge
+			self._dbusMulitService.add_path("/Alarms/LowVoltage", 0, writeable=True,)                                         # <- Low battery voltage
+			self._dbusMulitService.add_path("/Alarms/HighVoltage", 0, writeable=True,)                                       # <- High battery voltage
+			self._dbusMulitService.add_path("/Alarms/LowVoltageAcOut", 0, writeable=True,)                                    # <- Low AC Out voltage
+			self._dbusMulitService.add_path("/Alarms/HighVoltageAcOut", 0, writeable=True,)                                    # <- High AC Out voltage
+			self._dbusMulitService.add_path("/Alarms/HighTemperature", 0, writeable=True,)                                     # <- High device temperature
+			self._dbusMulitService.add_path("/Alarms/Overload"0, writeable=True,)                                            # <- Inverter overload
+			self._dbusMulitService.add_path("/Alarms/Ripple"0, writeable=True,)  
 			self._dbusMulitService.add_path('/UpdateIndex', 0, writeable=True, gettextcallback=_x,)
 			self._dbusMulitService.add_path("/CustomName", "Outback Multi", writeable=True)
 			
