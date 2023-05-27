@@ -501,7 +501,7 @@ class DbusHelper:
 			self._dbusVebusService['/Energy/InverterToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusVebusService['/Energy/InverterToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
 			self._dbusVebusService['/Energy/InverterToAcOut'] =  0 # round(self.inverter.a11pvInputVoltage, 2)
-			self._dbusVebusService['/Energy/OutToInverter'] =  # round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusVebusService['/Energy/OutToInverter'] =  0 # round(self.inverter.a11pvInputVoltage, 2)
 				
 			index = self._dbusVebusService['/UpdateIndex'] + 1  # increment index
 			if index > 255:  # maximum value of the index
@@ -566,7 +566,7 @@ class DbusHelper:
 			self._dbusMulitService['/Energy/InverterToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusMulitService['/Energy/InverterToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
 			self._dbusMulitService['/Energy/InverterToAcOut'] =  0 # round(self.inverter.a11pvInputVoltage, 2)
-			self._dbusMulitService['/Energy/OutToInverter'] =  # round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusMulitService['/Energy/OutToInverter'] =  0 # round(self.inverter.a11pvInputVoltage, 2)
 			
 			index = self._dbusMulitService['/UpdateIndex'] + 1  # increment index
 			if index > 255:  # maximum value of the index
