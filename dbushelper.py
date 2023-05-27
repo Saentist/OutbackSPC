@@ -288,7 +288,7 @@ class DbusHelper:
 			self._dbusMulitService.add_path("/Energy/InverterToAcIn1", None, writeable=True, )
 			self._dbusMulitService.add_path("/Energy/InverterToAcIn2", None, writeable=True, )
 			self._dbusMulitService.add_path("/Energy/InverterToAcOut", None, writeable=True, )
-			self._dbusMulitService.add_path("/Energy/OutToInvertert", None, writeable=True, )
+			self._dbusMulitService.add_path("/Energy/OutToInverter", None, writeable=True, )
 			self._dbusMulitService.add_path('/Pv/V', None, writeable=True, gettextcallback=_v, )
 			self._dbusMulitService.add_path('/Pv/P', None, writeable=True, gettextcallback=_w, )
 			self._dbusMulitService.add_path('/Pv/I', None, writeable=True, gettextcallback=_a, )
@@ -574,7 +574,7 @@ class DbusHelper:
 			self._dbusMulitService['/Energy/InverterToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusMulitService['/Energy/InverterToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
 			self._dbusMulitService['/Energy/InverterToAcOut'] =  round(self.inverter.a11pvInputVoltage, 2)
-			#self._dbusMulitService['/Energy/OutToInverter'] =  0 # round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusMulitService['/Energy/OutToInverter'] =  0 # round(self.inverter.a11pvInputVoltage, 2)
 			
 			index = self._dbusMulitService['/UpdateIndex'] + 1  # increment index
 			if index > 255:  # maximum value of the index
