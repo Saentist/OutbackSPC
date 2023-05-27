@@ -302,29 +302,29 @@ class DbusHelper:
 					logger.info("==> charging battery with " + str(toVictronEnergySolarToBattery))
 					logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
 			
-			# no charging
-			elif fromBmsDcPower == 0:
-				if fromOutbackAcOutputActivePower > 0:
-					toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower
-					if self.debug:
-						logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
-				else:
-					logger.info("==> new situation, needs to be solved Case C")
-			
-			# battery is discharging -10 Watts
-			elif fromBmsDcPower < 0:
-				# wenn der strom aus der batterie kleiner ist als der strom den wir verbrauchen z.b. -10 Watts / 70 Watts => DIFF 60 Watts
-				# muss der rest direkt aus der pv anlage kommen
-				if fromBmsDcPower < fromOutbackAcOutputActivePower:
-					toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower - (fromBmsDcPower * -1)
-					toVictronEnergyInverterToAcOut = fromBmsDcPower * -1
-					if self.debug:
-						logger.info("==> discharging battery with " + str(toVictronEnergyInverterToAcOut))
-						logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
-				else:
-					logger.info("==> new situation, needs to be solved Case B")
+		# no charging
+		elif fromBmsDcPower == 0:
+			if fromOutbackAcOutputActivePower > 0:
+				toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower
+				if self.debug:
+					logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
 			else:
-				logger.info("==> new situation, needs to be solved Case A")
+				logger.info("==> new situation, needs to be solved Case C")
+			
+		# battery is discharging -10 Watts
+		elif fromBmsDcPower < 0:
+			# wenn der strom aus der batterie kleiner ist als der strom den wir verbrauchen z.b. -10 Watts / 70 Watts => DIFF 60 Watts
+			# muss der rest direkt aus der pv anlage kommen
+			if fromBmsDcPower < fromOutbackAcOutputActivePower:
+				toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower - (fromBmsDcPower * -1)
+				toVictronEnergyInverterToAcOut = fromBmsDcPower * -1
+				if self.debug:
+					logger.info("==> discharging battery with " + str(toVictronEnergyInverterToAcOut))
+					logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
+			else:
+				logger.info("==> new situation, needs to be solved Case B")
+		else:
+			logger.info("==> new situation, needs to be solved Case A")
 						
 		###########################
 		# WRITING
