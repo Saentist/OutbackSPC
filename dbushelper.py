@@ -610,7 +610,7 @@ class DbusHelper:
 				calculatedPvPower = self.inverter.a03acActivePower - (currentBatteryValue * -1)
 				self._dbusMulitService['/Pv/P'] = round(calculatedPvPower,2)
 				self._dbusMulitService['/Pv/I'] = round(calculatedPvPower / self.inverter.a11pvInputVoltage, 2)
-				self._dbusMulitService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2) 
+				self._dbusMulitService['/Yield/Power'] = round(calculatedPvPower, 2) 
 			else: 
 				self._dbusMulitService['/Pv/I'] = round(self.inverter.a11pvInputCurrent, 2)                # <- PV array voltage from 1st tracker
 				self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
