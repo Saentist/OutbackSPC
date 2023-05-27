@@ -568,7 +568,7 @@ class DbusHelper:
 			
 			self._dbusMulitService['/Energy/AcIn1ToAcOut'] = 0 # später generator
 			self._dbusMulitService['/Energy/AcIn1ToInverter'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
-			self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a11pvInputVoltage/1000, 2)
 			# self._dbusMulitService['/Energy/AcIn2ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
 			self._dbusMulitService['/Energy/AcOutToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusMulitService['/Energy/AcOutToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
@@ -577,13 +577,19 @@ class DbusHelper:
 			
 			if currentBatteryValue > 0:
 				# Batterie erhält Strom
-				self._dbusMulitService['/Energy/OutToInverter'] =  currentBatteryValue # round(self.inverter.a11pvInputVoltage, 2)
+				fromYield = self.inverter.a03acActivePower
+				self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(fromYield/1000, 2) # direkt von pv in ac
+				self._dbusMulitService['/Energy/OutToInverter'] =  currentBatteryValue/1000 # round(self.inverter.a11pvInputVoltage, 2)
+				logger.info("==> Alles von PV mit " + str(fromYield))
+				logger.info("==> Batterie wird zusätzlich geladen mit " + str(currentBatteryValue))
 			
 			# wenn batterie 0 weder gibt noch nimmt
 			elif currentBatteryValue == 0:
 				# wenn wir strom verbrauchen
 				if self.inverter.a03acActivePower > 0:
-					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a03acActivePower, 2) # direkt von pv in ac
+					fromYield = self.inverter.a03acActivePower
+					logger.info("==> Alles von PV mit " + str(fromYield))
+					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(fromYield/1000, 2) # direkt von pv in ac
 				else:
 					logger.info("==> new situation, needs to be solved Case C")
 			
@@ -597,8 +603,8 @@ class DbusHelper:
 					fromYield = completePower - fromBattery
 					logger.info("==> Batterie hilf aus mit " + str(fromBattery) + "/" + str(completePower) + "/" + str(currentBatteryValue))
 					logger.info("==> Rest von PV mit " + str(fromYield))
-					self._dbusMulitService['/Energy/InverterToAcOut'] =  round(fromBattery, 2) # von batterie zu ac
-					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(fromYield, 2) # direkt von pv in ac
+					self._dbusMulitService['/Energy/InverterToAcOut'] =  round(fromBattery/1000, 2) # von batterie zu ac
+					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(fromYield/1000, 2) # direkt von pv in ac
 				else:
 					logger.info("==> new situation, needs to be solved Case B")
 			else:
