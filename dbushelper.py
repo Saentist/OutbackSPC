@@ -606,6 +606,7 @@ class DbusHelper:
 			self._dbusMulitService['/NrOfTrackers'] = 1   
 			logger.info("==> Werte  " + str(currentBatteryValue) + "/" + str(self.inverter.a11pvInputPower) + "/" + str(self.inverter.a03acActivePower))
 			if (currentBatteryValue + self.inverter.a11pvInputPower) < self.inverter.a03acActivePower:
+				logger.info("PV Wert zu niedrig trotz output ohne genügend abnahme von batterie")
 				self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)    
 				calculatedPvPower = self.inverter.a03acActivePower - (currentBatteryValue * -1)
 				self._dbusMulitService['/Pv/P'] = round(calculatedPvPower,2)
