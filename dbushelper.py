@@ -527,8 +527,9 @@ class DbusHelper:
 				#self._dbusMulitService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)
 				self._dbusMulitService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(), 2)
 				
-			# Calculated Values 
+			# Additional values 
 			selfConsumption = self.inverter.a03acApparentPower - self.inverter.a03acActivePower
+			currentBatteryValue = self._importedDbusValues["/Dc/0/Power"].get_value()
 			
 			# AC Input measurements:
 			self._dbusMulitService["/Ac/In/1/L1/P"] = 0 # round(self.inverter.a03acApparentPower, 2)      # <- Real power of AC IN1 onL1
@@ -567,15 +568,41 @@ class DbusHelper:
 			
 			self._dbusMulitService['/Energy/AcIn1ToAcOut'] = 0 # später generator
 			self._dbusMulitService['/Energy/AcIn1ToInverter'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
-			# self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusMulitService['/Energy/AcIn2ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
 			self._dbusMulitService['/Energy/AcOutToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusMulitService['/Energy/AcOutToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
 			self._dbusMulitService['/Energy/InverterToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusMulitService['/Energy/InverterToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
-			self._dbusMulitService['/Energy/InverterToAcOut'] =  round(self.inverter.a11pvInputVoltage, 2)
-			self._dbusMulitService['/Energy/OutToInverter'] =  0 # round(self.inverter.a11pvInputVoltage, 2)
 			
+			if currentBatteryValue > 0:
+				# Batterie erhält Strom
+				self._dbusMulitService['/Energy/OutToInverter'] =  currentBatteryValue0 # round(self.inverter.a11pvInputVoltage, 2)
+			
+			# wenn batterie 0 weder gibt noch nimmt
+			elif currentBatteryValue == 0:
+				# wenn wir strom verbrauchen
+				if self.inverter.a03acActivePower > 0:
+					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a03acActivePower, 2) # direkt von pv in ac
+				else:
+					logger.info("==> new situation, needs to be solved Case C)
+			
+			# wenn wir strom aus der batterie ziehen z.b -10 Watts
+			elif currentBatteryValue < 0:
+				# wenn der strom aus der batterie kleiner ist als der strom den wir verbrauchen z.b. -10 Watts / 70 Watts => DIFF 60 Watts
+				# muss der rest direkt aus der pv anlage kommen
+				if currentBatteryValue < self.inverter.a03acActivePower:
+					completePower = self.inverter.a03acActivePower
+					fromBattery = completePower + currentBatteryValue # is a negative value and will be substracted
+					fromYield = completePower - fromBatterie
+					logger.info("==> Batterie hilf aus mit " + str(diff))
+					self._dbusMulitService['/Energy/InverterToAcOut'] =  round(fromBattery, 2) # von batterie zu ac
+					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(fromYield, 2) # direkt von pv in ac
+				else:
+					logger.info("==> new situation, needs to be solved Case B)
+			else:
+				logger.info("==> new situation, needs to be solved Case A)
+				
 			index = self._dbusMulitService['/UpdateIndex'] + 1  # increment index
 			if index > 255:  # maximum value of the index
 				index = 0  # overflow from 255 to 0
