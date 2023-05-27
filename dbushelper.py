@@ -52,10 +52,10 @@ class DbusHelper:
 		
 		# ON / OFF SWITCHES
 		self.useInverterDevice = False
-		self.useSolarchargerDevice = True
+		self.useSolarchargerDevice = False
 		self.usePvInverterDevice = False
-		self.useVebusDevice = True
-		self.useMultiDevice = False
+		self.useVebusDevice = False
+		self.useMultiDevice = True
 		self.useGensetDevice = False
 		
 	def setup_vedbus(self):
@@ -296,11 +296,11 @@ class DbusHelper:
 			self._dbusMulitService.add_path("/Dc/0/Current", None, writeable=True, gettextcallback=_a, )
 			self._dbusMulitService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=_w, )
 			self._dbusMulitService.add_path("/Dc/0/Temperature", 0, writeable=True, gettextcallback=_w, )
-			self._dbusMulitService.add_path('/MppOperationMode', 1, writeable=True,)
+			self._dbusMulitService.add_path('/MppOperationMode', 2)
 			self._dbusMulitService.add_path("/Ac/ActiveIn/ActiveInput", 0)
 			self._dbusMulitService.add_path("/Ac/NumberOfPhases", 1)
 			self._dbusMulitService.add_path("/Ac/NumberOfAcInputs", 1)
-			self._dbusMulitService.add_path("/Ac/In/1/Type", 2)
+			self._dbusMulitService.add_path("/Ac/In/1/Type", 2) # <- AC IN1 type: 0 (Not used), 1 (Grid), 2(Generator), 3(Shore)
 			self._dbusMulitService.add_path('/NrOfTrackers', 1)
 			self._dbusMulitService.add_path('/Mode', 3, writeable=True,)
 			self._dbusMulitService.add_path('/State', 9, writeable=True,)
@@ -493,68 +493,80 @@ class DbusHelper:
 			# self._dbusVebusService['/MppOperationMode'] = 1                                              # <- 0 = Off 1 = Voltage or Current limited 2 = MPPT Tracker active
 			
 			self._dbusVebusService['/Energy/AcIn1ToAcOut'] = 0 # später generator
-			self._dbusVebusService['/Energy/InverterToAcOut'] = round(self.inverter.a03acActivePower, 2)
-			# self._dbusVebusService['/Energy/AcIn1ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusVebusService['/Energy/AcIn1ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusVebusService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusVebusService['/Energy/AcIn2ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
-			# self._dbusVebusService['/Energy/AcOutToAcIn1'] = round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusVebusService['/Energy/AcOutToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusVebusService['/Energy/AcOutToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
-			# self._dbusVebusService['/Energy/InverterToAcIn1'] = round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusVebusService['/Energy/InverterToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusVebusService['/Energy/InverterToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
-			# self._dbusVebusService['/Energy/OutToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusVebusService['/Energy/InverterToAcOut'] =  # round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusVebusService['/Energy/OutToInverter'] =  # round(self.inverter.a11pvInputVoltage, 2)
 				
 			index = self._dbusVebusService['/UpdateIndex'] + 1  # increment index
 			if index > 255:  # maximum value of the index
 				index = 0  # overflow from 255 to 0
 			self._dbusVebusService['/UpdateIndex'] = index
-			
+
+###########################
+# MULTI
+###########################				
 		if self.useMultiDevice:
 			logger.info("==> writing multi data ")
-			# AC Input measurements:
-			# self._dbusMulitService["/Ac/In/1/L1/P"] = round(self.inverter.a03acApparentPower - 30, 2)                                               # <- Real power of AC IN1 on L1
-			# self._dbusMulitService["/Ac/In/1/L1/I"] = round(self.inverter.a03acOutputCurrent, 2)                                                # <- Current of AC IN1 on L1
-			# self._dbusMulitService["/Ac/In/1/L1/V"] = round(self.inverter.a03gridVoltage, 2)               # <- Voltage of AC IN1 on L1
-			# self._dbusMulitService["/Ac/In/1/L1/F"] = round(self.inverter.a03gridFrequency, 2)             # <- Frequency of AC IN1 on L1
+			if hasVictronBMS:
+				self._dbusMulitService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(),2)
+				self._dbusMulitService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(),2)
+				#self._dbusMulitService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)
+				self._dbusMulitService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(), 2)
+				
+			# Calculated Values 
+			selfConsumption = self.inverter.a03acApparentPower - self.inverter.a03acActivePower
 			
-			# AC Input settings:
-			# self._dbusMulitService["/Ac/In/1/Type"] = 2                                                  # <- AC IN1 type: 0 (Not used), 1 (Grid), 2(Generator), 3(Shore)
+			# AC Input measurements:
+			self._dbusMulitService["/Ac/In/1/L1/P"] = 0 # round(self.inverter.a03acApparentPower, 2)      # <- Real power of AC IN1 onL1
+			self._dbusMulitService["/Ac/In/1/L1/I"] = 0 # round(self.inverter.a03acOutputCurrent, 2)           # <- Current of AC IN1 on L1
+			self._dbusMulitService["/Ac/In/1/L1/V"] = round(self.inverter.a03gridVoltage, 2)               # <- Voltage of AC IN1 on L1
+			self._dbusMulitService["/Ac/In/1/L1/F"] = round(self.inverter.a03gridFrequency, 2)             # <- Frequency of AC IN1 on L1
 			
 			# AC Output measurements:
-			# self._dbusService["/Ac/Out/L1/P"] = round(self.inverter.a03acApparentPower - 30, 2)    # <- Frequency of AC OUT1 on L1
 			self._dbusMulitService["/Ac/Out/L1/P"] = round(self.inverter.a03acActivePower, 2)    # <- Frequency of AC OUT1 on L1
 			self._dbusMulitService["/Ac/Out/L1/V"] = round(self.inverter.a03acOutputVoltage, 2)          # <- Voltage of AC OUT1 on L1
 			self._dbusMulitService["/Ac/Out/L1/I"] = round(self.inverter.a03acOutputCurrent, 2)          # <- Current of AC OUT1 on L1
 			self._dbusMulitService["/Ac/Out/L1/F"] = round(self.inverter.a03acFrequency, 2)        # <- Real power of AC OUT1 on L1
 			
-			# self._dbusMulitService["/Ac/ActiveIn/ActiveInput"] = 1                                       # <- Active input: 0 = ACin-1, 1 = ACin-2,
-			# self._dbusMulitService["/Ac/NumberOfPhases"] = 1
-			# self._dbusMulitService["/Ac/NumberOfAcInputs"] = 1
-			
 			# For all alarms: 0 = OK; 1 = Warning; 2 = Alarm
 			# Generic alarms:
-			# self._dbusMulitService["/Alarms/LowSoc"] = 0                                               # <- Low state of charge
-			# self._dbusMulitService["/Alarms/LowVoltage"] = 0                                           # <- Low battery voltage
-			# self._dbusMulitService["/Alarms/HighVoltage "] = 0                                         # <- High battery voltage
-			# self._dbusMulitService["/Alarms/LowVoltageAcOut"] = 0                                      # <- Low AC Out voltage
-			# self._dbusMulitService["/Alarms/HighVoltageAcOut"] = 0                                     # <- High AC Out voltage
-			# self._dbusMulitService["/Alarms/HighTemperature"] = 0                                      # <- High device temperature
-			# self._dbusMulitService["/Alarms/Overload"] = 0                                             # <- Inverter overload
-			# self._dbusMulitService["/Alarms/Ripple"] = 0                                               # <- High DC ripple
+			self._dbusMulitService["/Alarms/LowSoc"] = 0                                               # <- Low state of charge
+			self._dbusMulitService["/Alarms/LowVoltage"] = 0                                           # <- Low battery voltage
+			self._dbusMulitService["/Alarms/HighVoltage "] = 0                                         # <- High battery voltage
+			self._dbusMulitService["/Alarms/LowVoltageAcOut"] = 0                                      # <- Low AC Out voltage
+			self._dbusMulitService["/Alarms/HighVoltageAcOut"] = 0                                     # <- High AC Out voltage
+			self._dbusMulitService["/Alarms/HighTemperature"] = 0                                      # <- High device temperature
+			self._dbusMulitService["/Alarms/Overload"] = 0                                             # <- Inverter overload
+			self._dbusMulitService["/Alarms/Ripple"] = 0                                               # <- High DC ripple
 			
 			# Additional Data
-			# self._dbusMulitService['/Mode'] = 3                                                          # <- Position of the switch. 1=Charger Only;2=Inverter Only;3=On;4=Off
-			# self._dbusMulitService['/State'] = 252                                                       # <- Charger state 0=Off 2=Fault 3=Bulk 4=Absorption 5=Float 6=Storage 7=Equalize 8=Passthrough 9=Inverting 245=Wake-up 25-=Blocked 252=External control
-			# self._dbusMulitService['/Soc'] = 100                                                       # <- State of charge of internal battery monitor
+			self._dbusMulitService['/Mode'] = 3                                                        # <- Position of the switch. 1=Charger Only;2=Inverter Only;3=On;4=Off
+			self._dbusMulitService['/State'] = 9                                                       # <- Charger state 0=Off 2=Fault 3=Bulk 4=Absorption 5=Float 6=Storage 7=Equalize 8=Passthrough 9=Inverting 245=Wake-up 25-=Blocked 252=External control          # <- State of charge of internal battery monitor
 			
 			# PV tracker information:
-			# self._dbusMulitService['/NrOfTrackers'] = 1                                                  # <- number of trackers
-			# self._dbusMulitService['/Pv/I'] = round(self.inverter.a11pvInputCurrent, 2)                # <- PV array voltage from 1st tracker
-			# self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
-			# self._dbusMulitService['/Pv/P'] = round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
-			# self._dbusMulitService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2)                                                # <- PV array power (Watts)
-			# self._dbusMulitService['/Yield/User'] = 97                                                  # <- Total kWh produced (user resettable)
-			# self._dbusMulitService['/Yield/System'] = 96                                                # <- Total kWh produced (not resettable)
-			# self._dbusMulitService['/MppOperationMode'] = 1
+			self._dbusMulitService['/NrOfTrackers'] = 1                                                  # <- number of trackers
+			self._dbusMulitService['/Pv/I'] = round(self.inverter.a11pvInputCurrent, 2)                # <- PV array voltage from 1st tracker
+			self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
+			self._dbusMulitService['/Pv/P'] = round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
+			self._dbusMulitService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2)           # <- PV array power (Watts)
+			# self._dbusMulitService['/Yield/User'] = round(self.inverter.a11pvInputPower, 2)            # <- Total kWh produced (user resettable)
+			
+			self._dbusMulitService['/Energy/AcIn1ToAcOut'] = 0 # später generator
+			self._dbusMulitService['/Energy/InverterToAcOut'] = 0 # round(self.inverter.a03acActivePower, 2)
+			self._dbusMulitService['/Energy/AcIn1ToInverter'] = 0 + round(self.inverter.a11pvInputVoltage, 2)
+			# self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
+			# self._dbusMulitService['/Energy/AcIn2ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
+			# self._dbusMulitService['/Energy/AcOutToAcIn1'] = round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusMulitService['/Energy/AcOutToAcIn2'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusMulitService['/Energy/InverterToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
+			# self._dbusMulitService['/Energy/InverterToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusMulitService['/Energy/OutToInverter'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			
 			index = self._dbusMulitService['/UpdateIndex'] + 1  # increment index
 			if index > 255:  # maximum value of the index
