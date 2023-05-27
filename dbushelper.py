@@ -566,14 +566,14 @@ class DbusHelper:
 			# self._dbusMulitService['/Yield/User'] = round(self.inverter.a11pvInputPower, 2)            # <- Total kWh produced (user resettable)
 			
 			self._dbusMulitService['/Energy/AcIn1ToAcOut'] = 0 # später generator
-			self._dbusMulitService['/Energy/AcIn1ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusMulitService['/Energy/AcIn1ToInverter'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusMulitService['/Energy/AcIn2ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
 			self._dbusMulitService['/Energy/AcOutToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusMulitService['/Energy/AcOutToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
 			self._dbusMulitService['/Energy/InverterToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			# self._dbusMulitService['/Energy/InverterToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
-			self._dbusMulitService['/Energy/InverterToAcOut'] =  0 # round(self.inverter.a11pvInputVoltage, 2)
+			self._dbusMulitService['/Energy/InverterToAcOut'] =  round(self.inverter.a11pvInputVoltage, 2)
 			#self._dbusMulitService['/Energy/OutToInverter'] =  0 # round(self.inverter.a11pvInputVoltage, 2)
 			
 			index = self._dbusMulitService['/UpdateIndex'] + 1  # increment index
