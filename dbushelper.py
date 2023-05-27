@@ -229,6 +229,7 @@ class DbusHelper:
 			self._dbusVebusService.add_path('/Pv/V', None, writeable=True, gettextcallback=_v, )
 			self._dbusVebusService.add_path('/Pv/P', None, writeable=True, gettextcallback=_w, )
 			self._dbusVebusService.add_path("/Yield/Power", None, writeable=True, gettextcallback=_w, )
+			self._dbusMulitService.add_path('/Soc', 0, writeable=True,)
 			self._dbusVebusService.add_path("/Mode", 3, writeable=True, )
 			self._dbusVebusService.add_path("/ModeIsAdjustable", 3,writeable=True, )
 			self._dbusVebusService.add_path('/State', 9,writeable=True, )
@@ -427,6 +428,13 @@ class DbusHelper:
 			
 		if self.useVebusDevice:
 			logger.info("==> writing vebus data ")
+			# if hasVictronBMS:
+				self._dbusVebusService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(),2)
+				self._dbusVebusService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(),2)
+				self._dbusVebusService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)
+				# self._dbusVebusService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(),2)
+				self._dbusVebusService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(), 2)
+				
 			# AC Input measurements:
 			# self._dbusVebusService["/Ac/In/1/L1/P"] = round(self.inverter.a03acApparentPower - 30, 2)                                               # <- Real power of AC IN1 on L1
 			# self._dbusVebusService["/Ac/In/1/L1/I"] = round(self.inverter.a03acOutputCurrent, 2)                                                # <- Current of AC IN1 on L1
