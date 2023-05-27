@@ -585,7 +585,7 @@ class DbusHelper:
 				if self.inverter.a03acActivePower > 0:
 					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a03acActivePower, 2) # direkt von pv in ac
 				else:
-					logger.info("==> new situation, needs to be solved Case C)
+					logger.info("==> new situation, needs to be solved Case C")
 			
 			# wenn wir strom aus der batterie ziehen z.b -10 Watts
 			elif currentBatteryValue < 0:
@@ -599,9 +599,9 @@ class DbusHelper:
 					self._dbusMulitService['/Energy/InverterToAcOut'] =  round(fromBattery, 2) # von batterie zu ac
 					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(fromYield, 2) # direkt von pv in ac
 				else:
-					logger.info("==> new situation, needs to be solved Case B)
+					logger.info("==> new situation, needs to be solved Case B")
 			else:
-				logger.info("==> new situation, needs to be solved Case A)
+				logger.info("==> new situation, needs to be solved Case A")
 				
 			index = self._dbusMulitService['/UpdateIndex'] + 1  # increment index
 			if index > 255:  # maximum value of the index
