@@ -593,9 +593,10 @@ class DbusHelper:
 				# muss der rest direkt aus der pv anlage kommen
 				if currentBatteryValue < self.inverter.a03acActivePower:
 					completePower = self.inverter.a03acActivePower
-					fromBattery = completePower + currentBatteryValue # is a negative value and will be substracted
+					fromBattery = currentBatteryValue * -1 # is a negative value and will be substracted
 					fromYield = completePower - fromBattery
 					logger.info("==> Batterie hilf aus mit " + str(fromBattery) + "/" + str(completePower) + "/" + str(currentBatteryValue))
+					logger.info("==> Rest von PV mit " + str(fromYield))
 					self._dbusMulitService['/Energy/InverterToAcOut'] =  round(fromBattery, 2) # von batterie zu ac
 					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(fromYield, 2) # direkt von pv in ac
 				else:
