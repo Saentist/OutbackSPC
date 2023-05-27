@@ -429,11 +429,11 @@ class DbusHelper:
 		if self.useVebusDevice:
 			logger.info("==> writing vebus data ")
 			# if hasVictronBMS:
-				self._dbusVebusService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(),2)
-				self._dbusVebusService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(),2)
-				self._dbusVebusService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)
-				# self._dbusVebusService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(),2)
-				self._dbusVebusService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(), 2)
+			self._dbusVebusService["/Dc/0/Voltage"] = round(self._importedDbusValues["/Dc/0/Voltage"].get_value(),2)
+			self._dbusVebusService["/Dc/0/Current"] = round(self._importedDbusValues["/Dc/0/Current"].get_value(),2)
+			self._dbusVebusService["/Dc/0/Temperature"] = round(self._importedDbusValues["/Dc/0/Temperature"].get_value(),2)
+			# self._dbusVebusService["/Dc/0/Power"] = round(self._importedDbusValues["/Dc/0/Power"].get_value(),2)
+			self._dbusVebusService["/Soc"] = round(self._importedDbusValues["/Soc"].get_value(), 2)
 				
 			# AC Input measurements:
 			# self._dbusVebusService["/Ac/In/1/L1/P"] = round(self.inverter.a03acApparentPower - 30, 2)                                               # <- Real power of AC IN1 on L1
