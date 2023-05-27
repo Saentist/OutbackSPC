@@ -229,7 +229,7 @@ class DbusHelper:
 			self._dbusVebusService.add_path('/Pv/V', None, writeable=True, gettextcallback=_v, )
 			self._dbusVebusService.add_path('/Pv/P', None, writeable=True, gettextcallback=_w, )
 			self._dbusVebusService.add_path("/Yield/Power", None, writeable=True, gettextcallback=_w, )
-			self._dbusMulitService.add_path('/Soc', 0, writeable=True,)
+			self._dbusVebusService.add_path('/Soc', 0, writeable=True,)
 			self._dbusVebusService.add_path("/Mode", 3, writeable=True, )
 			self._dbusVebusService.add_path("/ModeIsAdjustable", 3,writeable=True, )
 			self._dbusVebusService.add_path('/State', 9,writeable=True, )
