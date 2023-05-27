@@ -577,7 +577,7 @@ class DbusHelper:
 			
 			if currentBatteryValue > 0:
 				# Batterie erhält Strom
-				self._dbusMulitService['/Energy/OutToInverter'] =  currentBatteryValue0 # round(self.inverter.a11pvInputVoltage, 2)
+				self._dbusMulitService['/Energy/OutToInverter'] =  currentBatteryValue # round(self.inverter.a11pvInputVoltage, 2)
 			
 			# wenn batterie 0 weder gibt noch nimmt
 			elif currentBatteryValue == 0:
