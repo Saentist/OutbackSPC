@@ -196,8 +196,10 @@ class DbusHelper:
 			self._importedDbusValues["/Dc/0/Power"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Power')
 			self._importedDbusValues["/Soc"] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', '/Soc')
 			# self._importedDbusValues["/Dc/0/Temperature"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Temperature')
-		
+
+		###########
 		# IMPORTING
+		###########
 		if hasVictronBMS:
 			fromBmsDcVoltage = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Voltage')
 			fromBmSDcCurrent = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Current')
@@ -210,6 +212,8 @@ class DbusHelper:
 		fromOutbackDcVoltage = self.inverter.a03batteryVoltage
 		fromOutbackDcCurrent = self.inverter.a03batteryChargeCurrent
 		
+		fromOutbackAcInputGridPower = 0 # ToDo find out
+		fromOutbackAcInputGridVoltage = 0 # ToDo find out
 		fromOutbackAcInputGridVoltage = self.inverter.a03gridVoltage
 		fromOutbackAcInputGridFrequency = self.inverter.a03gridFrequency
 		
@@ -224,21 +228,93 @@ class DbusHelper:
 		formOutbackPvInputCurrent = self.inverter.a11pvInputCurrent
 		fromOutbackPcInputVoltage = self.inverter.a11pvInputVoltage
 		
-		
-		# CALCULATED
-		calculatedOutbackSelfconsumption = fromOutbackAcOutputApparentPower - fromOutbackAcOutputActivePower
-		
-		
+		###########
 		# EXPORTING
+		###########
 		toVictronDcVoltage = fromBmsDcVoltage
 		toVictronDcCurrent = fromBmSDcCurrent
 		toVictronDcPower = fromBmsDcPower
 		toVictronDcSoc = fromBmsDcSoc
 		# toVictronDcTemperature = fromBmsDcTemperature
+		
+		toVictronAcInputGridPower = fromOutbackAcInputGridPower
+		toVictronAcInputGridVoltage = fromOutbackAcInputGridVoltage
+		toVictronAcInputGridVoltage = fromOutbackAcInputGridVoltage
+		toVictronAcInputGridFrequency = fromOutbackAcInputGridFrequency
+		
+		toVictronAcOutputApparentPower = fromOutbackAcOutputApparentPower
+		toVictronAcOutputActivePower = fromOutbackAcOutputActivePower
+		toVictronAcOutputVoltage = fromOutbackAcOutputVoltage
+		toVictronAcOutputCurrent = fromOutbackAcOutputCurrent
+		toVictronAcOutputFrequency = fromOutbackAcOutputFrequency
+		toVictronAcOutputLoadPercentage = fromOutbackAcOutputLoadPercentage
+		
+		toVictronAlarmLowSoc = 0
+		toVictronAlarmLowVoltage = 0
+		toVictronAlarmHighVoltage = 0
+		toVictronAlarmLowVoltageAcOut = 0
+		toVictronAlarmHighVoltageAcOut = 0
+		toVictronAlarmHighTemperture = 0
+		toVictronAlarmOverload = 0
+		toVictronAlarmRipple = 0
+		
+		toVictronMultiState = 9 # <- Charger state 0=Off 2=Fault 3=Bulk 4=Absorption 5=Float 6=Storage 7=Equalize 8=Passthrough 9=Inverting 245=Wake-up 25-=Blocked 252=External
+		toVictronMultiMode = 3 # <- Position of the switch. 1=Charger Only;2=Inverter Only;3=On;4=Off
+				
+		toVictronEnergyAcIn1ToAcOut = 0
+		toVictronEnergyAcIn1ToInverter = 0
+		toVictronEnergyAcIn2ToAcOut = 0
+		toVictronEnergyAcIn2ToInverter = 0
+		toVictronEnergyAcOutToAcIn1 = 0
+		toVictronEnergyAcOutToAcIn2 = 0
+		toVictronEnergyInverterToAcIn1 = 0
+		toVictronEnergyInverterToAcIn2 = 0
+		toVictronEnergyInverterToAcOut = 0
+		toVictronEnergyOutToInverter = 0
+		toVictronEnergySolarToAcIn1 = 0
+		toVictronEnergySolarToAcIn2 = 0
+		toVictronEnergySolarToAcOut = 0
+		toVictronEnergySolarToBattery = 0
+	
+		
+		##########
+		# CHANGING
+		##########
+		if fromBmsDcPower > 0:
+				# Batterie erhält Strom
+				toVictronEnergySolarToBattery = fromBmsDcPower/1000
+				logger.info("==> Batterie wird zusätzlich geladen mit " + str(fromBmsDcPower))
 			
-###########################
-# MULTI
-###########################				
+			# wenn batterie 0 weder gibt noch nimmt
+			elif fromBmsDcPower == 0:
+				# wenn wir strom verbrauchen
+				if fromOutbackAcOutputActivePower > 0:
+					calculatedPvFromYield = self.inverter.a03acActivePower
+					logger.info("==> Alles von PV mit " + str(calculatedPvFromYield))
+					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(calculatedPvFromYield/1000, 2) # direkt von pv in ac
+				else:
+					logger.info("==> new situation, needs to be solved Case C")
+			
+			# wenn wir strom aus der batterie ziehen z.b -10 Watts
+			elif fromBmsDcPower < 0:
+				# wenn der strom aus der batterie kleiner ist als der strom den wir verbrauchen z.b. -10 Watts / 70 Watts => DIFF 60 Watts
+				# muss der rest direkt aus der pv anlage kommen
+				if fromBmsDcPower < self.inverter.a03acActivePower:
+					completePower = self.inverter.a03acActivePower
+					fromBattery = fromBmsDcPower * -1 # is a negative value and will be substracted
+					calculatedPvFromYield = completePower - fromBattery
+					logger.info("==> Batterie hilf aus mit " + str(fromBattery) + "/" + str(completePower) + "/" + str(fromBmsDcPower))
+					logger.info("==> Rest von PV mit " + str(calculatedPvFromYield))
+					self._dbusMulitService['/Energy/InverterToAcOut'] =  round(fromBattery/1000, 2) # von batterie zu ac
+					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(calculatedPvFromYield/1000, 2) # direkt von pv in ac
+				else:
+					logger.info("==> new situation, needs to be solved Case B")
+			else:
+				logger.info("==> new situation, needs to be solved Case A")
+		
+		###########################
+		# WRITING
+		###########################				
 		if self.useMultiDevice:
 			logger.info("==> writing multi data ")
 			if hasVictronBMS:
@@ -247,88 +323,55 @@ class DbusHelper:
 				self._dbusMulitService["/Soc"] = round(toVictronDcSoc, 2)
 				# self._dbusMulitService["/Dc/0/Temperature"] = round(toVictronDcTemperature,2)
 				
-			# Additional values 
-			selfConsumption = self.inverter.a03acApparentPower - self.inverter.a03acActivePower
-			currentBatteryValue = self._importedDbusValues["/Dc/0/Power"].get_value()
-			
 			# AC Input measurements:
-			self._dbusMulitService["/Ac/In/1/L1/P"] = 0 # round(self.inverter.a03acApparentPower, 2)      # <- Real power of AC IN1 onL1
-			self._dbusMulitService["/Ac/In/1/L1/I"] = 0 # round(self.inverter.a03acOutputCurrent, 2)           # <- Current of AC IN1 on L1
-			self._dbusMulitService["/Ac/In/1/L1/V"] = round(self.inverter.a03gridVoltage, 2)               # <- Voltage of AC IN1 on L1
-			self._dbusMulitService["/Ac/In/1/L1/F"] = round(self.inverter.a03gridFrequency, 2)             # <- Frequency of AC IN1 on L1
+			self._dbusMulitService["/Ac/In/1/L1/P"] = round(toVictronAcInputGridPower, 2)
+			self._dbusMulitService["/Ac/In/1/L1/I"] = round(toVictronAcInputGridVoltage, 2)
+			self._dbusMulitService["/Ac/In/1/L1/V"] = round(toVictronAcInputGridVoltage, 2)
+			self._dbusMulitService["/Ac/In/1/L1/F"] = round(toVictronAcInputGridFrequency, 2)
 			
 			# AC Output measurements:
-			self._dbusMulitService["/Ac/Out/L1/P"] = round(self.inverter.a03acActivePower, 2)    # <- Frequency of AC OUT1 on L1
-			self._dbusMulitService["/Ac/Out/L1/V"] = round(self.inverter.a03acOutputVoltage, 2)          # <- Voltage of AC OUT1 on L1
-			self._dbusMulitService["/Ac/Out/L1/I"] = round(self.inverter.a03acOutputCurrent, 2)          # <- Current of AC OUT1 on L1
-			self._dbusMulitService["/Ac/Out/L1/F"] = round(self.inverter.a03acFrequency, 2)        # <- Real power of AC OUT1 on L1
+			self._dbusMulitService["/Ac/Out/L1/P"] = round(toVictronAcOutputActivePower, 2)
+			self._dbusMulitService["/Ac/Out/L1/V"] = round(toVictronAcOutputVoltage, 2)
+			self._dbusMulitService["/Ac/Out/L1/I"] = round(toVictronAcOutputCurrent, 2)
+			self._dbusMulitService["/Ac/Out/L1/F"] = round(toVictronAcOutputFrequency, 2)
 			
 			# For all alarms: 0 = OK; 1 = Warning; 2 = Alarm
 			# Generic alarms:
-			self._dbusMulitService["/Alarms/LowSoc"] = 0                                               # <- Low state of charge
-			self._dbusMulitService["/Alarms/LowVoltage"] = 0                                           # <- Low battery voltage
-			#self._dbusMulitService["/Alarms/HighVoltage "] = 0                                         # <- High battery voltage
-			self._dbusMulitService["/Alarms/LowVoltageAcOut"] = 0                                      # <- Low AC Out voltage
-			self._dbusMulitService["/Alarms/HighVoltageAcOut"] = 0                                     # <- High AC Out voltage
-			self._dbusMulitService["/Alarms/HighTemperature"] = 0                                      # <- High device temperature
-			self._dbusMulitService["/Alarms/Overload"] = 0                                             # <- Inverter overload
-			self._dbusMulitService["/Alarms/Ripple"] = 0                                               # <- High DC ripple
+			self._dbusMulitService["/Alarms/LowSoc"] = toVictronAlarmLowSoc
+			self._dbusMulitService["/Alarms/LowVoltage"] = toVictronAlarmLowVoltage
+			#self._dbusMulitService["/Alarms/HighVoltage "] = toVictronAlarmHighVoltage
+			self._dbusMulitService["/Alarms/LowVoltageAcOut"] = toVictronAlarmLowVoltageAcOut
+			self._dbusMulitService["/Alarms/HighVoltageAcOut"] = toVictronAlarmHighVoltageAcOut
+			self._dbusMulitService["/Alarms/HighTemperature"] = toVictronAlarmHighTemperture
+			self._dbusMulitService["/Alarms/Overload"] = toVictronAlarmOverload
+			self._dbusMulitService["/Alarms/Ripple"] = toVictronAlarmRipple
 			
 			# Additional Data
-			self._dbusMulitService['/Mode'] = 3                                                        # <- Position of the switch. 1=Charger Only;2=Inverter Only;3=On;4=Off
-			self._dbusMulitService['/State'] = 9                                                       # <- Charger state 0=Off 2=Fault 3=Bulk 4=Absorption 5=Float 6=Storage 7=Equalize 8=Passthrough 9=Inverting 245=Wake-up 25-=Blocked 252=External control          # <- State of charge of internal battery monitor
+			self._dbusMulitService['/Mode'] = toVictronMultiMode
+			self._dbusMulitService['/State'] = toVictronMultiState
 			
-			self._dbusMulitService['/Energy/AcIn1ToAcOut'] = 0 # später generator
-			self._dbusMulitService['/Energy/AcIn1ToInverter'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
-			self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a11pvInputVoltage/1000, 2)
-			# self._dbusMulitService['/Energy/AcIn2ToInverter'] = round(self.inverter.a11pvInputVoltage, 2)
-			self._dbusMulitService['/Energy/AcOutToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
-			# self._dbusMulitService['/Energy/AcOutToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
-			self._dbusMulitService['/Energy/InverterToAcIn1'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
-			# self._dbusMulitService['/Energy/InverterToAcIn2'] = round(self.inverter.a11pvInputVoltage, 2)
-			
-			if currentBatteryValue > 0:
-				# Batterie erhält Strom
-				fromYield = self.inverter.a03acActivePower
-				self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(fromYield/1000, 2) # direkt von pv in ac
-				self._dbusMulitService['/Energy/OutToInverter'] =  currentBatteryValue/1000 # round(self.inverter.a11pvInputVoltage, 2)
-				logger.info("==> Alles von PV mit " + str(fromYield))
-				logger.info("==> Batterie wird zusätzlich geladen mit " + str(currentBatteryValue))
-			
-			# wenn batterie 0 weder gibt noch nimmt
-			elif currentBatteryValue == 0:
-				# wenn wir strom verbrauchen
-				if self.inverter.a03acActivePower > 0:
-					fromYield = self.inverter.a03acActivePower
-					logger.info("==> Alles von PV mit " + str(fromYield))
-					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(fromYield/1000, 2) # direkt von pv in ac
-				else:
-					logger.info("==> new situation, needs to be solved Case C")
-			
-			# wenn wir strom aus der batterie ziehen z.b -10 Watts
-			elif currentBatteryValue < 0:
-				# wenn der strom aus der batterie kleiner ist als der strom den wir verbrauchen z.b. -10 Watts / 70 Watts => DIFF 60 Watts
-				# muss der rest direkt aus der pv anlage kommen
-				if currentBatteryValue < self.inverter.a03acActivePower:
-					completePower = self.inverter.a03acActivePower
-					fromBattery = currentBatteryValue * -1 # is a negative value and will be substracted
-					fromYield = completePower - fromBattery
-					logger.info("==> Batterie hilf aus mit " + str(fromBattery) + "/" + str(completePower) + "/" + str(currentBatteryValue))
-					logger.info("==> Rest von PV mit " + str(fromYield))
-					self._dbusMulitService['/Energy/InverterToAcOut'] =  round(fromBattery/1000, 2) # von batterie zu ac
-					self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(fromYield/1000, 2) # direkt von pv in ac
-				else:
-					logger.info("==> new situation, needs to be solved Case B")
-			else:
-				logger.info("==> new situation, needs to be solved Case A")
+			self._dbusMulitService['/Energy/AcIn1ToAcOut'] = round(toVictronEnergyAcIn1ToAcOut/1000, 2)
+			self._dbusMulitService['/Energy/AcIn1ToInverter'] = round(toVictronEnergyAcIn1ToInverter/1000, 2)
+			self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(toVictronEnergyAcIn2ToAcOut/1000, 2)
+			self._dbusMulitService['/Energy/AcIn2ToInverter'] = round(toVictronEnergyAcIn2ToInverter, 2)
+			self._dbusMulitService['/Energy/AcOutToAcIn1'] = round(toVictronEnergyAcOutToAcIn1/1000, 2)
+			self._dbusMulitService['/Energy/AcOutToAcIn2'] = round(toVictronEnergyAcOutToAcIn2/1000, 2)
+			self._dbusMulitService['/Energy/InverterToAcIn1'] = round(toVictronEnergyInverterToAcIn1/1000, 2)
+			self._dbusMulitService['/Energy/InverterToAcIn2'] = round(toVictronEnergyInverterToAcIn2/1000, 2)
+			self._dbusMulitService['/Energy/InverterToAcIn2'] = round(toVictronEnergyInverterToAcOut/1000, 2)
+			self._dbusMulitService['/Energy/OutToInverter'] = round(toVictronEnergyOutToInverter/1000, 2)
+			self._dbusMulitService['/Energy/SolarToAcIn1'] = round(toVictronEnergySolarToAcIn1/1000, 2)
+			self._dbusMulitService['/Energy/SolarToAcIn2'] = round(toVictronEnergySolarToAcIn2/1000, 2)
+			self._dbusMulitService['/Energy/SolarToAcOut'] = round(toVictronEnergySolarToAcOut/1000, 2)
+			self._dbusMulitService['/Energy/SolarToBattery'] = round(toVictronEnergySolarToBattery/1000, 2)
 				
 			# PV tracker information:
 			self._dbusMulitService['/NrOfTrackers'] = 1   
-			logger.info("==> Werte  " + str(currentBatteryValue) + "/" + str(self.inverter.a11pvInputPower) + "/" + str(self.inverter.a03acActivePower))
-			if (currentBatteryValue + self.inverter.a11pvInputPower) < self.inverter.a03acActivePower:
+			logger.info("==> Werte  " + str(fromBmsDcPower) + "/" + str(self.inverter.a11pvInputPower) + "/" + str(self.inverter.a03acActivePower))
+			if (fromBmsDcPower + self.inverter.a11pvInputPower) < self.inverter.a03acActivePower:
 				logger.info("PV Wert zu niedrig trotz output ohne genügend abnahme von batterie")
 				self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)    
-				calculatedPvPower = self.inverter.a03acActivePower - (currentBatteryValue * -1)
+				calculatedPvPower = self.inverter.a03acActivePower - (fromBmsDcPower * -1)
 				self._dbusMulitService['/Pv/P'] = round(calculatedPvPower,2)
 				self._dbusMulitService['/Pv/I'] = round(calculatedPvPower / self.inverter.a11pvInputVoltage, 2)
 				self._dbusMulitService['/Yield/Power'] = round(calculatedPvPower, 2) 
