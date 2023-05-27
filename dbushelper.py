@@ -286,7 +286,7 @@ class DbusHelper:
 		##########
 		# PV ARRAY
 		# battery discharge amount + pv input amount smaller than pv output amount => needs to correct pv output
-		if (fromBmsDcPower + fromOutbackPvInputPower) < fromOutbackAcOutputActivePower:
+		if (int(fromBmsDcPower) + int(fromOutbackPvInputPower) < int(fromOutbackAcOutputActivePower):
 			toVictronPvInputPower = fromOutbackAcOutputActivePower - (fromBmsDcPower * -1)
 			toVictronPvInputCurrent = toVictronPvInputPower / toVictronPvInputVoltage
 			if self.debug:
