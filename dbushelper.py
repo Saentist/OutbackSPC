@@ -558,14 +558,6 @@ class DbusHelper:
 			self._dbusMulitService['/Mode'] = 3                                                        # <- Position of the switch. 1=Charger Only;2=Inverter Only;3=On;4=Off
 			self._dbusMulitService['/State'] = 9                                                       # <- Charger state 0=Off 2=Fault 3=Bulk 4=Absorption 5=Float 6=Storage 7=Equalize 8=Passthrough 9=Inverting 245=Wake-up 25-=Blocked 252=External control          # <- State of charge of internal battery monitor
 			
-			# PV tracker information:
-			self._dbusMulitService['/NrOfTrackers'] = 1                                                  # <- number of trackers
-			self._dbusMulitService['/Pv/I'] = round(self.inverter.a11pvInputCurrent, 2)                # <- PV array voltage from 1st tracker
-			self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
-			self._dbusMulitService['/Pv/P'] = round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
-			self._dbusMulitService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2)           # <- PV array power (Watts)
-			# self._dbusMulitService['/Yield/User'] = round(self.inverter.a11pvInputPower, 2)            # <- Total kWh produced (user resettable)
-			
 			self._dbusMulitService['/Energy/AcIn1ToAcOut'] = 0 # später generator
 			self._dbusMulitService['/Energy/AcIn1ToInverter'] = 0 # round(self.inverter.a11pvInputVoltage, 2)
 			self._dbusMulitService['/Energy/AcIn2ToAcOut'] = round(self.inverter.a11pvInputVoltage/1000, 2)
@@ -609,6 +601,22 @@ class DbusHelper:
 					logger.info("==> new situation, needs to be solved Case B")
 			else:
 				logger.info("==> new situation, needs to be solved Case A")
+				
+			# PV tracker information:
+			self._dbusMulitService['/NrOfTrackers'] = 1       
+			if (currentBatteryValue + self.inverter.a11pvInputPower) < self.inverter.a03acActivePower:
+				self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)    
+				calculatedPvPower = self.inverter.a03acActivePower - (currentBatteryValue * -1)
+				self._dbusMulitService['/Pv/P'] = round(calculatedPvPower,2)
+				self._dbusMulitService['/Pv/I'] = round(calculatedPvPower / self.inverter.a11pvInputVoltage, 2)
+				self._dbusMulitService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2) 
+			else: 
+				self._dbusMulitService['/Pv/I'] = round(self.inverter.a11pvInputCurrent, 2)                # <- PV array voltage from 1st tracker
+				self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)                # <- PV array voltage from 1st tracker
+				self._dbusMulitService['/Pv/P'] = round(self.inverter.a11pvInputPower, 2)                  # <- PV array power (Watts) from 1st tracker
+				self._dbusMulitService['/Yield/Power'] = round(self.inverter.a11pvInputPower, 2)           # <- PV array power (Watts)
+				# self._dbusMulitService['/Yield/User'] = round(self.inverter.a11pvInputPower, 2)            # <- Total kWh produced (user resettable)
+			
 				
 			index = self._dbusMulitService['/UpdateIndex'] + 1  # increment index
 			if index > 255:  # maximum value of the index
