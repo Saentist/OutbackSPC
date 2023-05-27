@@ -603,7 +603,8 @@ class DbusHelper:
 				logger.info("==> new situation, needs to be solved Case A")
 				
 			# PV tracker information:
-			self._dbusMulitService['/NrOfTrackers'] = 1       
+			self._dbusMulitService['/NrOfTrackers'] = 1   
+			logger.info("==> Werte  " + str(currentBatteryValue) + "/" + str(self.inverter.a11pvInputPower) + "/" + str(self.inverter.a03acActivePower))
 			if (currentBatteryValue + self.inverter.a11pvInputPower) < self.inverter.a03acActivePower:
 				self._dbusMulitService['/Pv/V'] = round(self.inverter.a11pvInputVoltage, 2)    
 				calculatedPvPower = self.inverter.a03acActivePower - (currentBatteryValue * -1)
