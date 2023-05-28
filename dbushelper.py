@@ -382,6 +382,23 @@ class DbusHelper:
 			self._dbusMulitService['/Energy/SolarToAcIn2'] = round(toVictronEnergySolarToAcIn2/1000, 2)
 			self._dbusMulitService['/Energy/SolarToAcOut'] = round(toVictronEnergySolarToAcOut/1000, 2)
 			self._dbusMulitService['/Energy/SolarToBattery'] = round(toVictronEnergySolarToBattery/1000, 2)
+			
+			self.debug = True
+			if self.debug:
+				logger.info("==> toVictronEnergyAcIn1ToAcOut " + str(toVictronEnergyAcIn1ToAcOut))
+				logger.info("==> toVictronEnergyAcIn1ToInverter " + str(toVictronEnergyAcIn1ToInverter))
+				logger.info("==> toVictronEnergyAcIn2ToAcOut " + str(toVictronEnergyAcIn2ToAcOut))
+				logger.info("==> toVictronEnergyAcIn2ToInverter " + str(toVictronEnergyAcIn2ToInverter))
+				logger.info("==> toVictronEnergyAcOutToAcIn1 " + str(toVictronEnergyAcOutToAcIn1))
+				logger.info("==> toVictronEnergyAcOutToAcIn2 " + str(toVictronEnergyAcOutToAcIn2))
+				logger.info("==> toVictronEnergyInverterToAcIn1 " + str(toVictronEnergyInverterToAcIn1))
+				logger.info("==> toVictronEnergyInverterToAcIn2 " + str(toVictronEnergyInverterToAcIn2))
+				logger.info("==> toVictronEnergyInverterToAcOut " + str(toVictronEnergyInverterToAcOut))
+				logger.info("==> toVictronEnergyOutToInverter " + str(toVictronEnergyOutToInverter))
+				logger.info("==> toVictronEnergySolarToAcIn1 " + str(toVictronEnergySolarToAcIn1))
+				logger.info("==> toVictronEnergySolarToAcIn2 " + str(toVictronEnergySolarToAcIn2))
+				logger.info("==> toVictronEnergySolarToAcOut " + str(toVictronEnergySolarToAcOut))
+				logger.info("==> toVictronEnergySolarToBattery " + str(toVictronEnergySolarToBattery))
 				
 			# PV tracker information:
 			self._dbusMulitService['/NrOfTrackers'] = 1
