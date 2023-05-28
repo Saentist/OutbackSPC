@@ -406,6 +406,7 @@ class DbusHelper:
 			self._dbusMulitService['/Pv/I'] = round(toVictronPvInputCurrent, 2)
 			self._dbusMulitService['/Pv/V'] = round(toVictronPvInputVoltage, 2) 
 			self._dbusMulitService['/Yield/Power'] = round(toVictronPvInputPower, 2)  
+			self._dbusMulitService['/Yield/User'] = round(toVictronPvInputPower/1000, 2)  
 						
 			index = self._dbusMulitService['/UpdateIndex'] + 1  # increment index
 			if index > 255:  # maximum value of the index
