@@ -87,7 +87,7 @@ class DbusHelper:
 			# Create device specific objects
 			self._dbusMulitService.add_path("/Yield/Power", None, writeable=True, gettextcallback=_w, )
 			self._dbusMulitService.add_path("/Yield/User", None, writeable=True, gettextcallback=_w, )
-			self._dbusMulitService.add_path("/Yield/System", None, writeable=True, gettextcallback=_w, )
+			#self._dbusMulitService.add_path("/Yield/System", None, writeable=True, gettextcallback=_w, )
 			self._dbusMulitService.add_path("/Ac/In/1/L1/P", None, writeable=True, gettextcallback=_w, )
 			self._dbusMulitService.add_path("/Ac/In/1/L1/I", None, writeable=True, gettextcallback=_a, )
 			self._dbusMulitService.add_path("/Ac/In/1/L1/V", None, writeable=True, gettextcallback=_v, )
@@ -118,7 +118,7 @@ class DbusHelper:
 			self._dbusMulitService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=_w, )
 			self._dbusMulitService.add_path("/Dc/0/Temperature", 0, writeable=True, gettextcallback=_w, )
 			self._dbusMulitService.add_path('/MppOperationMode', 2)
-			self._dbusMulitService.add_path("/Ac/ActiveIn/ActiveInput", 0)
+			self._dbusMulitService.add_path("/Ac/ActiveIn/ActiveInput", 240)
 			self._dbusMulitService.add_path("/Ac/NumberOfPhases", 1)
 			self._dbusMulitService.add_path("/Ac/NumberOfAcInputs", 1)
 			self._dbusMulitService.add_path("/Ac/In/1/Type", 2) # <- AC IN1 type: 0 (Not used), 1 (Grid), 2(Generator), 3(Shore)
