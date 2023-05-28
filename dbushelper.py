@@ -118,7 +118,7 @@ class DbusHelper:
 			self._dbusMulitService.add_path("/Dc/0/Power", None, writeable=True, gettextcallback=_w, )
 			self._dbusMulitService.add_path("/Dc/0/Temperature", 0, writeable=True, gettextcallback=_w, )
 			self._dbusMulitService.add_path('/MppOperationMode', 2)
-			self._dbusMulitService.add_path("/Ac/ActiveIn/ActiveInput", 240)
+			self._dbusMulitService.add_path("/Ac/ActiveIn/ActiveInput", 0)
 			self._dbusMulitService.add_path("/Ac/NumberOfPhases", 1)
 			self._dbusMulitService.add_path("/Ac/NumberOfAcInputs", 1)
 			self._dbusMulitService.add_path("/Ac/In/1/Type", 2) # <- AC IN1 type: 0 (Not used), 1 (Grid), 2(Generator), 3(Shore)
@@ -135,7 +135,7 @@ class DbusHelper:
 			self._dbusMulitService.add_path("/Alarms/Overload", 0, writeable=True,)                                            # <- Inverter overload
 			self._dbusMulitService.add_path("/Alarms/Ripple", 0, writeable=True,)  
 			self._dbusMulitService.add_path('/UpdateIndex', 0, writeable=True,)
-			self._dbusMulitService.add_path("/CustomName", "Outback Multi", writeable=True)
+			self._dbusMulitService.add_path("/CustomName", "Outback SPC", writeable=True)
 			
 		if self.useGensetDevice:
 			devType = "genset"
