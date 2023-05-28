@@ -290,12 +290,12 @@ class DbusHelper:
 		##########
 		# PV ARRAY
 		# battery discharge amount + pv input amount smaller than pv output amount => needs to correct pv output
-		if (int(fromBmsDcPower) + int(fromOutbackPvInputPower)) < int(fromOutbackAcOutputActivePower):
-			toVictronPvInputPower = fromOutbackAcOutputActivePower - (fromBmsDcPower * -1)
-			toVictronPvInputCurrent = toVictronPvInputPower / toVictronPvInputVoltage if toVictronPvInputPower != 0 else 0
-			if self.debug:
-				logger.info("==> changing Pv Power to " + str(toVictronPvInputPower))
-				logger.info("==> changing Pv Current to " + str(toVictronPvInputCurrent))
+		#if (int(fromBmsDcPower) + int(fromOutbackPvInputPower)) < int(fromOutbackAcOutputActivePower):
+			#toVictronPvInputPower = fromOutbackAcOutputActivePower - (fromBmsDcPower * -1)
+			#toVictronPvInputCurrent = toVictronPvInputPower / toVictronPvInputVoltage if toVictronPvInputPower != 0  else 0
+			#if self.debug:
+				#logger.info("==> changing Pv Power to " + str(toVictronPvInputPower))
+				#logger.info("==> changing Pv Current to " + str(toVictronPvInputCurrent))
 		
 		# BATTERY
 		# battery is charging
