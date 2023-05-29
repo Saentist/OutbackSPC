@@ -188,7 +188,17 @@ class DbusHelper:
 		except:
 			traceback.print_exc()
 			loop.quit()
-			
+	
+	def substractValues (self, value1, value2, allowNegativeResult):
+		result = value1 - value2
+		
+		if allowNegativeResult:
+			return result
+		elif:
+			if result <= 0:
+				return 0
+		
+						
 	def publish_dbus(self):
 		logger.info("Publishing to dbus")
 		
@@ -284,10 +294,51 @@ class DbusHelper:
 		toVictronEnergySolarToAcOut = 0
 		toVictronEnergySolarToBattery = 0
 	
+		###########
+		# STATES
+		###########
+		# generatorisRunning = False # ToDo
+		pvArrayIsProducing = False
+		batteryIsCharing = False
+		batteryIsDischarging = False
+		acOutIsConsuming = False
+		acOutIsConsumingFromPvAndBattery = False
+		acOutIsConsumingOnlyFromPv = False
+		acOutIsConsumingOnlyFromBattery = False
+		
+		if fromOutbackAcOutputActivePower > 0:
+			pvArrayIsProducing = True
+		
+		if fromBmsDcPower > 0:
+			batteryIsCharing = True
+		
+		if fromBmsDcPower < 0:
+			batteryIsDischarging = True
+			
+		if fromOutbackAcOutputActivePower > 0:
+			acOutIsConsuming = True
+			if batteryIsDischarging and pvArrayIsProducing:
+				acOutIsConsumingFromPvAndBattery = True
+			elif batteryIsDischarging:
+				acOutIsConsumingOnlyFromBattery = True
+			else:
+				acOutIsConsumingOnlyFromPv = True	
+				
+		#############
+		# CALCULATED
+		#############
+		
+		outbackSelfconsumption = subtractValues(fromOutbackAcOutputApparentPower, fromOutbackAcOutputActivePower, allowNegativeResult = False)
+		
+		
 		
 		##########
 		# CHANGING
 		##########
+
+		
+		
+				
 		# PV ARRAY
 		# battery discharge amount + pv input amount smaller than pv output amount => needs to correct pv output
 		#if (int(fromBmsDcPower) + int(fromOutbackPvInputPower)) < int(fromOutbackAcOutputActivePower):
@@ -317,16 +368,35 @@ class DbusHelper:
 			
 		# battery is discharging -10 Watts
 		elif fromBmsDcPower < 0:
-			# wenn der strom aus der batterie kleiner ist als der strom den wir verbrauchen z.b. -10 Watts / 70 Watts => DIFF 60 Watts
-			# muss der rest direkt aus der pv anlage kommen
-			if fromBmsDcPower < fromOutbackAcOutputActivePower:
-				toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower - (fromBmsDcPower * -1)
-				toVictronEnergyInverterToAcOut = fromBmsDcPower * -1
+			
+			# when now power is coming from pv array
+			if fromOutbackAcOutputActivePower == 0:
+				# full amount is coming from battery
+				toVictronEnergyInverterToAcOut = fromBmsDcPower
 				if self.debug:
 					logger.info("==> discharging battery with " + str(toVictronEnergyInverterToAcOut))
-					logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
 			else:
-				logger.info("==> new situation, needs to be solved Case B")
+				# py array is still delivering power
+				# case: amount from battery is smaller than from pv arra
+				if fromBmsDcPower < fromOutbackAcOutputActivePower:
+					# battery -10W / 70W => DIFF 60 Watts
+					# muss der rest direkt aus der pv anlage kommen
+					toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower - (fromBmsDcPower * -1)
+					toVictronEnergyInverterToAcOut = fromBmsDcPower * -1
+					if self.debug:
+						logger.info("==> discharging battery with " + str(toVictronEnergyInverterToAcOut))
+						logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
+				
+				# case: amount from battery is bigger than from pv array
+				# battery -90W / pv array 30W
+				elif fromBmsDcPower > fromOutbackAcOutputActivePower:
+					toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower
+					toVictronEnergyInverterToAcOut = fromBmsDcPower * -1
+					if self.debug:
+						logger.info("==> discharging battery with " + str(toVictronEnergyInverterToAcOut))
+						logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
+				else:
+					logger.info("==> new situation, needs to be solved Case B")
 		else:
 			logger.info("==> new situation, needs to be solved Case A")
 						
