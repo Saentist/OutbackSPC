@@ -191,7 +191,7 @@ class DbusHelper:
 
     def substractValues (self, value1, value2, allowNegativeResult):
         result = value1 - value2
-
+        logger.error("ERROR >>> result" + str(result))
         if allowNegativeResult:
             return result
         else:
