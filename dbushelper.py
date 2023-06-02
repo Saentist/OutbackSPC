@@ -297,7 +297,7 @@ class DbusHelper:
         ###########
         # STATES
         ###########
-        # generatorisRunning = False # ToDo
+        generatorisRunning = False
         pvArrayIsProducing = False
         batteryIsCharing = False
         batteryIsDischarging = False
@@ -337,11 +337,18 @@ class DbusHelper:
         # CHANGING
         ##########
         if batteryIsCharing:
-            toVictronEnergySolarToBattery = fromBmsDcPower
-            toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower
-            if self.debug:
-                logger.info("==> charging battery with " + str(toVictronEnergySolarToBattery))
-                logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
+            if not generatorisRunning and pvArrayIsProducing:
+                toVictronEnergySolarToBattery = fromBmsDcPower
+                toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower
+                if self.debug:
+                    logger.info("==> charging battery with " + str(toVictronEnergySolarToBattery))
+                    logger.info("==> inverting from solar " + str(toVictronEnergySolarToAcOut))
+            elif not pvArrayIsProducing and generatorisRunning:
+                if self.debug:
+                    logger.info("==> only generator is producing")
+            elif generatorisRunning and pvArrayIsProducing:
+                if self.debug:
+                    logger.info("==> pv and generator are producing")
 
         elif batteryIsIdle and pvArrayIsProducing:
             toVictronEnergySolarToAcOut = fromOutbackAcOutputActivePower
