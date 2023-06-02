@@ -307,7 +307,7 @@ class DbusHelper:
         acOutIsConsumingOnlyFromPv = False
         acOutIsConsumingOnlyFromBattery = False
 
-        if fromOutbackAcOutputActivePower > 0:
+        if toVictronPvInputPower > 0:
             pvArrayIsProducing = True
 
         if fromBmsDcPower > 0:
