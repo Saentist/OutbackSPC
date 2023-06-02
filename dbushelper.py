@@ -332,7 +332,7 @@ class DbusHelper:
         # CALCULATED
         #############
         outbackSelfconsumption = self.substractValues(fromOutbackAcOutputApparentPower, fromOutbackAcOutputActivePower, False)
-
+        logger.info("==> self consumption = " + str(outbackSelfconsumption))
         ##########
         # CHANGING
         ##########
