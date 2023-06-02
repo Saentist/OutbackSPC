@@ -276,8 +276,8 @@ class DbusHelper:
         toVictronAlarmOverload = 0
         toVictronAlarmRipple = 0
 
-        toVictronMultiState = 9 # <- Charger state 0=Off 2=Fault 3=Bulk 4=Absorption 5=Float 6=Storage 7=Equalize 8=Passthrough 9=Inverting 245=Wake-up 25-=Blocked 252=External
-        toVictronMultiMode = 3 # <- Position of the switch. 1=Charger Only;2=Inverter Only;3=On;4=Off
+        toVictronMultiState = 9  # <- Charger state 0=Off 2=Fault 3=Bulk 4=Absorption 5=Float 6=Storage 7=Equalize 8=Passthrough 9=Inverting 245=Wake-up 25-=Blocked 252=External
+        toVictronMultiMode = 3  # <- Position of the switch. 1=Charger Only;2=Inverter Only;3=On;4=Off
 
         toVictronEnergyAcIn1ToAcOut = 0
         toVictronEnergyAcIn1ToInverter = 0
@@ -331,7 +331,7 @@ class DbusHelper:
         #############
         # CALCULATED
         #############
-        outbackSelfconsumption = self.substractValues(fromOutbackAcOutputApparentPower, fromOutbackAcOutputActivePower, allowNegativeResult = False)
+        outbackSelfconsumption = self.substractValues(fromOutbackAcOutputApparentPower, fromOutbackAcOutputActivePower, False)
 
         ##########
         # CHANGING
@@ -360,8 +360,10 @@ class DbusHelper:
             if acOutIsConsumingOnlyFromBattery:
                 # full amount is coming from battery
                 toVictronEnergyInverterToAcOut = fromBmsDcPower
+                toVictronEnergyInverterToAcIn2 = outbackSelfconsumption
                 if self.debug:
                     logger.info("==> discharging battery with " + str(toVictronEnergyInverterToAcOut))
+                    logger.info("==> selfconsumption is  " + str(toVictronEnergyInverterToAcIn2))
             elif acOutIsConsumingFromPvAndBattery:
                 # py array is still delivering power
                 # case: amount from battery is smaller than from pv arra
