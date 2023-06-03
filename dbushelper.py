@@ -190,7 +190,8 @@ class DbusHelper:
             traceback.print_exc()
             loop.quit()
 
-    def substractValues (self, value1, value2, allowNegativeResult):
+    @staticmethod
+    def substractValues(value1, value2, allowNegativeResult):
         result = value1 - value2
         if allowNegativeResult:
             return result
@@ -199,7 +200,6 @@ class DbusHelper:
                 return 0
             else:
                 return result
-
 
     def publish_dbus(self):
         logger.info("Publishing to dbus")
@@ -228,8 +228,8 @@ class DbusHelper:
         fromOutbackDcVoltage = self.inverter.a03batteryVoltage
         fromOutbackDcCurrent = self.inverter.a03batteryChargeCurrent
 
-        fromOutbackAcInputGridPower = 0 # ToDo find out
-        fromOutbackAcInputGridVoltage = 0 # ToDo find out
+        fromOutbackAcInputGridPower = 0  # ToDo find out
+        fromOutbackAcInputGridVoltage = 0  # ToDo find out
         fromOutbackAcInputGridVoltage = self.inverter.a03gridVoltage
         fromOutbackAcInputGridFrequency = self.inverter.a03gridFrequency
 
@@ -364,7 +364,7 @@ class DbusHelper:
             # battery is discharging and pv is not producting
             if acOutIsConsumingOnlyFromBattery:
                 # full amount is coming from battery
-                toVictronEnergyInverterToAcOut = fromBmsDcPower * -1
+                toVictronEnergyInverterToAcOut = fromOutbackAcOutputActivePower
                 toVictronEnergyInverterToAcIn2 = outbackSelfconsumption
                 if self.debug:
                     logger.info("==> discharging battery with " + str(toVictronEnergyInverterToAcOut))
