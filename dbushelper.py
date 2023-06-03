@@ -363,7 +363,7 @@ class DbusHelper:
             # battery is discharging and pv is not producting
             if acOutIsConsumingOnlyFromBattery:
                 # full amount is coming from battery
-                toVictronEnergyInverterToAcOut = fromBmsDcPower
+                toVictronEnergyInverterToAcOut = fromBmsDcPower * -1
                 toVictronEnergyInverterToAcIn2 = outbackSelfconsumption
                 if self.debug:
                     logger.info("==> discharging battery with " + str(toVictronEnergyInverterToAcOut))
