@@ -442,7 +442,7 @@ class DbusHelper:
             self._dbusMulitService['/Energy/AcOutToAcIn2'] = round(toVictronEnergyAcOutToAcIn2/1000, 2)
             self._dbusMulitService['/Energy/InverterToAcIn1'] = round(toVictronEnergyInverterToAcIn1/1000, 2)
             self._dbusMulitService['/Energy/InverterToAcIn2'] = round(toVictronEnergyInverterToAcIn2/1000, 2)
-            self._dbusMulitService['/Energy/InverterToAcIn2'] = round(toVictronEnergyInverterToAcOut/1000, 2)
+            self._dbusMulitService['/Energy/InverterToAcOut'] = round(toVictronEnergyInverterToAcOut/1000, 2)
             self._dbusMulitService['/Energy/OutToInverter'] = round(toVictronEnergyOutToInverter/1000, 2)
             self._dbusMulitService['/Energy/SolarToAcIn1'] = round(toVictronEnergySolarToAcIn1/1000, 2)
             self._dbusMulitService['/Energy/SolarToAcIn2'] = round(toVictronEnergySolarToAcIn2/1000, 2)
