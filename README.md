@@ -73,6 +73,8 @@ Github branch or tag: `main` <br>
 
 1) select our service directory
 > cd /opt/victronenergy/OutbackSPC/
+or if you used SetupHelper
+> cd /data/OutbackSPC
 
 2) scan for nearby devices
 >./scan.py
