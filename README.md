@@ -102,6 +102,9 @@ After you have found out the mac adress of your device you have to make the devi
 
 #### without config
 >/opt/victronenergy/OutbackSPC/dbus-btbattery.py xx:xx:xx:xx:xx:xx
+>
+### Logfiles
+> /var/log/OutbackSPC
 
 # NOTES: This driver is is still in development and may not work as intended. Use at your own risk!
 
