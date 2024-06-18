@@ -55,7 +55,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 #outbackService00001801 = self.bt.getServiceByUUID('00001801-0000-1000-8000-00805f9b34fb')
                 #outbackService00001801a01 = outbackService00001801.getCharacteristics("00002a05-0000-1000-8000-00805f9b34fb")[0]
                 #outbackService00001801a01Data = outbackService00001801a01.read()
-                #print(outbackService00001801a01Data)
+                #logger.info(outbackService00001801a01Data)
 
                 # outbackService00001810a01 = outbackService00001810.getCharacteristics("00002a01-0000-1000-8000-00805f9b34fb")[0]
                 # outbackService00001810a02 = outbackService00001810.getCharacteristics("00002a02-0000-1000-8000-00805f9b34fb")[0]
@@ -84,19 +84,19 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 # outbackService00001810a0cData = self.getExtractData(outbackService00001810a0c.read())
                 # outbackService00001810a0dData = self.getExtractData(outbackService00001810a0d.read())
                 if self.debug:
-                    # print(outbackService00001810a01Data)
-                    # print(outbackService00001810a02Data)
-                    print("a03: " + str(outbackService00001810a03Data))
-                    # print(outbackService00001810a04Data)
-                    # print(outbackService00001810a05Data)
-                    # print(outbackService00001810a06Data)
-                    # print(outbackService00001810a07Data)
-                    # print(outbackService00001810a08Data)
-                    # print(outbackService00001810a09Data)
-                    # print(outbackService00001810a0aData)
-                    # print(outbackService00001810a0bData)
-                    # print(outbackService00001810a0cData)
-                    # print(outbackService00001810a0dData)
+                    # logger.info(outbackService00001810a01Data)
+                    # logger.info(outbackService00001810a02Data)
+                    logger.info("a03: " + str(outbackService00001810a03Data))
+                    # logger.info(outbackService00001810a04Data)
+                    # logger.info(outbackService00001810a05Data)
+                    # logger.info(outbackService00001810a06Data)
+                    # logger.info(outbackService00001810a07Data)
+                    # logger.info(outbackService00001810a08Data)
+                    # logger.info(outbackService00001810a09Data)
+                    # logger.info(outbackService00001810a0aData)
+                    # logger.info(outbackService00001810a0bData)
+                    # logger.info(outbackService00001810a0cData)
+                    # logger.info(outbackService00001810a0dData)
 
                 outbackService00001811a11 = outbackService00001811.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
                 # outbackService00001811a12 = outbackService00001811.getCharacteristics("00002a12-0000-1000-8000-00805f9b34fb")[0]
@@ -107,18 +107,18 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 # outbackService00001811a13Data = self.getExtractData(outbackService00001811a13.read())
                 # outbackService00001811a14Data = self.getExtractData(outbackService00001811a14.read())
                 if self.debug:
-                    print("a11: " + str(outbackService00001811a11Data))
-                    # print(outbackService00001811a12Data)
-                    # print(outbackService00001811a13Data)
-                    # print(outbackService00001811a14Data)
+                    logger.info("a11: " + str(outbackService00001811a11Data))
+                    # logger.info(outbackService00001811a12Data)
+                    # logger.info(outbackService00001811a13Data)
+                    # logger.info(outbackService00001811a14Data)
 
                 #outbackService0000180aa29 = outbackService0000180a.getCharacteristics("00002a29-0000-1000-8000-00805f9b34fb")[0]
                 #outbackService0000180aa2a = outbackService0000180a.getCharacteristics("00002a2a-0000-1000-8000-00805f9b34fb")[0]
                 #outbackService0000180aa29Data = outbackService0000180aa29.read()
                 #outbackService0000180aa2aData = outbackService0000180aa2a.read()
                 #if self.debug:
-                    #print(outbackService0000180aa29Data)
-                    #print(outbackService0000180aa2aData)
+                    #logger.info(outbackService0000180aa29Data)
+                    #logger.info(outbackService0000180aa2aData)
 
                 # read our data
                 self.generalDataCallback(outbackService00001810a03Data, "a03")
@@ -132,7 +132,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 
     def connect(self):
         if self.debug:
-            print('=> connect')
+            logger.info('=> connect')
         self.start()
 
     def stop(self):
@@ -182,7 +182,7 @@ class OutbackBt(Inverter):
     def refresh_data(self):
         if self.newData:
             if self.debug:
-                print("=> refresh_data")
+                logger.info("=> refresh_data")
             result = False  #  self.read_gen_data()
             while not result:
                 result = self.read_gen_data()
@@ -215,19 +215,19 @@ class OutbackBt(Inverter):
 
             # AUSGABE
             if self.debug:
-                print('collected values')
-                print('a03gridVoltage => ' + str(self.a03gridVoltage))
-                print('a03gridFrequency => ' + str(self.a03gridFrequency))
-                print('a03acOutputVoltage => ' + str(self.a03acOutputVoltage))
-                print('a03acFrequency => ' + str(self.a03acFrequency))
-                print('a03acApparentPower => ' + str(self.a03acApparentPower))
-                print('a03acActivePower => ' + str(self.a03acActivePower))
-                print('a03loadPercent => ' + str(self.a03loadPercent))
-                print('a03busVoltage => ' + str(self.a03busVoltage))
-                print('a03batteryVoltage => ' + str(self.a03batteryVoltage))
-                print('a03batteryChargeCurrent => ' + str(self.a03batteryChargeCurrent))
-                print('calculated values')
-                print('a03acOutputCurrent => ' + str(self.a03acOutputCurrent))
+                logger.info('collected values')
+                logger.info('a03gridVoltage => ' + str(self.a03gridVoltage))
+                logger.info('a03gridFrequency => ' + str(self.a03gridFrequency))
+                logger.info('a03acOutputVoltage => ' + str(self.a03acOutputVoltage))
+                logger.info('a03acFrequency => ' + str(self.a03acFrequency))
+                logger.info('a03acApparentPower => ' + str(self.a03acApparentPower))
+                logger.info('a03acActivePower => ' + str(self.a03acActivePower))
+                logger.info('a03loadPercent => ' + str(self.a03loadPercent))
+                logger.info('a03busVoltage => ' + str(self.a03busVoltage))
+                logger.info('a03batteryVoltage => ' + str(self.a03batteryVoltage))
+                logger.info('a03batteryChargeCurrent => ' + str(self.a03batteryChargeCurrent))
+                logger.info('calculated values')
+                logger.info('a03acOutputCurrent => ' + str(self.a03acOutputCurrent))
 
         if self.a11Data:
             self.a11unknown0 = self.a11Data[0]  #
@@ -248,19 +248,19 @@ class OutbackBt(Inverter):
 
             if self.debug:
                 # AUSGABE
-                print('collected values')
-                print('a11 unknown0 => ' + str(self.a11unknown0))
-                print('a11 unknown1 => ' + str(self.a11unknown1))
-                print('a11 unknown2 => ' + str(self.a11unknown2))
-                print('a11 unknown3 => ' + str(self.a11unknown3))
-                print('a11 unknown4 => ' + str(self.a11unknown4))
-                print('a11 unknown5 => ' + str(self.a11unknown5))
-                print('a11pvInputPower => ' + str(self.a11pvInputPower))
-                print('a11pvInputVoltage => ' + str(self.a11pvInputVoltage))
-                print('a11 unknown8 => ' + str(self.a11unknown8))
-                print('a11 unknown9 => ' + str(self.a11unknown9))
-                print('calculated values')
-                print('a11pvInputCurrent => ' + str(self.a11pvInputCurrent))
+                logger.info('collected values')
+                logger.info('a11 unknown0 => ' + str(self.a11unknown0))
+                logger.info('a11 unknown1 => ' + str(self.a11unknown1))
+                logger.info('a11 unknown2 => ' + str(self.a11unknown2))
+                logger.info('a11 unknown3 => ' + str(self.a11unknown3))
+                logger.info('a11 unknown4 => ' + str(self.a11unknown4))
+                logger.info('a11 unknown5 => ' + str(self.a11unknown5))
+                logger.info('a11pvInputPower => ' + str(self.a11pvInputPower))
+                logger.info('a11pvInputVoltage => ' + str(self.a11pvInputVoltage))
+                logger.info('a11 unknown8 => ' + str(self.a11unknown8))
+                logger.info('a11 unknown9 => ' + str(self.a11unknown9))
+                logger.info('calculated values')
+                logger.info('a11pvInputCurrent => ' + str(self.a11pvInputCurrent))
 
         if self.a29Data:
             # A29 Bereich
@@ -277,16 +277,16 @@ class OutbackBt(Inverter):
 
             if self.debug:
                 # AUSGABE
-                print('a29 unknown0 => ' + str(self.a29unknown0))
-                print('a29 unknown1 => ' + str(self.a29unknown1))
-                print('a29 unknown2 => ' + str(self.a29unknown2))
-                print('a29 unknown3 => ' + str(self.a29unknown3))
-                print('a29 unknown4 => ' + str(self.a29unknown4))
-                print('a29 unknown5 => ' + str(self.a29unknown5))
-                print('a29 unknown6 => ' + str(self.a29unknown6))
-                print('a29 unknown7 => ' + str(self.a29unknown7))
-                print('a29 unknown8 => ' + str(self.a29unknown8))
-                print('a29 unknown9 => ' + str(self.a29unknown9))
+                logger.info('a29 unknown0 => ' + str(self.a29unknown0))
+                logger.info('a29 unknown1 => ' + str(self.a29unknown1))
+                logger.info('a29 unknown2 => ' + str(self.a29unknown2))
+                logger.info('a29 unknown3 => ' + str(self.a29unknown3))
+                logger.info('a29 unknown4 => ' + str(self.a29unknown4))
+                logger.info('a29 unknown5 => ' + str(self.a29unknown5))
+                logger.info('a29 unknown6 => ' + str(self.a29unknown6))
+                logger.info('a29 unknown7 => ' + str(self.a29unknown7))
+                logger.info('a29 unknown8 => ' + str(self.a29unknown8))
+                logger.info('a29 unknown9 => ' + str(self.a29unknown9))
 
         self.mutex.release()
         self.newData = False
@@ -295,7 +295,7 @@ class OutbackBt(Inverter):
     def generalDataCB(self, data, charType):
         with self.mutex:
             if self.debug:
-                print('setting data for' + "" + charType)
+                logger.info('setting data for ' + "" + charType)
             if charType == "a03":
                 self.a03Data = data
                 logger.info("a03 => " + str(data))
@@ -308,7 +308,6 @@ class OutbackBt(Inverter):
             else:
                 if self.debug:
                     logger.warning("no characteristic given")
-                    # print("no characteristic given")
             logger.info("setting new data => True")
             self.newData = True
 
@@ -317,7 +316,7 @@ class OutbackBt(Inverter):
 if __name__ == "__main__":
     peripheral = Peripheral("00:35:FF:02:95:99", iface=0)
     for service in peripheral.getServices():
-        print(service)
-        print(service.uuid)
+        logger.info(service)
+        logger.info(service.uuid)
         for characteristic in service.getCharacteristics():
-            print("Characteristic - id: %s\tname (if exists): %s\tavailable methods: %s" % (str(characteristic.uuid), str(characteristic), characteristic.propertiesToString()))
+            logger.info("Characteristic - id: %s\tname (if exists): %s\tavailable methods: %s" % (str(characteristic.uuid), str(characteristic), characteristic.propertiesToString()))
