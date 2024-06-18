@@ -292,26 +292,25 @@ class OutbackBt(Inverter):
         self.newData = False
         return True
 
-
     def generalDataCB(self, data, charType):
-        self.mutex.acquire()
-        if self.debug:
-            print('setting data' + "" + charType)
-        if charType == "a03":
-            self.a03Data = data
-            logger.warning("INFO a03>>> " + str(data))
-        elif charType == "a11":
-            self.a11Data = data
-            logger.warning("INFO a11>>> " + str(data))
-        elif charType == "a29":
-            self.a29Data = data
-            logger.warning("INFO a29>>> " + str(data))
-        else:
+        with self.mutex:
             if self.debug:
-                print("no characteristic given")
-
-        self.newData = True
-        self.mutex.release()
+                print('setting data for' + "" + charType)
+            if charType == "a03":
+                self.a03Data = data
+                logger.info("a03 => " + str(data))
+            elif charType == "a11":
+                self.a11Data = data
+                logger.info("a11 => " + str(data))
+            elif charType == "a29":
+                self.a29Data = data
+                logger.info("a29 => " + str(data))
+            else:
+                if self.debug:
+                    logger.warning("no characteristic given")
+                    # print("no characteristic given")
+            logger.info("setting new data => True")
+            self.newData = True
 
 
 # Testmethode für direkten Aufruf
