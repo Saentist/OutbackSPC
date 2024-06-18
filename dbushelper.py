@@ -181,7 +181,7 @@ class DbusHelper:
                 # If the battery is offline for more than 10 polls (polled every second for most batteries)
                 if self.error_count >= 20:
                     self.inverter.online = False
-                    logger.warning("WARNING >>> Inverter possbily offline")
+                    logger.warning("WARNING >>> Inverter possibly offline")
                 # Has it completely failed
                 if self.error_count >= 100:
                     logger.error("ERROR >>> Loop quited")

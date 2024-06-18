@@ -201,8 +201,10 @@ class OutbackBt(Inverter):
             return False
 
     def read_gen_data(self):
-        with self.mutex:
+        if self.debug:
+            logger.info("INFO >>> read_gen_data")
 
+        with self.mutex:
             if self.a03Data is None and self.a11Data is None and self.a29Data is None:
                 self.mutex.release()
                 logger.info("INFO >>> Currently no data at all")
@@ -307,6 +309,8 @@ class OutbackBt(Inverter):
         return True
 
     def generalDataCB(self, outbackServiceData):
+        if self.debug:
+            logger.info("INFO >>> generalDataCB")
         with self.mutex:
             for charType, data in outbackServiceData.items():
                 if self.debug:
