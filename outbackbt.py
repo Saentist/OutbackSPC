@@ -132,9 +132,11 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 sleep(self.interval)
 
             except BTLEDisconnectError:
-                logger.info('Disconnected')
+                logger.info('Disconnected' + str(BTLEDisconnectError))
                 connected = False
                 continue
+            except Exception as error:
+                logger.info('ERROR:' + str(error))
 
     def connect(self):
         if self.debug:
