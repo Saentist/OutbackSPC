@@ -164,6 +164,8 @@ class DbusHelper:
         return True
 
     def publish_inverter(self, loop):
+        if self.debug:
+            logger.info("INFO >>> publish_inverter")
         # This is called every battery.poll_interval milli second as set up per battery type to read and update the data
         try:
             # Call the battery's refresh_data function
@@ -202,7 +204,8 @@ class DbusHelper:
                 return result
 
     def publish_dbus(self):
-        logger.info("Publishing to dbus")
+        if self.debug:
+            logger.info("Publishing to dbus")
 
         # Battery Values
         hasVictronBMS = 'com.victronenergy.battery.ttyUSB0' in self._dbusConnection.list_names()
