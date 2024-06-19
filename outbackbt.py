@@ -209,7 +209,7 @@ class OutbackBt(Inverter):
 
         with self.mutex:
             if self.a03Data is None and self.a11Data is None and self.a29Data is None:
-                self.mutex.release()
+                #self.mutex.release()
                 logger.info("INFO >>> Currently no data at all")
                 return False
 
