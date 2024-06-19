@@ -190,17 +190,18 @@ class OutbackBt(Inverter):
     def refresh_data(self):
         if self.debug:
             logger.info("INFO >>> refresh_data")
-        if self.newData:
-            if self.debug:
-                logger.info("new data collected")
-            result = False
-            while not result:
-                result = self.read_gen_data()
-                return result  # False
-            logger.info("new data proceeded")
-            return result  # True
-        else:
-            return False
+        return self.read_gen_data()
+        #if self.newData:
+        #    if self.debug:
+        #        logger.info("new data collected")
+        #    result = False
+        #    while not result:
+        #        result = self.read_gen_data()
+        #        return result  # False
+        #    logger.info("new data proceeded")
+        #    return result  # True
+        #else:
+        #    return False
 
     def read_gen_data(self):
         if self.debug:
