@@ -208,7 +208,16 @@ class DbusHelper:
             logger.info("Publishing to dbus")
 
         # Battery Values
-        hasVictronBMS = 'com.victronenergy.battery.ttyUSB0' in self._dbusConnection.list_names()
+        available_devices = self._dbusConnection.list_names()
+        device_found = None
+
+        for i in range(10):  # Annahme: Überprüfen von ttyUSB0 bis ttyUSB9
+            device_name = f'com.victronenergy.battery.ttyUSB{i}'
+            if device_name in available_devices:
+                hasVictronBMS = True
+                break
+
+        #hasVictronBMS = 'com.victronenergy.battery.ttyUSB0' in self._dbusConnection.list_names()
         if hasVictronBMS:
             self._importedDbusValues["/Dc/0/Voltage"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Voltage')
             self._importedDbusValues["/Dc/0/Current"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Current')
@@ -250,11 +259,12 @@ class DbusHelper:
         ###########
         # EXPORTING
         ###########
-        toVictronDcVoltage = fromBmsDcVoltage
-        toVictronDcCurrent = fromBmSDcCurrent
-        toVictronDcPower = fromBmsDcPower
-        toVictronDcSoc = fromBmsDcSoc
-        # toVictronDcTemperature = fromBmsDcTemperature
+        if hasVictronBMS:
+            toVictronDcVoltage = fromBmsDcVoltage
+            toVictronDcCurrent = fromBmSDcCurrent
+            toVictronDcPower = fromBmsDcPower
+            toVictronDcSoc = fromBmsDcSoc
+            # toVictronDcTemperature = fromBmsDcTemperature
 
         toVictronAcInputGridPower = fromOutbackAcInputGridPower
         toVictronAcInputGridVoltage = fromOutbackAcInputGridVoltage
