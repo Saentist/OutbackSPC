@@ -217,23 +217,23 @@ class DbusHelper:
                 hasVictronBMS = True
                 break
 
-        #hasVictronBMS = 'com.victronenergy.battery.ttyUSB0' in self._dbusConnection.list_names()
+        #hasVictronBMS = device_name in self._dbusConnection.list_names()
         if hasVictronBMS:
-            self._importedDbusValues["/Dc/0/Voltage"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Voltage')
-            self._importedDbusValues["/Dc/0/Current"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Current')
-            self._importedDbusValues["/Dc/0/Power"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Power')
-            self._importedDbusValues["/Soc"] = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', '/Soc')
-            # self._importedDbusValues["/Dc/0/Temperature"] = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Temperature')
+            self._importedDbusValues["/Dc/0/Voltage"] = VeDbusItemImport(self._dbusConnection,device_name, '/Dc/0/Voltage')
+            self._importedDbusValues["/Dc/0/Current"] = VeDbusItemImport(self._dbusConnection,device_name, '/Dc/0/Current')
+            self._importedDbusValues["/Dc/0/Power"] = VeDbusItemImport(self._dbusConnection,device_name, '/Dc/0/Power')
+            self._importedDbusValues["/Soc"] = VeDbusItemImport(self._dbusConnection, device_name, '/Soc')
+            # self._importedDbusValues["/Dc/0/Temperature"] = VeDbusItemImport(self._dbusConnection,device_name, '/Dc/0/Temperature')
 
         ###########
         # IMPORTING
         ###########
         if hasVictronBMS:
-            fromBmsDcVoltage = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Voltage').get_value()
-            fromBmSDcCurrent = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Current').get_value()
-            fromBmsDcPower = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Power').get_value()
-            fromBmsDcSoc = VeDbusItemImport(self._dbusConnection, 'com.victronenergy.battery.ttyUSB0', '/Soc').get_value()
-            #fromBmsDcTemperature = VeDbusItemImport(self._dbusConnection,'com.victronenergy.battery.ttyUSB0', '/Dc/0/Temperature').get_value()
+            fromBmsDcVoltage = VeDbusItemImport(self._dbusConnection,device_name, '/Dc/0/Voltage').get_value()
+            fromBmSDcCurrent = VeDbusItemImport(self._dbusConnection,device_name, '/Dc/0/Current').get_value()
+            fromBmsDcPower = VeDbusItemImport(self._dbusConnection,device_name, '/Dc/0/Power').get_value()
+            fromBmsDcSoc = VeDbusItemImport(self._dbusConnection, device_name, '/Soc').get_value()
+            #fromBmsDcTemperature = VeDbusItemImport(self._dbusConnection,device_name, '/Dc/0/Temperature').get_value()
 
         # ToDo complete values
         # no Soc available
