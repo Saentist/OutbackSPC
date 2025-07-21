@@ -210,6 +210,7 @@ class DbusHelper:
         # Battery Values
         available_devices = self._dbusConnection.list_names()
         device_found = None
+        hasVictronBMS = False
 
         for i in range(10):  # Annahme: Überprüfen von ttyUSB0 bis ttyUSB9
             device_name = f'com.victronenergy.battery.ttyUSB{i}'
