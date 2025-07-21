@@ -166,8 +166,10 @@ class OutbackBt(Inverter):
         self.debug = utils.DEBUG_MODE
 
         # Bluepy stuff
+        # OutbackBt does not handle BLE notifications directly, so no
+        # delegate is registered here.  The OutbackBtDev helper class
+        # manages all Bluetooth communication and callbacks.
         self.bt = Peripheral()
-        self.bt.setDelegate(self)
 
         self.mutex = Lock()
         self.a03Data = None
