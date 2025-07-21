@@ -24,6 +24,13 @@ class OutbackBtDev(DefaultDelegate, Thread):
         self.bt = Peripheral()
         self.bt.setDelegate(self)
 
+
+    def _disconnect_bt(self):
+        try:
+            self.bt.disconnect()
+        except Exception as e:
+            logger.debug('Disconnect error: %s', e)
+
         # cached services and characteristics
         self.service_1810 = None
         self.service_1811 = None
@@ -52,6 +59,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     logger.info(ex)
                     e = sys.exc_info()
                     logger.info(e)
+                    self._disconnect_bt()
                     time.sleep(2)
                     logger.info('restarting and reseting bluetooth')
                     os.system('/etc/init.d/bluetooth restart; hciconfig hci0 reset')
@@ -154,6 +162,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 
             except BTLEDisconnectError:
                 logger.info('Disconnected' + str(BTLEDisconnectError))
+                self._disconnect_bt()
                 connected = False
                 self.service_1810 = None
                 self.service_1811 = None
@@ -162,6 +171,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 continue
             except Exception as error:
                 logger.info('ERROR:' + str(error))
+                self._disconnect_bt()
 
     def connect(self):
         if self.debug:
@@ -170,6 +180,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 
     def stop(self):
         self.running = False
+        self._disconnect_bt()
 
     def addGeneralDataCallback(self, func):
         self.generalDataCallback = func
