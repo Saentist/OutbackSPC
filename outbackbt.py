@@ -24,11 +24,18 @@ class OutbackBtDev(DefaultDelegate, Thread):
         self.bt = Peripheral()
         self.bt.setDelegate(self)
 
+
     def _disconnect_bt(self):
         try:
             self.bt.disconnect()
         except Exception as e:
             logger.debug('Disconnect error: %s', e)
+
+        # cached services and characteristics
+        self.service_1810 = None
+        self.service_1811 = None
+        self.char_a03 = None
+        self.char_a11 = None
 
     def run(self):
         self.running = True
@@ -40,6 +47,11 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     self.bt.connect(self.address, iface=0)
                     logger.info('Connected ' + self.address)
                     logger.info('Debug mode ' + str(self.debug))
+                    # cache services and characteristics
+                    self.service_1810 = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
+                    self.service_1811 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
+                    self.char_a03 = self.service_1810.getCharacteristics('00002a03-0000-1000-8000-00805f9b34fb')[0]
+                    self.char_a11 = self.service_1811.getCharacteristics('00002a11-0000-1000-8000-00805f9b34fb')[0]
                     connected = True
                 except BTLEException as ex:
                     logger.info('Connection failed')
@@ -51,11 +63,21 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     time.sleep(2)
                     logger.info('restarting and reseting bluetooth')
                     os.system('/etc/init.d/bluetooth restart; hciconfig hci0 reset')
+                    self.service_1810 = None
+                    self.service_1811 = None
+                    self.char_a03 = None
+                    self.char_a11 = None
                     time.sleep(3)
                     continue
             try:
-                outbackService00001810 = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
-                outbackService00001811 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
+                if self.service_1810 is None or self.service_1811 is None:
+                    # services might be lost after reconnect
+                    self.service_1810 = self.bt.getServiceByUUID('00001810-0000-1000-8000-00805f9b34fb')
+                    self.service_1811 = self.bt.getServiceByUUID('00001811-0000-1000-8000-00805f9b34fb')
+                if self.char_a03 is None:
+                    self.char_a03 = self.service_1810.getCharacteristics('00002a03-0000-1000-8000-00805f9b34fb')[0]
+                if self.char_a11 is None:
+                    self.char_a11 = self.service_1811.getCharacteristics('00002a11-0000-1000-8000-00805f9b34fb')[0]
                 #outbackService0000180a = self.bt.getServiceByUUID('0000180a-0000-1000-8000-00805f9b34fb')
 
                 # kann  nicht gelesen werden, daher auskommentiert
@@ -66,7 +88,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
 
                 # outbackService00001810a01 = outbackService00001810.getCharacteristics("00002a01-0000-1000-8000-00805f9b34fb")[0]
                 # outbackService00001810a02 = outbackService00001810.getCharacteristics("00002a02-0000-1000-8000-00805f9b34fb")[0]
-                outbackService00001810a03 = outbackService00001810.getCharacteristics("00002a03-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001810a03 = self.char_a03
                 # outbackService00001810a04 = outbackService00001810.getCharacteristics("00002a04-0000-1000-8000-00805f9b34fb")[0]
                 # outbackService00001810a05 = outbackService00001810.getCharacteristics("00002a05-0000-1000-8000-00805f9b34fb")[0]
                 # outbackService00001810a06 = outbackService00001810.getCharacteristics("00002a06-0000-1000-8000-00805f9b34fb")[0]
@@ -105,7 +127,7 @@ class OutbackBtDev(DefaultDelegate, Thread):
                     # logger.info(outbackService00001810a0cData)
                     # logger.info(outbackService00001810a0dData)
 
-                outbackService00001811a11 = outbackService00001811.getCharacteristics("00002a11-0000-1000-8000-00805f9b34fb")[0]
+                outbackService00001811a11 = self.char_a11
                 # outbackService00001811a12 = outbackService00001811.getCharacteristics("00002a12-0000-1000-8000-00805f9b34fb")[0]
                 # outbackService00001811a13 = outbackService00001811.getCharacteristics("00002a13-0000-1000-8000-00805f9b34fb")[0]
                 # outbackService00001811a14 = outbackService00001811.getCharacteristics("00002a14-0000-1000-8000-00805f9b34fb")[0]
@@ -142,6 +164,10 @@ class OutbackBtDev(DefaultDelegate, Thread):
                 logger.info('Disconnected' + str(BTLEDisconnectError))
                 self._disconnect_bt()
                 connected = False
+                self.service_1810 = None
+                self.service_1811 = None
+                self.char_a03 = None
+                self.char_a11 = None
                 continue
             except Exception as error:
                 logger.info('ERROR:' + str(error))
@@ -176,8 +202,10 @@ class OutbackBt(Inverter):
         self.debug = utils.DEBUG_MODE
 
         # Bluepy stuff
+        # OutbackBt does not handle BLE notifications directly, so no
+        # delegate is registered here.  The OutbackBtDev helper class
+        # manages all Bluetooth communication and callbacks.
         self.bt = Peripheral()
-        self.bt.setDelegate(self)
 
         self.mutex = Lock()
         self.a03Data = None
