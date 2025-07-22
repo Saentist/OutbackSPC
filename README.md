@@ -106,40 +106,40 @@ or if you used SetupHelper
 cd /data/OutbackSPC
 ```
 
-2) scan for nearby devices
-./scan.py
-
-After you have found out the mac address of your device you have to make the device connectable.<br/> 
-replace xx:xx:xx:xx:xx:xx with the Bluetooth address of your Inverter<br/>
+2) Scan for nearby devices
 ```sh
 ./scan.py
 ```
-3) start bluetoothctl<br>
+After you have found out the mac address of your device you have to make the device connectable.<br/> 
+replace xx:xx:xx:xx:xx:xx with the Bluetooth address of your Inverter<br/>
+
+3) Start bluetoothctl<br>
 ```sh
 bluetoothctl
 ```
-4) trust the device<br>
+4) Trust the device<br>
 ```sh
 trust xx:xx:xx:xx:xx:xx
 ```
-5) pair with the device<br>
+5) Pair with the device<br>
 ```sh
 pair xx:xx:xx:xx:xx:xx
 ```
 (enter 000000 or 123456)
-6) connect optionally to verify connection<br>
+
+6) Connect optionally to verify connection<br>
 ```sh
 connect xx:xx:xx:xx:xx:xx
 ```
-7) exit bluetoothctl
+7) Exit bluetoothctl
 ```sh
 exit
 ```
-8) edit default_config.ini (set OUTBACK_ADDRESS)
+8) Edit default_config.ini (set OUTBACK_ADDRESS)
 ```sh
 nano default_config.ini
 ```
-8) reboot system
+8) Reboot system
 ```sh
 reboot
 ```
@@ -149,7 +149,7 @@ reboot
 ```sh
 /opt/victronenergy/OutbackSPC/dbus-btoutback.py
 ```
-#### without config
+#### Test without config
 ```sh
 /opt/victronenergy/OutbackSPC/dbus-btoutback.py xx:xx:xx:xx:xx:xx
 ```
@@ -158,5 +158,5 @@ reboot
 /var/log/OutbackSPC
 ```
 
-# NOTES: This driver is still in development and may not work as intended. Use at your own risk!
-
+# NOTES: 
+## $\color{Red}\Huge{\textsf{This driver is still in development and may not work as intended. Use at your own risk!}}$
